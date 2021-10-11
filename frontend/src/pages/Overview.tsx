@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {FC, useEffect, useState} from "react"
 import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,38 +13,44 @@ import {PokemonData} from "../../src/data/pokemonData"
 import Rating from '@mui/material/Rating';
 import style from "./Overview.module.css"
 import TablePagination from '@mui/material/TablePagination';
+import {Pokemon} from "../types/Pokemon";
 
 
 const rows = PokemonData
 
-const Details = (name: string, img_url: string, type: string[], weight: number, averageRating: number,
-                 ratings: number, percentage: number) => {
-    const [value, setValue] = useState<number>(0)
+interface iDetails extends Pokemon {
+    setMethod: Function;
+    getMethod: Function;
+}
+
+const Details: FC<iDetails> = (props, map) => {
+    let value = 4
+
     return (
         <div className={style.outerWrapper}>
-            <h2>{name}</h2>
+            <h2>{props.name}</h2>
             <div className={style.wrapper}>
                 <div>
-                    <img src={img_url} className={style.bigpic}/>
+                    <img src={props.sprite_url} className={style.bigpic}/>
                 </div>
                 <div>
-                    <p>type: {type}</p>
-                    <p>weight: {weight}</p>
+                    <p>type: {props.type}</p>
+                    <p>weight: {props.weight}</p>
                 </div>
                 <div>
                     <div>
-                        <p>average rating of {ratings} people</p>
-                        <Rating name="read-only" defaultValue={0} precision={0.1} value={averageRating} readOnly/>
+                        <p>average rating of {props.number_of_ratings} people</p>
+                        <Rating name="read-only" defaultValue={0} precision={0.1} value={props.rating} readOnly/>
                     </div>
-                    <p>Used by: {percentage * 100}% of teams</p>
+                    <p>Used by: {props.usage_percentage * 100}% of teams</p>
                     <div>
                         <p>your rating</p>
                         <Rating
                             name="simple-controlled"
-                            value={value}
+                            value={props.getMethod(props.id)}
                             precision={0.5}
                             onChange={(event, newValue) => {
-                                setValue(newValue ? newValue : 0)
+                                props.setMethod(props.id, newValue)
                             }}
                         />
                     </div>
@@ -55,7 +61,7 @@ const Details = (name: string, img_url: string, type: string[], weight: number, 
 }
 
 const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => {
-    const [isExpanded, setIsExpanded] = React.useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     return (
         <>
@@ -78,21 +84,29 @@ const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => 
 };
 
 const SimpleTable = () => {
+    const [map, setMap] = useState(new Map())
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState<number>(2);
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
 
+    const upsert = (key: number, value: number) => {
+        setMap((prev) => new Map(prev).set(key, value));
+    }
+
+    const getStars = (key: number) => {
+        if (map.has(key)){
+            return map.get(key)
+        } else {
+            return 0
+        }
+    }
+
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
-
-    useEffect(() => {
-        console.log("page " + {page} as string)
-        console.log("rowsPerPage " + {rowsPerPage} as string)
-    }, [page, rowsPerPage])
 
     return (
         <Paper className={style.root}>
@@ -115,7 +129,20 @@ const SimpleTable = () => {
                         <ExpandableTableRow
                             key={row.name}
                             expandComponent={<TableCell colSpan={8}>
-                                {Details(row.name, row.sprite_url, row.type, row.weight, row.rating, 10, row.usage_percentage)}
+                                {<Details
+                                    getMethod={getStars}
+                                    setMethod={upsert}
+                                    id={row.id}
+                                    name={row.name}
+                                    type={row.type}
+                                    stats={row.stats}
+                                    weight={row.weight}
+                                    rating={row.rating}
+                                    number_of_ratings={10}
+                                    usage_percentage={row.usage_percentage}
+                                    sprite_url={row.sprite_url}
+                                />
+                                }
                             </TableCell>}
                         >
                             <TableCell component="th" scope="row">
