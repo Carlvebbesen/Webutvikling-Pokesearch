@@ -1,0 +1,32 @@
+.root {
+    width: 100%;
+    overflow-x: auto;
+}
+
+
+.table {
+    min-width: 650px;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+
+}
+
+.bigpic{
+    display: block;
+    width: 40%;
+    height: auto;
+}
+
+.outerWrapper{
+    justify-content: center;
+    align-items: center;
+}
+
+key{
+    align-items: center;
+    justify-content: center;
+}
