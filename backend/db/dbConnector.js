@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { environment } from '../config/config';
-import { friendSchema } from './schema/friendSchema.ts';
-import { seriesSchema } from './schema/seriesSchema.ts';
+import { pokemonSchema } from './schema/pokemonSchema';
 const env = process.env.NODE_ENV || "development";
 
 /**
@@ -18,7 +17,6 @@ db.on('error', () => {
     console.error("Error while connecting to DB");
 });
 
-const Friends = mongoose.model('Friends', friendSchema);
-const Series = mongoose.model('Series', seriesSchema);
+const Pokemons = mongoose.model('Pokemon', pokemonSchema, 'Pokemons');
 
-export { Friends, Series };
+export { Pokemons };
