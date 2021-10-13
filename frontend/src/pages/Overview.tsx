@@ -15,8 +15,18 @@ import style from "./Overview.module.css"
 import TablePagination from '@mui/material/TablePagination';
 import {Pokemon} from "../types/Pokemon";
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
+import Filter from "../components/Filter"
+import {Theme} from "@mui/material/styles";
 
 const rows = PokemonData
+
+
+function getStyles() {
+    return {
+        display: "flex"
+    };
+}
+
 
 interface iTeamMember {
     id: number
@@ -146,66 +156,68 @@ const SimpleTable = () => {
     };
 
     return (
-        <Paper className={style.root}>
-            <Table stickyHeader className={style.table} aria-label="sticky table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell padding="checkbox"/>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right">HP</TableCell>
-                        <TableCell align="right">Attack</TableCell>
-                        <TableCell align="right">Defence</TableCell>
-                        <TableCell align="right">Sp. Atk</TableCell>
-                        <TableCell align="right">Sp. Def</TableCell>
-                        <TableCell align="right">Speed</TableCell>
-                        <TableCell align="right">Total</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-                        <ExpandableTableRow
-                            key={row.name}
-                            expandComponent={<TableCell colSpan={8}>
-                                {<Details
-                                    getRating={getStars}
-                                    setRating={upsert}
-                                    id={row.id}
-                                    name={row.name}
-                                    type={row.type}
-                                    stats={row.stats}
-                                    weight={row.weight}
-                                    rating={row.rating}
-                                    number_of_ratings={10}
-                                    usage_percentage={row.usage_percentage}
-                                    sprite_url={row.sprite_url}
-                                />
-                                }
-                            </TableCell>}
-                        >
-                            <TableCell component="th" scope="row">
-                                <img src={row.sprite_url}></img>{row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
-                            <TableCell align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
-                            <TableCell align="right">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
-                            <TableCell align="right">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
-                            <TableCell align="right">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
-                            <TableCell align="right">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
-                        </ExpandableTableRow>
-                    ))
-                    }
-                </TableBody>
-            </Table>
-            <TablePagination
-                rowsPerPageOptions={[1, 2, 3]}
-                component="div"
-                count={rows.length}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </Paper>
+        <div>
+            <Paper className={style.root}>
+                <Table stickyHeader className={style.table} aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell padding="checkbox"/>
+                            <TableCell>Name</TableCell>
+                            <TableCell align="right">HP</TableCell>
+                            <TableCell align="right">Attack</TableCell>
+                            <TableCell align="right">Defence</TableCell>
+                            <TableCell align="right">Sp. Atk</TableCell>
+                            <TableCell align="right">Sp. Def</TableCell>
+                            <TableCell align="right">Speed</TableCell>
+                            <TableCell align="right">Total</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                            <ExpandableTableRow
+                                key={row.name}
+                                expandComponent={<TableCell colSpan={8}>
+                                    {<Details
+                                        getRating={getStars}
+                                        setRating={upsert}
+                                        id={row.id}
+                                        name={row.name}
+                                        type={row.type}
+                                        stats={row.stats}
+                                        weight={row.weight}
+                                        rating={row.rating}
+                                        number_of_ratings={10}
+                                        usage_percentage={row.usage_percentage}
+                                        sprite_url={row.sprite_url}
+                                    />
+                                    }
+                                </TableCell>}
+                            >
+                                <TableCell component="th" scope="row">
+                                    <img src={row.sprite_url}></img>{row.name}
+                                </TableCell>
+                                <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
+                                <TableCell align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
+                                <TableCell align="right">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
+                                <TableCell align="right">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
+                                <TableCell align="right">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
+                                <TableCell align="right">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
+                            </ExpandableTableRow>
+                        ))
+                        }
+                    </TableBody>
+                </Table>
+                <TablePagination //TODO: https://mui.com/api/table-pagination/
+                    rowsPerPageOptions={[1, 2, 3]}
+                    component="div"
+                    count={rows.length}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
+        </div>
     )
         ;
 }
@@ -216,6 +228,7 @@ const OverviewPage = () => {
             <h1>
                 Overview Page
             </h1>
+            <Filter/>
             <SimpleTable/>
         </div>
     )

@@ -2,6 +2,7 @@ import React from 'react';
 import {Redirect, Route, Switch} from "react-router"
 import {BrowserRouter} from 'react-router-dom'
 import OverviewPage from "./pages/Overview";
+import Test from "./components/Test"
 
 function App() {
     return (
@@ -13,9 +14,7 @@ function App() {
                     </Route>
                     <Route exact path={"/test"}>
                         <div>
-                            <p>
-                                This is a test
-                            </p>
+                            <Test/>
                         </div>
                     </Route>
                     <Redirect to={"/"}/>
