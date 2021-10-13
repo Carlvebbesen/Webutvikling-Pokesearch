@@ -14,30 +14,64 @@ import Rating from '@mui/material/Rating';
 import style from "./Overview.module.css"
 import TablePagination from '@mui/material/TablePagination';
 import {Pokemon} from "../types/Pokemon";
-
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 const rows = PokemonData
 
-interface iDetails extends Pokemon {
-    setMethod: Function;
-    getMethod: Function;
+interface iTeamMember {
+    id: number
 }
 
-const Details: FC<iDetails> = (props, map) => {
-    let value = 4
+const TeamMember: FC<iTeamMember> = (props) => {
+    function handleClick() {
+        alert("remove " + props.id)
+    }
 
     return (
+        <div className={style.teamMember}>
+            <p>{props.id}</p>
+            <HighlightOffOutlinedIcon className={style.removeButton} onClick={handleClick}/>
+        </div>
+    )
+}
+
+interface iTeam {
+    members: number[]
+}
+
+const Team: FC<iTeam> = (props) => {
+    const team = props.members.map(id => <li><TeamMember id={id}/></li>)
+    return (
+        <div className={style.team}>
+            <h4>Current Team</h4>
+            <ul className={style.teamList}>
+                {team}
+            </ul>
+        </div>
+    )
+}
+
+
+interface iDetails extends Pokemon {
+    setRating: Function;
+    getRating: Function;
+}
+
+const Details: FC<iDetails> = (props) => {
+    const teamMembers = [1, 2, 3, 4, 5, 6] //TODO: endre
+    return (
         <div className={style.outerWrapper}>
-            <h2>{props.name}</h2>
+            <h1>{props.name}</h1>
             <div className={style.wrapper}>
-                <div>
+                <div className={style.detailsDiv}>
                     <img src={props.sprite_url} className={style.bigpic}/>
                 </div>
-                <div>
+                <div className={style.detailsDiv}>
                     <p>type: {props.type}</p>
+                    <p>number: {props.id}</p>
                     <p>weight: {props.weight}</p>
                 </div>
-                <div>
+                <div className={style.detailsDiv}>
                     <div>
                         <p>average rating of {props.number_of_ratings} people</p>
                         <Rating name="read-only" defaultValue={0} precision={0.1} value={props.rating} readOnly/>
@@ -47,13 +81,16 @@ const Details: FC<iDetails> = (props, map) => {
                         <p>your rating</p>
                         <Rating
                             name="simple-controlled"
-                            value={props.getMethod(props.id)}
+                            value={props.getRating(props.id)}
                             precision={0.5}
                             onChange={(event, newValue) => {
-                                props.setMethod(props.id, newValue)
+                                props.setRating(props.id, newValue)
                             }}
                         />
                     </div>
+                </div>
+                <div className={style.detailsDiv}>
+                    <Team members={teamMembers}/>
                 </div>
             </div>
         </div>
@@ -74,7 +111,7 @@ const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => 
                 {children}
             </TableRow>
             {isExpanded && (
-                <TableRow>
+                <TableRow className={style.expanding}>
                     <TableCell padding="checkbox"/>
                     {expandComponent}
                 </TableRow>
@@ -85,8 +122,8 @@ const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => 
 
 const SimpleTable = () => {
     const [map, setMap] = useState(new Map())
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(2);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(1);
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -96,7 +133,7 @@ const SimpleTable = () => {
     }
 
     const getStars = (key: number) => {
-        if (map.has(key)){
+        if (map.has(key)) {
             return map.get(key)
         } else {
             return 0
@@ -130,8 +167,8 @@ const SimpleTable = () => {
                             key={row.name}
                             expandComponent={<TableCell colSpan={8}>
                                 {<Details
-                                    getMethod={getStars}
-                                    setMethod={upsert}
+                                    getRating={getStars}
+                                    setRating={upsert}
                                     id={row.id}
                                     name={row.name}
                                     type={row.type}
@@ -160,7 +197,7 @@ const SimpleTable = () => {
                 </TableBody>
             </Table>
             <TablePagination
-                rowsPerPageOptions={[1, 2, 10]}
+                rowsPerPageOptions={[1, 2, 3]}
                 component="div"
                 count={rows.length}
                 page={page}
