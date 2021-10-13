@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { environment } from '../config/config';
 import { pokemonSchema } from './schema/pokemonSchema';
+import { teamSchema } from './schema/teamSchema';
 const env = process.env.NODE_ENV || "development";
 
 /**
@@ -18,5 +19,6 @@ db.on('error', () => {
 });
 
 const Pokemons = mongoose.model('Pokemon', pokemonSchema, 'Pokemons');
+const Teams = mongoose.model('Team', teamSchema, 'Teams')
 
-export { Pokemons };
+export { Pokemons, Teams };

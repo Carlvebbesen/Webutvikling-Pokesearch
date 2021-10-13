@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
 
 export const pokemonSchema = new mongoose.Schema({
-    id: {
-        type: Number
-    },
     name: {
         type: String
     },
