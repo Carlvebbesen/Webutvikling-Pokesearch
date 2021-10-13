@@ -55,5 +55,24 @@ export const resolvers = {
                 })
             })
         },
+        addPokemon: async (root, { input }) => {
+            let team = await Teams.findOne({ name: input.teamName });
+            let newPokemon = await Pokemons.findOne({ name: input.newPokemonName});
+
+            if (!team.pokemon.some(pokemon => pokemon.name === newPokemon.name)) {
+                if (team.pokemon.length === 6) {
+                    team.pokemon[input.index] = newPokemon;
+                } else {
+                    team.pokemon.push(newPokemon);
+                }
+            }
+
+            return new Promise((resolve, reject) => {
+                team.save((err) => {
+                    if(err) reject(err);
+                    else resolve(team);
+                })
+            });
+        },
     }
 };
