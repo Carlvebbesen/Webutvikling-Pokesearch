@@ -1,8 +1,60 @@
 import { gql } from 'apollo-server-express';
 
 export const typeDefs = gql`
-    type User {
-        name: String!
-        age: Int!
+    type Pokemon {
+        name: String,
+        pokeTypes: [String!]!,
+        stats: [Stat!]!,
+        weight: Int,
+        rating: Int,
+        usage_percentage: Int,
+        sprite_url: String,
     }
+
+    type Stat {
+        name: String,
+        base_stat: Int,
+    }
+
+    type Team {
+        name: String,
+        pokemon: [Pokemon]!,
+    }
+
+    input StatInput {
+        name: String,
+        base_stat: Int,
+    } 
+
+    input PokemonInput {
+        name: String,
+        pokeTypes: [String!]!,
+        stats: [StatInput],
+        weight: Int,
+        rating: Int,
+        usage_percentage: Int,
+        sprite_url: String,
+    }
+
+    input TeamInput {
+        name: String,
+    }
+
+    input AddPokemonInput {
+        teamName: String,
+        newPokemonName: String,
+        index: Int,
+    }
+
+    type Query {
+        getAllPokemon:[Pokemon],
+        getAllTeams:[Team]
+    }
+
+    type Mutation {
+        createPokemon(input:PokemonInput):Pokemon,
+        createTeam(input:TeamInput):Team,
+        addPokemon(input:AddPokemonInput):Team,
+    }
+
 `;
