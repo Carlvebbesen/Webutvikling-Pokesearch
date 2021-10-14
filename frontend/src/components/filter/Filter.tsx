@@ -4,7 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, {SelectChangeEvent} from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import {PokemonTypes} from "../types/Values";
+import {PokemonTypes} from "../../types/Values";
 import NativeSelect from '@mui/material/NativeSelect';
 import {OutlinedInput, Rating} from "@mui/material";
 import Box from '@mui/material/Box';

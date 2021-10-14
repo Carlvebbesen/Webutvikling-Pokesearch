@@ -1,0 +1,58 @@
+
+.teamMember{
+    background-color: lightblue;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+    border: solid 0.5px grey;
+    justify-content: space-between;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 3px;
+    height: 40px;
+    overflow-x: auto;
+}
+.teamMember:hover{
+    background-color: lightgreen;
+}
+
+.emptyTeamMember{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 3px;
+    height: 40px;
+    overflow-x: auto;
+}
+
+
+.removeButton{
+    color: red;
+}
+.removeButton:hover{
+    color: black;
+}
+
+.addButton{
+    color: green;
+}
+.addButton:hover{
+    color: black;
+}
+
+.team{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.teamList{
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
