@@ -6,7 +6,7 @@ export const PokemonData = [{
     weight: 69,
     rating: 2.5,
     usage_percentage: 0.3,
-    sprite_url: "1https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
 }, {
     id: 4,
     name: "charmander",
@@ -15,7 +15,7 @@ export const PokemonData = [{
     weight: 35,
     rating: 3.5,
     usage_percentage: 0.5,
-    sprite_url: "1https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png"
+    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png"
 }, {
     id: 7,
     name: "squirtle",
@@ -24,5 +24,5 @@ export const PokemonData = [{
     weight: 40,
     rating: 4.5,
     usage_percentage: 0.2,
-    sprite_url: "1https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"
+    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"
 }]

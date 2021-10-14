@@ -16,7 +16,9 @@ import TablePagination from '@mui/material/TablePagination';
 import {Pokemon} from "../types/Pokemon";
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import Filter from "../components/Filter"
-import {Theme} from "@mui/material/styles";
+import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+
 
 const rows = PokemonData
 
@@ -27,30 +29,49 @@ function getStyles() {
     };
 }
 
+function capitalizeFirstLetter(word: string) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
 interface iTeamMember {
-    id: number
+    teamId: number
+    pokemonid: number
 }
 
 const TeamMember: FC<iTeamMember> = (props) => {
-    function handleClick() {
-        alert("remove " + props.id)
+    function handleSwap() {
+        alert("remove " + props.teamId + " and add " + props.pokemonid)
     }
 
+    function handleAdd() {
+        alert("add " + props.pokemonid)
+    }
+
+
+    if (props.teamId!==0){
     return (
         <div className={style.teamMember}>
-            <p>{props.id}</p>
-            <HighlightOffOutlinedIcon className={style.removeButton} onClick={handleClick}/>
+            <p>{props.teamId}</p>
+            <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={handleSwap}/>
+        </div>
+    )}
+    return(
+        <div className={style.emptyTeamMember}>
+            <AddCircleOutlineIcon className={style.addButton} onClick={handleAdd}/>
         </div>
     )
 }
 
 interface iTeam {
     members: number[]
+    pokemonid: number
 }
 
 const Team: FC<iTeam> = (props) => {
-    const team = props.members.map(id => <li><TeamMember id={id}/></li>)
+    const team = props.members.map(id => <li><TeamMember teamId={id} pokemonid={props.pokemonid}/></li>)
+    while (team.length<6){
+        team.push(<li><TeamMember teamId={0} pokemonid={props.pokemonid}/></li>)
+    }
     return (
         <div className={style.team}>
             <h4>Current Team</h4>
@@ -68,10 +89,10 @@ interface iDetails extends Pokemon {
 }
 
 const Details: FC<iDetails> = (props) => {
-    const teamMembers = [1, 2, 3, 4, 5, 6] //TODO: endre
+    const teamMembers = [1, 2, 3, 4] //TODO: endre
     return (
         <div className={style.outerWrapper}>
-            <h1>{props.name}</h1>
+            <h1>{capitalizeFirstLetter(props.name)}</h1>
             <div className={style.wrapper}>
                 <div className={style.detailsDiv}>
                     <img src={props.sprite_url} className={style.bigpic}/>
@@ -100,7 +121,7 @@ const Details: FC<iDetails> = (props) => {
                     </div>
                 </div>
                 <div className={style.detailsDiv}>
-                    <Team members={teamMembers}/>
+                    <Team members={teamMembers} pokemonid={props.id}/>
                 </div>
             </div>
         </div>
@@ -133,7 +154,7 @@ const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => 
 const SimpleTable = () => {
     const [map, setMap] = useState(new Map())
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
@@ -175,7 +196,7 @@ const SimpleTable = () => {
                     <TableBody>
                         {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
                             <ExpandableTableRow
-                                key={row.name}
+                                key={capitalizeFirstLetter(row.name)}
                                 expandComponent={<TableCell colSpan={8}>
                                     {<Details
                                         getRating={getStars}
@@ -194,7 +215,7 @@ const SimpleTable = () => {
                                 </TableCell>}
                             >
                                 <TableCell component="th" scope="row">
-                                    <img src={row.sprite_url}></img>{row.name}
+                                    <img src={row.sprite_url}></img>{capitalizeFirstLetter(row.name)}
                                 </TableCell>
                                 <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
                                 <TableCell align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
@@ -208,7 +229,7 @@ const SimpleTable = () => {
                     </TableBody>
                 </Table>
                 <TablePagination //TODO: https://mui.com/api/table-pagination/
-                    rowsPerPageOptions={[1, 2, 3]}
+                    rowsPerPageOptions={[5, 10, 15]}
                     component="div"
                     count={rows.length}
                     page={page}

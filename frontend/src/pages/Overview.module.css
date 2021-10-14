@@ -65,11 +65,30 @@
     background-color: lightgreen;
 }
 
+.emptyTeamMember{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: 3px;
+    height: 40px;
+    overflow-x: auto;
+}
+
 
 .removeButton{
     color: red;
 }
 .removeButton:hover{
+    color: black;
+}
+
+.addButton{
+    color: green;
+}
+.addButton:hover{
     color: black;
 }
 
