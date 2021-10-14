@@ -1,5 +1,4 @@
 import React, {FC, useEffect, useState} from "react"
-import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,10 +17,15 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import Filter from "../components/Filter"
 import SwapHorizontalCircleOutlinedIcon from '@mui/icons-material/SwapHorizontalCircleOutlined';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import {Pagination} from "@mui/material";
 
 
 const rows = PokemonData
-
+const styles = {
+    MuiTablePaginationMenuItem: {
+        display: "flex"
+    }
+}
 
 function getStyles() {
     return {
@@ -48,14 +52,15 @@ const TeamMember: FC<iTeamMember> = (props) => {
     }
 
 
-    if (props.teamId!==0){
+    if (props.teamId !== 0) {
+        return (
+            <div className={style.teamMember}>
+                <p>{props.teamId}</p>
+                <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={handleSwap}/>
+            </div>
+        )
+    }
     return (
-        <div className={style.teamMember}>
-            <p>{props.teamId}</p>
-            <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={handleSwap}/>
-        </div>
-    )}
-    return(
         <div className={style.emptyTeamMember}>
             <AddCircleOutlineIcon className={style.addButton} onClick={handleAdd}/>
         </div>
@@ -69,7 +74,7 @@ interface iTeam {
 
 const Team: FC<iTeam> = (props) => {
     const team = props.members.map(id => <li><TeamMember teamId={id} pokemonid={props.pokemonid}/></li>)
-    while (team.length<6){
+    while (team.length < 6) {
         team.push(<li><TeamMember teamId={0} pokemonid={props.pokemonid}/></li>)
     }
     return (
@@ -89,7 +94,7 @@ interface iDetails extends Pokemon {
 }
 
 const Details: FC<iDetails> = (props) => {
-    const teamMembers = [1, 2, 3, 4] //TODO: endre
+    const teamMembers = [1, 2, 3, 4]
     return (
         <div className={style.outerWrapper}>
             <h1>{capitalizeFirstLetter(props.name)}</h1>
@@ -218,11 +223,18 @@ const SimpleTable = () => {
                                     <img src={row.sprite_url}></img>{capitalizeFirstLetter(row.name)}
                                 </TableCell>
                                 <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
-                                <TableCell align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
-                                <TableCell align="right">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
-                                <TableCell align="right">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
-                                <TableCell align="right">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
-                                <TableCell align="right">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
+                                <TableCell
+                                    align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
+                                <TableCell
+                                    align="right">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
+                                <TableCell
+                                    align="right">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
+                                <TableCell
+                                    align="right">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
+                                <TableCell
+                                    align="right">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
+                                <TableCell
+                                    align="right">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell>
                             </ExpandableTableRow>
                         ))
                         }
@@ -230,7 +242,6 @@ const SimpleTable = () => {
                 </Table>
                 <TablePagination //TODO: https://mui.com/api/table-pagination/
                     rowsPerPageOptions={[5, 10, 15]}
-                    component="div"
                     count={rows.length}
                     page={page}
                     rowsPerPage={rowsPerPage}
@@ -244,12 +255,15 @@ const SimpleTable = () => {
 }
 
 const OverviewPage = () => {
+    const [type, setType] = useState<string[]>([])
+    const [name, setName] = useState<string>("")
+    const [stars, setStars] = useState<number>(0)
     return (
-        <div>
+        <div className={style.overview}>
             <h1>
                 Overview Page
             </h1>
-            <Filter/>
+            <Filter name={name} setName={setName} setStars={setStars} stars={stars} setType={setType} type={type}/>
             <SimpleTable/>
         </div>
     )

@@ -1,0 +1,12 @@
+.filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    border-radius: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #FAFAFA;
+}

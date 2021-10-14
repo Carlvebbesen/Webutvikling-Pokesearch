@@ -6,11 +6,12 @@ import Select, {SelectChangeEvent} from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import {PokemonTypes} from "../types/Values";
 import NativeSelect from '@mui/material/NativeSelect';
-import {OutlinedInput} from "@mui/material";
+import {OutlinedInput, Rating} from "@mui/material";
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import ButtonBase from '@mui/material/ButtonBase';
 import {useTheme, Theme} from "@mui/material/styles";
+import style from "./filter.module.css"
 
 function getStyles(name: string, selected: readonly string[], theme: Theme) {
     return {
@@ -22,15 +23,21 @@ function getStyles(name: string, selected: readonly string[], theme: Theme) {
     };
 }
 
+interface iFilter {
+    type: string[]
+    name: string
+    stars: number
+    setType: Function
+    setName: Function
+    setStars: Function
+}
 
-const Filter = () => {
-    const [type, setType] = useState<string[]>([])
-    const [name, setName] = useState<string>("hei")
+
+const Filter: FC<iFilter> = (props) => {
+
     const theme = useTheme();
 
     const menuItems = PokemonTypes.map(type => <option value={type}>{type}</option>)
-
-
 
 
     const ITEM_HEIGHT = 48;
@@ -45,11 +52,11 @@ const Filter = () => {
     };
 
 
-    const handleChange = (event: SelectChangeEvent<typeof type>) => {
+    const handleChange = (event: SelectChangeEvent<typeof props.type>) => {
         const {
             target: {value},
         } = event;
-        setType(
+        props.setType(
             // On autofill we get a the stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
@@ -57,17 +64,23 @@ const Filter = () => {
 
 
     return (
-        <div>
-            <p>hei</p>
+        <div className={style.filter}>
+            <TextField sx={{m: 1, width: 300}}
+                       id="outlined-search"
+                       label="Name"
+                       type="search"
+                       value={props.name}
+                       onChange={event => props.setName(event.target.value)}
+            />
             <FormControl sx={{m: 1, width: 300}}>
-                <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+                <InputLabel id="demo-multiple-chip-label">Type</InputLabel>
                 <Select
                     labelId="multiple-chip-label"
                     id="Type"
                     multiple
-                    value={type}
+                    value={props.type}
                     onChange={handleChange}
-                    input={<OutlinedInput id="select-multiple-chip" label="Chip"/>}
+                    input={<OutlinedInput id="select-multiple-chip" label="Type"/>}
                     renderValue={(selected) => (
                         <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                             {selected.map((value) => (
@@ -79,22 +92,28 @@ const Filter = () => {
                 >
                     {PokemonTypes.map((x) => (
                         <MenuItem sx={{display: "block"}}
-                            key={x}
-                            value={x}
-                            style={getStyles(x, type, theme)}
+                                  key={x}
+                                  value={x}
+                                  style={getStyles(x, props.type, theme)}
                         >
                             {x}
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <TextField
-                id="outlined-search"
-                label="Search field"
-                type="search"
-                value={name}
-                onChange={event => setName(event.target.value)}
+            <div>
+                <p>minimum rating:</p>
+            <Rating
+                name="simple-controlled"
+                value={props.stars}
+                precision={0.5}
+                onChange={(event, star) => {
+                    if (star != null) {
+                        props.setStars(star);
+                    }
+                }}
             />
+            </div>
 
         </div>
     )
