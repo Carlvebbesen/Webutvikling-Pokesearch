@@ -1,0 +1,32 @@
+.table {
+    min-width: 650px;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr 2fr;
+    align-items: center;
+}
+
+.bigpic{
+    display: block;
+    width: 70%;
+    height: auto;
+}
+.expanding{
+    background-color: lightgrey;
+}
+
+.detailsDiv{
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: 10px;
+    background-color: white;
+}
+
+
