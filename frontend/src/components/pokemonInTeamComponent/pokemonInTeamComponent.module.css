@@ -1,17 +1,26 @@
-.acc{
+.pokeContainer{
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .pokeImg {
-    grid-column-start: 1;
+    grid-row-start: 1;
+    justify-self: center;
 }
 
 .pokeName{
-    grid-column-start: 2;
+    grid-row-start: 2;
+    justify-self: center;
 
 }
 
 .pokeType {
-    grid-column-start: 3;
+    grid-row-start: 3;
+    justify-self: center;
 
+}
+
+.pokeDiv {
+    grid-column: 1/3;
 }

@@ -1,4 +1,6 @@
-export const PokemonData = [{
+import {Pokemon} from "../pages/myTeamPage/myTeam";
+
+export const PokemonData : Pokemon[] = [{
     id: 1,
     name: "bulbasaur",
     type: ["grass"],
