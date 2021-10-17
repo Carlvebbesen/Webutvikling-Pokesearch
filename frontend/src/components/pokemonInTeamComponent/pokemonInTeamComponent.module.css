@@ -1,0 +1,17 @@
+.acc{
+    display: flex;
+}
+
+.pokeImg {
+    grid-column-start: 1;
+}
+
+.pokeName{
+    grid-column-start: 2;
+
+}
+
+.pokeType {
+    grid-column-start: 3;
+
+}
