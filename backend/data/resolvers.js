@@ -7,9 +7,6 @@ import { Pokemons, Teams } from '../db/dbConnector.js'
 export const resolvers = {
     Query: {
             getFilteredPokemon:(root, {input})=> {
-                console.log(input.name),
-                console.log(input.rating),
-                console.log(input.pokeTypes)
                 const query = Pokemons.find({
                     name: { $regex: `^${input.name}`, $options: 'is' }
                 })
