@@ -1,5 +1,6 @@
 import React from 'react';
 import MyTeamOverviewComponent from "../../components/myTeamOverviewComponent/myTeamOverviewComponent";
+import styles from "./myTeam.module.css";
 
 
 export type Pokemon = {
@@ -16,7 +17,8 @@ export type Pokemon = {
 export const MyTeam = () => {
 
     return (
-        <div className={"MyTeam"}>
+        <div className={styles.myTeamPage}>
+            <h2 className={styles.myTeamHeadline}>My team</h2>
             <MyTeamOverviewComponent />
         </div>
     );
