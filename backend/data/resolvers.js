@@ -6,11 +6,28 @@ import { Pokemons, Teams } from '../db/dbConnector.js'
 
 export const resolvers = {
     Query: {
-            getAllPokemon:(root)=> {
+            getFilteredPokemon:(root, {input})=> {
+                console.log(input.name),
+                console.log(input.rating),
+                console.log(input.pokeTypes)
+                const query = Pokemons.find({
+                    name: { $regex: `^${input.name}`, $options: 'is' }
+                })
+                if(!input.pokeTypes.isEmpty){
+                    query.find({
+                        pokeTypes: {$in: input.pokeTypes},
+                    })
+                }
+                if(input.rating > 0){
+                    query.find({
+                    rating: {$gte: input.rating},
+                    })
+                }
+                const searchCount = Pokemons.count(query);
+                query.skip(input.offset).limit(input.limit)
                 return new Promise((resolve, reject) => {
-                    Pokemons.find((err, pokemons) => {
-                        if(err) reject(err);
-                        else resolve(pokemons);
+                    resolve({pokemons:query.exec(),
+                         count: searchCount,
                     })
                 })
             },
