@@ -1,7 +1,7 @@
 import {Pokemon} from "../../pages/myTeamPage/myTeam";
 import PokemonInTeamComponent from "../pokemonInTeamComponent/pokemonInTeamComponent";
 import styles from "./myTeamOverviewComponent.module.css"
-import {Button, Grid, TextField} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {pokemonTeam, updatedPokemonTeam} from "../../store";
 import {useState} from "react";
@@ -16,27 +16,25 @@ const MyTeamOverviewComponent = () => {
 
     const addToTeam = () => {
         const newTeam : number[] = [...team];
-        newTeam.push(myValue);
-        console.log(newTeam)
+        if (!isNaN(myValue)) {
+            newTeam.push(myValue);
+        }
         setTeam(newTeam)
     }
 
     return (
-        <Grid container spacing={2}>
-
-            {team.length === 1 ?
+        <div className={styles.MyTeamOverview}>
+            {team.length === 0 ?
                 <div>
                     You have not chosen any pokemon for your team
                 </div>
                 :pokemon.map((poke, key) =>
                 <PokemonInTeamComponent pokemon={poke} key={key}/>
             )}
-            {/*
-            For testing:
-            <TextField id="outlined-basic" label="Outlined" variant="outlined"  onChange={(e) => setValue(Number(e.target.value))}/>
+            <TextField id="outlined-basic" variant="outlined"
+                   onChange={(e) => setValue(Number(e.target.value))}/>
             <Button variant="contained" onClick={addToTeam}>Add to team</Button>
-            */}
-        </Grid>
+        </div>
 
     );
 

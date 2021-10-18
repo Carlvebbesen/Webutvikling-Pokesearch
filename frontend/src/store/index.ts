@@ -2,9 +2,9 @@ import {atom, selector} from "recoil";
 import {PokemonData} from "../data/pokemonData";
 import {Pokemon} from "../pages/myTeamPage/myTeam";
 
-export const pokemonTeam = atom({
+export const pokemonTeam = atom<number[]>({
     key: "pokemonTeam",
-    default: [0]
+    default: [4]
 });
 
 export const updatedPokemonTeam = selector({
