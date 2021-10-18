@@ -13,7 +13,7 @@ export const resolvers = {
                 const query = Pokemons.find({
                     name: { $regex: `^${input.name}`, $options: 'is' }
                 })
-                if(!input.pokeTypes.isEmpty){
+                if(input.pokeTypes.length !== 0){
                     query.find({
                         pokeTypes: {$in: input.pokeTypes},
                     })
@@ -24,7 +24,7 @@ export const resolvers = {
                     })
                 }
                 const searchCount = Pokemons.count(query);
-                query.skip(input.offset).limit(input.limit)
+                query.skip(input.offset).limit(input.limit).sort({name: 1})
                 return new Promise((resolve, reject) => {
                     resolve({pokemons:query.exec(),
                          count: searchCount,
