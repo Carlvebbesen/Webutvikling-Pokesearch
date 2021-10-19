@@ -14,12 +14,44 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TablePagination from "@mui/material/TablePagination";
 import {capitalize} from "@mui/material";
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
+
+interface iSortingButton{
+    id: number
+    name: string,
+    hide: boolean,
+    decending: boolean,
+    onClick: Function
+}
+
+
+const SortingButton: FC<iSortingButton> = (props)=>{
+
+    const handleClick=()=>{
+        props.onClick(props.id)
+    }
+ 
+    return(
+        <button onClick={handleClick}>
+            <span>
+            <p>{props.name}</p>
+                {props.hide
+                   ?<FilterAltIcon/>:
+                   props.decending?<ArrowDownwardOutlinedIcon/>:<ArrowUpwardOutlinedIcon/>}
+           </span>
+        </button>
+    )
+}
 
 interface iDetails extends Pokemon {
     setRating: Function;
     getRating: Function;
 }
+
+
 
 const Details: FC<iDetails> = (props) => {
     const teamMembers = [1, 2, 3, 4]
@@ -111,10 +143,25 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
         }
     }
 
+    const handleSort=(id:number)=>{
+        console.log(id)
+        tableHeader.filter(a=>a.id!==id).forEach(a=>console.log(a as unknown as string))
+        //tableHeader.forEach(button=>button.hide=true)
+        //button.decending=!button.decending
+        //button.hide=false
+
+    }
+
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         props.setRowsPerPage(+event.target.value);
         props.setPage(0);
     };
+
+
+    let tableHeader:iSortingButton[] = ["Name", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
+        .map((name, index) => <SortingButton name={name} hide={true} decending={true}
+                                             onClick={handleSort} id={index}/> as unknown  as iSortingButton)
+
 
     return (
         <div>
@@ -123,14 +170,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"/>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="right">HP</TableCell>
-                            <TableCell align="right">Attack</TableCell>
-                            <TableCell align="right">Defence</TableCell>
-                            <TableCell align="right">Sp. Atk</TableCell>
-                            <TableCell align="right">Sp. Def</TableCell>
-                            <TableCell align="right">Speed</TableCell>
-                            <TableCell align="right">Total</TableCell>
+                            {tableHeader.map(header=><TableCell align="right">{header}</TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>
