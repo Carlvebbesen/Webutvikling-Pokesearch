@@ -17,6 +17,7 @@ import {capitalize} from "@mui/material";
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import {findAllByAltText} from "@testing-library/react";
 
 
 interface iSortingButton {
@@ -30,22 +31,20 @@ interface iSortingButton {
 
 const SortingButton: FC<iSortingButton> = (props) => {
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(props.id + ": decending changed to " + props.decending)
-    },[props.decending])
+    }, [props.decending])
 
     const handleClick = () => {
         props.onClick(props.id)
     }
 
     return (
-        <button onClick={handleClick}>
-            <span>
+        <button className={style.sortingButton} onClick={handleClick}>
             <p>{props.name}</p>
-                {props.hide
-                    ? <FilterAltIcon/> :
-                    props.decending ? <ArrowUpwardOutlinedIcon/>:<ArrowDownwardOutlinedIcon/>}
-           </span>
+            {props.hide
+                ? <FilterAltIcon/> :
+                props.decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}
         </button>
     )
 }
@@ -147,15 +146,16 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
     }
 
     const handleSort = (id: number) => {
+        console.log(tableHeader)
         setTableHeader(prev => prev.map(a => {
             if (a.id === id) {
-                console.log("first", a.id,a.hide,a.decending)
+                console.log("first", a.id, a.hide, a.decending)
                 if (a.hide) {
                     a.hide = false
                 } else {
-                    a.decending = (!a.decending)
+                    a.decending = !a.decending //TODO: noe galt her
                 }
-                console.log("end", a.id,a.hide,a.decending)
+                console.log("end", a.id, a.hide, a.decending)
             } else {
                 a.hide = true
             }
@@ -219,19 +219,19 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                     <TableCell component="th" scope="row">
                                         <img src={row.sprite_url}/>{capitalize(row.name)}
                                     </TableCell>
-                                    <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
+                                    <TableCell align="center">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell>
+                                        align="center">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell>
                                 </ExpandableTableRow>
                             ))
                         }
