@@ -1,5 +1,5 @@
 import {Pokemon} from "../../types/Pokemon";
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import style from "./SimpleTable.module.css";
 import Rating from "@mui/material/Rating";
 import Team from "../team/Team";
@@ -19,7 +19,7 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 
-interface iSortingButton{
+interface iSortingButton {
     id: number
     name: string,
     hide: boolean,
@@ -28,19 +28,23 @@ interface iSortingButton{
 }
 
 
-const SortingButton: FC<iSortingButton> = (props)=>{
+const SortingButton: FC<iSortingButton> = (props) => {
 
-    const handleClick=()=>{
+    useEffect(()=>{
+        console.log(props.id + ": decending changed to " + props.decending)
+    },[props.decending])
+
+    const handleClick = () => {
         props.onClick(props.id)
     }
- 
-    return(
+
+    return (
         <button onClick={handleClick}>
             <span>
             <p>{props.name}</p>
                 {props.hide
-                   ?<FilterAltIcon/>:
-                   props.decending?<ArrowDownwardOutlinedIcon/>:<ArrowUpwardOutlinedIcon/>}
+                    ? <FilterAltIcon/> :
+                    props.decending ? <ArrowUpwardOutlinedIcon/>:<ArrowDownwardOutlinedIcon/>}
            </span>
         </button>
     )
@@ -50,7 +54,6 @@ interface iDetails extends Pokemon {
     setRating: Function;
     getRating: Function;
 }
-
 
 
 const Details: FC<iDetails> = (props) => {
@@ -143,12 +146,23 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
         }
     }
 
-    const handleSort=(id:number)=>{
-        console.log(id)
-        tableHeader.filter(a=>a.id!==id).forEach(a=>console.log(a as unknown as string))
-        //tableHeader.forEach(button=>button.hide=true)
-        //button.decending=!button.decending
-        //button.hide=false
+    const handleSort = (id: number) => {
+        setTableHeader(prev => prev.map(a => {
+            if (a.id === id) {
+                console.log("first", a.id,a.hide,a.decending)
+                if (a.hide) {
+                    a.hide = false
+                } else {
+                    a.decending = (!a.decending)
+                }
+                console.log("end", a.id,a.hide,a.decending)
+            } else {
+                a.hide = true
+            }
+            return a
+        }))
+        console.log(tableHeader)
+
 
     }
 
@@ -158,10 +172,13 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
     };
 
 
-    let tableHeader:iSortingButton[] = ["Name", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
-        .map((name, index) => <SortingButton name={name} hide={true} decending={true}
-                                             onClick={handleSort} id={index}/> as unknown  as iSortingButton)
-
+    const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Name", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
+        .map((name, index) => {
+            const button: iSortingButton = {
+                decending: true, hide: true, id: index, name: name, onClick: handleSort
+            }
+            return button
+        }))
 
     return (
         <div>
@@ -170,7 +187,10 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"/>
-                            {tableHeader.map(header=><TableCell align="right">{header}</TableCell>)}
+                            {tableHeader.map(header => <TableCell align="right">
+                                <SortingButton id={header.id} name={header.name} hide={header.hide}
+                                               decending={header.decending} onClick={header.onClick}
+                                /></TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -197,7 +217,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                     </TableCell>}
                                 >
                                     <TableCell component="th" scope="row">
-                                        <img src={row.sprite_url}></img>{capitalize(row.name)}
+                                        <img src={row.sprite_url}/>{capitalize(row.name)}
                                     </TableCell>
                                     <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
                                     <TableCell
