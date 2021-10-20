@@ -11,6 +11,11 @@ export const typeDefs = gql`
         sprite_url: String,
     }
 
+    type PokemonFilter {
+    pokemons: [Pokemon],
+    count: Int,
+    }
+
     type Stat {
         name: String,
         base_stat: Int,
@@ -36,6 +41,14 @@ export const typeDefs = gql`
         sprite_url: String,
     }
 
+    input FilterInput {
+        name: String,
+        pokeTypes: [String],
+        rating: Int,
+        limit: Int!,
+        offset: Int!
+    } 
+
     input TeamInput {
         name: String,
     }
@@ -47,7 +60,7 @@ export const typeDefs = gql`
     }
 
     type Query {
-        getAllPokemon:[Pokemon],
+        getFilteredPokemon(input: FilterInput): PokemonFilter,
         getAllTeams:[Team]
     }
 
