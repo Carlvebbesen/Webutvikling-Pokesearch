@@ -4,12 +4,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, {SelectChangeEvent} from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import {PokemonTypes} from "../../types/Values";
+import {PokemonTypes} from "../../utils/Values";
 import {OutlinedInput, Rating} from "@mui/material";
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {useTheme, Theme} from "@mui/material/styles";
-import style from "./filter.module.css"
+import style from "./Filter.module.css"
 
 function getStyles(name: string, selected: readonly string[], theme: Theme) {
     return {

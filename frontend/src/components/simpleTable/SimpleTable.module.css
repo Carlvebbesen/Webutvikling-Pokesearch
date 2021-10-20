@@ -37,5 +37,13 @@
     align-items: center;
     min-width: 100px;
     height: 100%;
+}
 
+
+.selected{
+    background-color: #aee3ae;
+}
+
+.notSelected{
+    background-color: white;
 }

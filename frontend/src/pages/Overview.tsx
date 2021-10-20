@@ -1,7 +1,7 @@
 import React, {FC, useState} from "react"
 import {PokemonData} from "../../src/data/pokemonData"
 import style from "./Overview.module.css"
-import {Pokemon} from "../types/Pokemon";
+import {Pokemon} from "../utils/Pokemon";
 import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 

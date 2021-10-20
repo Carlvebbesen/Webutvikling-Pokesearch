@@ -1,6 +1,5 @@
-import {Pokemon} from "../../types/Pokemon";
+import {Pokemon} from "../../utils/Pokemon";
 import React, {FC, useEffect, useState} from "react";
-import style from "./SimpleTable.module.css";
 import Rating from "@mui/material/Rating";
 import Team from "../team/Team";
 import TableRow from "@material-ui/core/TableRow";
@@ -17,7 +16,11 @@ import {capitalize} from "@mui/material";
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import {findAllByAltText} from "@testing-library/react";
+import {getWindowDimensions} from "../../utils/methods";
+import style from './SimpleTable.module.css';
+
+const teamMembers = [1, 2, 3, 4]
+const {height, width} = getWindowDimensions();
 
 
 interface iSortingButton {
@@ -56,7 +59,6 @@ interface iDetails extends Pokemon {
 
 
 const Details: FC<iDetails> = (props) => {
-    const teamMembers = [1, 2, 3, 4]
     return (
         <div className={style.outerWrapper}>
             <h1>{capitalize(props.name)}</h1>
@@ -187,7 +189,8 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"/>
-                            {tableHeader.map(header => <TableCell align="right">
+
+                            {(width>600?tableHeader:tableHeader.slice(0,1)).map(header => <TableCell align="right">
                                 <SortingButton id={header.id} name={header.name} hide={header.hide}
                                                decending={header.decending} onClick={header.onClick}
                                 /></TableCell>)}
@@ -198,6 +201,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                             props.page * props.rowsPerPage, props.page * props.rowsPerPage + props.rowsPerPage)
                             .map(row => (
                                 <ExpandableTableRow
+                                    className={teamMembers.includes(row.id) ? style.selected : style.notSelected}
                                     key={capitalize(row.name)}
                                     expandComponent={<TableCell colSpan={8}>
                                         {<Details
