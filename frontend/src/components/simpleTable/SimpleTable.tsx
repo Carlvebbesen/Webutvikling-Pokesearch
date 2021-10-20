@@ -28,7 +28,7 @@ const Details: FC<iDetails> = (props) => {
             <h1>{capitalize(props.name)}</h1>
             <div className={style.wrapper}>
                 <div className={style.detailsDiv}>
-                    <img src={props.sprite_url} className={style.bigpic}/>
+                    <img src={props.sprite_url} className={style.bigpic} alt="pokemon"/>
                 </div>
                 <div className={style.detailsDiv}>
                     <p>type: {props.type}</p>
@@ -157,7 +157,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                     </TableCell>}
                                 >
                                     <TableCell component="th" scope="row">
-                                        <img src={row.sprite_url}></img>{capitalize(row.name)}
+                                        <img src={row.sprite_url} alt="pokemon"></img>{capitalize(row.name)}
                                     </TableCell>
                                     <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
                                     <TableCell
