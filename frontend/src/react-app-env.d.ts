@@ -1,1 +1,1 @@
-/// <reference utils="react-scripts" />
+/// <reference types="react-scripts" />

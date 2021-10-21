@@ -11,7 +11,7 @@ export const PokemonData = [{
     id: 4,
     name: "charmander",
     type: ["fire"],
-    stats: [{name: "hp", value: 20}, {name: "attack", value: 30}],
+    stats: [{name: "hp", value: 20}, {name: "attack", value: 30},{name: "defence", value: 10},{name: "sp.atk", value: 300}],
     weight: 35,
     rating: 3.5,
     usage_percentage: 0.5,

@@ -16,11 +16,11 @@ import {capitalize} from "@mui/material";
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import {getWindowDimensions} from "../../utils/methods";
+import {useWindowDimensions} from "../../utils/methods";
 import style from './SimpleTable.module.css';
 
 const teamMembers = [1, 2, 3, 4]
-const {height, width} = getWindowDimensions();
+
 
 
 interface iSortingButton {
@@ -131,6 +131,7 @@ interface iSimpleTable {
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
+    const {height, width} = useWindowDimensions();
     const handleChangePage = (event: unknown, newPage: number) => {
         props.setPage(newPage);
     };
@@ -174,7 +175,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
     };
 
 
-    const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Name", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
+    const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
             const button: iSortingButton = {
                 decending: true, hide: true, id: index, name: name, onClick: handleSort
@@ -184,6 +185,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
 
     return (
         <div>
+            <p>hei, width = {width}</p>
             <Paper className={style.root}>
                 <Table stickyHeader className={style.table} aria-label="sticky table">
                     <TableHead>
@@ -223,6 +225,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                     <TableCell component="th" scope="row">
                                         <img src={row.sprite_url}/>{capitalize(row.name)}
                                     </TableCell>
+                                    {width>600?<>
                                     <TableCell align="center">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
                                     <TableCell
                                         align="center">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
@@ -235,7 +238,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                     <TableCell
                                         align="center">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell>
+                                        align="center">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell></>:<></>}
                                 </ExpandableTableRow>
                             ))
                         }

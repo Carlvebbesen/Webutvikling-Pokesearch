@@ -1,11 +1,18 @@
 .table {
-    min-width: 650px;
+    font-size: 1vm;
 }
 
 .wrapper {
-    display: grid;
+    display: unset;
     grid-template-columns: 3fr 2fr 2fr 2fr;
     align-items: center;
+}
+
+@media only screen and (min-width: 600px) {
+    .wrapper{
+        display: grid;
+    }
+
 }
 
 .bigpic{

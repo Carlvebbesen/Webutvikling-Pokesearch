@@ -74,7 +74,7 @@ const Filter: FC<iFilter> = (props) => {
                        onChange={event => props.setName(event.target.value)}
             />
             <FormControl sx={{m: 1, width: 300}}>
-                <InputLabel id="demo-multiple-chip-label">Type</InputLabel>
+                <InputLabel id="demo-multiple-chip-label">Type (Max 2)</InputLabel>
                 <Select
                     labelId="multiple-chip-label"
                     id="Type"
