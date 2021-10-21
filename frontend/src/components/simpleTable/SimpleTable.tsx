@@ -1,6 +1,5 @@
-import {Pokemon} from "../../types/Pokemon";
-import React, {FC, useState} from "react";
-import style from "./SimpleTable.module.css";
+import {Pokemon} from "../../utils/Pokemon";
+import React, {FC, useEffect, useState} from "react";
 import Rating from "@mui/material/Rating";
 import Team from "../team/Team";
 import TableRow from "@material-ui/core/TableRow";
@@ -14,15 +13,52 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TablePagination from "@mui/material/TablePagination";
 import {capitalize} from "@mui/material";
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import {useWindowDimensions} from "../../utils/methods";
+import style from './SimpleTable.module.css';
 
+const teamMembers = [1, 2, 3, 4]
+
+
+
+interface iSortingButton {
+    id: number
+    name: string,
+    hide: boolean,
+    decending: boolean,
+    onClick: Function
+}
+
+
+const SortingButton: FC<iSortingButton> = (props) => {
+
+    useEffect(() => { //TODO: delete after solve bug
+        console.log(props.id + ": decending changed to " + props.decending)
+    }, [props.decending])
+
+    const handleClick = () => {
+        props.onClick(props.id)
+    }
+
+    return (
+        <button className={style.sortingButton} onClick={handleClick}>
+            <p>{props.name}</p>
+            {props.hide
+                ? <FilterAltIcon/> :
+                props.decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}
+        </button>
+    )
+}
 
 interface iDetails extends Pokemon {
     setRating: Function;
     getRating: Function;
 }
 
+
 const Details: FC<iDetails> = (props) => {
-    const teamMembers = [1, 2, 3, 4]
     return (
         <div className={style.outerWrapper}>
             <h1>{capitalize(props.name)}</h1>
@@ -95,6 +131,7 @@ interface iSimpleTable {
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
+    const {height, width} = useWindowDimensions();
     const handleChangePage = (event: unknown, newPage: number) => {
         props.setPage(newPage);
     };
@@ -111,26 +148,56 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
         }
     }
 
+    const handleSort = (id: number) => {
+        console.log(tableHeader)
+        setTableHeader(prev => prev.map(a => {
+            if (a.id === id) {
+                console.log("first", a.id, a.hide, a.decending)
+                if (a.hide) {
+                    a.hide = false
+                } else {
+                    a.decending = !a.decending //TODO: noe galt her
+                }
+                console.log("end", a.id, a.hide, a.decending)
+            } else {
+                a.hide = true
+            }
+            return a
+        }))
+        console.log(tableHeader)
+
+        //TODO: sende request her til backend
+
+
+    }
+
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         props.setRowsPerPage(+event.target.value);
         props.setPage(0);
     };
 
+
+    const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
+        .map((name, index) => {
+            const button: iSortingButton = {
+                decending: true, hide: true, id: index, name: name, onClick: handleSort
+            }
+            return button
+        }))
+
     return (
         <div>
+            <p>hei, width = {width}</p>
             <Paper className={style.root}>
                 <Table stickyHeader className={style.table} aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"/>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="right">HP</TableCell>
-                            <TableCell align="right">Attack</TableCell>
-                            <TableCell align="right">Defence</TableCell>
-                            <TableCell align="right">Sp. Atk</TableCell>
-                            <TableCell align="right">Sp. Def</TableCell>
-                            <TableCell align="right">Speed</TableCell>
-                            <TableCell align="right">Total</TableCell>
+
+                            {(width>600?tableHeader:tableHeader.slice(0,1)).map(header => <TableCell align="right">
+                                <SortingButton id={header.id} name={header.name} hide={header.hide}
+                                               decending={header.decending} onClick={header.onClick}
+                                /></TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -138,6 +205,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                             props.page * props.rowsPerPage, props.page * props.rowsPerPage + props.rowsPerPage)
                             .map(row => (
                                 <ExpandableTableRow
+                                    className={teamMembers.includes(row.id) ? style.selected : style.notSelected}
                                     key={capitalize(row.name)}
                                     expandComponent={<TableCell colSpan={8}>
                                         {<Details
@@ -157,21 +225,22 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                     </TableCell>}
                                 >
                                     <TableCell component="th" scope="row">
-                                        <img src={row.sprite_url}></img>{capitalize(row.name)}
+                                        <img src={row.sprite_url}/>{capitalize(row.name)}
                                     </TableCell>
-                                    <TableCell align="right">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
+                                    {width>600?<>
+                                    <TableCell align="center">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
+                                        align="center">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
                                     <TableCell
-                                        align="right">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell>
+                                        align="center">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell></>:<></>}
                                 </ExpandableTableRow>
                             ))
                         }

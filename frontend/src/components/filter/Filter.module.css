@@ -1,5 +1,5 @@
 .filter {
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
@@ -9,4 +9,15 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     background-color: #FAFAFA;
+}
+
+@media only screen and (min-width: 600px) {
+    body {
+        display: flex;
+        font-size: 1.5vw;
+    }
+
+    .filter{
+        display: flex;
+    }
 }

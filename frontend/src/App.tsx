@@ -3,6 +3,7 @@ import {Redirect, Route, Switch} from "react-router"
 import {BrowserRouter} from 'react-router-dom'
 import OverviewPage from "./pages/Overview";
 import Test from "./components/Test"
+import "./index.css"
 
 function App() {
     return (
