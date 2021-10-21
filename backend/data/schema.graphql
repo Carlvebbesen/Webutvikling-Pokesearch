@@ -2,23 +2,30 @@ import { gql } from 'apollo-server-express';
 
 export const typeDefs = gql`
     type Pokemon {
+        entry_number: Int,
         name: String,
         pokeTypes: [String!]!,
-        stats: [Stat!]!,
+        stats: Stats,
         weight: Int,
-        rating: Int,
-        usage_percentage: Int,
+        rating: Float,
+        rating_count: Int,
+        usage_percentage: Float,
         sprite_url: String,
     }
 
     type PokemonFilter {
-    pokemons: [Pokemon],
-    count: Int,
+        pokemons: [Pokemon],
+        count: Int,
     }
 
-    type Stat {
-        name: String,
-        base_stat: Int,
+    type Stats {
+        hp: Int,
+        attack: Int,
+        defense: Int,
+        special_attack: Int,
+        special_defense: Int,
+        speed: Int,
+        total: Int,
     }
 
     type Team {
@@ -29,24 +36,16 @@ export const typeDefs = gql`
     input StatInput {
         name: String,
         base_stat: Int,
-    } 
-
-    input PokemonInput {
-        name: String,
-        pokeTypes: [String!]!,
-        stats: [StatInput],
-        weight: Int,
-        rating: Int,
-        usage_percentage: Int,
-        sprite_url: String,
     }
 
     input FilterInput {
         name: String,
         pokeTypes: [String],
-        rating: Int,
+        rating: Float,
         limit: Int!,
-        offset: Int!
+        offset: Int!,
+        sortBy: String,
+        sortDesc: Boolean,
     } 
 
     input TeamInput {
@@ -59,15 +58,20 @@ export const typeDefs = gql`
         index: Int,
     }
 
+    input RatePokemonInput {
+        entry_number: Int,
+        rating: Float,
+    }
+
     type Query {
         getFilteredPokemon(input: FilterInput): PokemonFilter,
         getAllTeams:[Team]
     }
 
     type Mutation {
-        createPokemon(input:PokemonInput):Pokemon,
         createTeam(input:TeamInput):Team,
         addPokemon(input:AddPokemonInput):Team,
+        ratePokemon(input:RatePokemonInput):Pokemon,
     }
 
 `;
