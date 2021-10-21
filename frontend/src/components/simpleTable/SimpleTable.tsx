@@ -34,7 +34,7 @@ interface iSortingButton {
 
 const SortingButton: FC<iSortingButton> = (props) => {
 
-    useEffect(() => {
+    useEffect(() => { //TODO: delete after solve bug
         console.log(props.id + ": decending changed to " + props.decending)
     }, [props.decending])
 
@@ -165,6 +165,8 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
             return a
         }))
         console.log(tableHeader)
+
+        //TODO: sende request her til backend
 
 
     }
