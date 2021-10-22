@@ -4,12 +4,16 @@ import { Pokemons, Teams } from '../db/dbConnector.js'
 * GraphQL Resolvers 
 **/
 
+const statOptions = ["hp", "attack", "defense", "special_attack", "special_defense", "speed", "total"];
+
 export const resolvers = {
     Query: {
             getFilteredPokemon:(root, {input})=> {
-                const query = Pokemons.find({
-                    name: { $regex: `^${input.name}`, $options: 'is' }
-                })
+                const query = input.name
+                    ? Pokemons.find({
+                        name: { $regex: `^${input.name}`, $options: 'is' }
+                    })
+                    : Pokemons.find();
                 if(input.pokeTypes.length !== 0){
                     query.find({
                         pokeTypes: {$in: input.pokeTypes},
@@ -20,8 +24,19 @@ export const resolvers = {
                     rating: {$gte: input.rating},
                     })
                 }
+
+                let sortingOptions = {}
+
+                if (statOptions.includes(input.sortBy)) {
+                    sortingOptions[`stats.${input.sortBy}`] = input.sortDesc ? -1 : 1;
+                } else {
+                    sortingOptions[input.sortBy] = input.sortDesc ? -1 : 1; 
+                }
+
+                sortingOptions.entry_number = 1;
+
                 const searchCount = Pokemons.count(query);
-                query.skip(input.offset).limit(input.limit).sort({name: 1})
+                query.sort(sortingOptions).skip(input.offset).limit(input.limit);
                 return new Promise((resolve, reject) => {
                     resolve({pokemons:query.exec(),
                          count: searchCount,
@@ -38,25 +53,14 @@ export const resolvers = {
             }
         },
     Mutation: {
-        createPokemon: (root, { input }) => {
-            const newPokemon = new Pokemons({
-                name: input.name,
-                pokeTypes: input.pokeTypes,
-                stats: input.stats,
-                weight: input.weight,
-                rating: input.rating,
-                usage_percentage: input.usage_percentage,
-                sprite_url: input.sprite_url,
-            });
-
-            return new Promise((resolve, reject) => {
-                newPokemon.save((err) => {
-                    if(err) reject(err);
-                    else resolve(newPokemon);
-                })
-            })
-        },
         createTeam: (root, { input }) => {
+
+            if (Teams.count({ name: input.name }) > 0) {
+                return new Promise((resolve, reject) => {
+                    reject(new Error("The team name specified is not unique."));
+                })
+            }
+
             const newTeam = new Teams({
                 name: input.name,
                 pokemon: [],
@@ -71,14 +75,20 @@ export const resolvers = {
         },
         addPokemon: async (root, { input }) => {
             let team = await Teams.findOne({ name: input.teamName });
-            let newPokemon = await Pokemons.findOne({ name: input.newPokemonName});
+            let newPokemon = await Pokemons.findOne({ entry_number: input.entry_number });
 
             if (!team.pokemon.some(pokemon => pokemon.name === newPokemon.name)) {
+
+                let teams_count = await Teams.count();
+
                 if (team.pokemon.length === 6) {
+                    let oldPokemon = await Pokemons.findOne({ name: team.pokemon[input.index].name });
+                    oldPokemon.usage_percentage = (oldPokemon.usage_percentage * teams_count - 1.0) / (teams_count)
                     team.pokemon[input.index] = newPokemon;
                 } else {
                     team.pokemon.push(newPokemon);
                 }
+                newPokemon.usage_percentage = (newPokemon.usage_percentage * teams_count + 1.0) / (teams_count);
             }
 
             return new Promise((resolve, reject) => {
@@ -88,5 +98,21 @@ export const resolvers = {
                 })
             });
         },
+        ratePokemon: async  (root, { input }) => {
+            let pokemon = await Pokemons.findOne({ entry_number: input.entry_number });
+            let oldRating = parseFloat(pokemon.rating);
+            let newRating = (oldRating * pokemon.rating_count + input.rating) / (pokemon.rating_count + 1.0);
+            pokemon.rating = newRating;
+            pokemon.rating_count += 1;
+
+            console.log(pokemon);
+
+            return new Promise((resolve, reject) => {
+                pokemon.save((err) => {
+                    if(err) reject(err);
+                    else resolve(pokemon);
+                })
+            });
+        }
     }
 };

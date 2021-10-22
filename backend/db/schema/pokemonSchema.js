@@ -1,6 +1,10 @@
+import { Double } from 'mongodb';
 import mongoose from 'mongoose';
 
 export const pokemonSchema = new mongoose.Schema({
+    entry_number: {
+        type: Number,
+    },
     name: {
         type: String
     },
@@ -8,16 +12,19 @@ export const pokemonSchema = new mongoose.Schema({
         type: Array
     },
     stats: {
-        type: Array,
+        type: Object,
     },
     weight: {
         type: Number
     },
     rating: {
-        type: Number
+        type: Number,
+    },
+    rating_count: {
+        type: Number,
     },
     usage_percentage: {
-        type: Number
+        type: Number,
     },
     sprite_url: {
         type: String
