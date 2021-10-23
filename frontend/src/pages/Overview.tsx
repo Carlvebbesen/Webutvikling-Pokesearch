@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react"
 import style from "./Overview.module.css"
-import {Pokemon} from "../types/Pokemon";
+import {Pokemon} from "../utils/Pokemon";
 import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 import { useQuery } from "@apollo/client";
