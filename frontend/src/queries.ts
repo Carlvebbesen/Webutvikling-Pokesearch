@@ -6,14 +6,7 @@ query GetFilteredPokemon($input: FilterInput){
         pokemons {
             name,
             pokeTypes,
-            stats {
-                    name,
-                    base_stat,
-        },
-        weight,
-        rating,
-        usage_percentage,
-        sprite_url,
+            sprite_url,
         },
         count
     }
@@ -30,3 +23,23 @@ query GetAllTeams{
     }
 }
 `;
+export type listPokemon ={
+    name: string,
+    pokeTypes: string[],
+    rating: number,
+    sprite_url: string,
+}
+
+export type FilteredPokemon = {
+    pokemons: listPokemon[],
+    count: number,
+}
+export type Stats = {
+    hp: number,
+    attack: number,
+    defense: number,
+    special_attack: number,
+    special_defense: number,
+    speed: number,
+    total: number,
+}
