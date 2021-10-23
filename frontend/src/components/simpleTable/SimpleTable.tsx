@@ -64,7 +64,7 @@ const Details: FC<iDetails> = (props) => {
             <h1>{capitalize(props.name)}</h1>
             <div className={style.wrapper}>
                 <div className={style.detailsDiv}>
-                    <img src={props.sprite_url} className={style.bigpic}/>
+                    <img src={props.sprite_url} className={style.bigpic} alt="pokemon"/>
                 </div>
                 <div className={style.detailsDiv}>
                     <p>type: {props.type}</p>
