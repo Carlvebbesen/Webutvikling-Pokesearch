@@ -18,10 +18,9 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {useWindowDimensions} from "../../utils/methods";
 import style from './SimpleTable.module.css';
+import { FilteredPokemon } from "../../queries";
 
 const teamMembers = [1, 2, 3, 4]
-
-
 
 interface iSortingButton {
     id: number
@@ -29,8 +28,7 @@ interface iSortingButton {
     hide: boolean,
     decending: boolean,
     onClick: Function
-}
-
+};
 
 const SortingButton: FC<iSortingButton> = (props) => {
 
@@ -97,7 +95,7 @@ const Details: FC<iDetails> = (props) => {
     )
 }
 
-const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => {
+const ExpandableTableRow = ({children, ...otherProps}: any) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
@@ -110,44 +108,16 @@ const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => 
                 </TableCell>
                 {children}
             </TableRow>
-            {isExpanded && (
-                <TableRow className={style.expanding}>
-                    <TableCell padding="checkbox"/>
-                    {expandComponent}
-                </TableRow>
-            )}
         </>
     );
 };
 
 interface iSimpleTable {
-    rows: Pokemon[]
-    map: Map<number, number>
-    page: number
-    rowsPerPage: number
-    setMap: Function
-    setPage: Function
-    setRowsPerPage: Function
+    data: FilteredPokemon
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
-    const {height, width} = useWindowDimensions();
-    const handleChangePage = (event: unknown, newPage: number) => {
-        props.setPage(newPage);
-    };
-
-    const upsert = (key: number, value: number) => {
-        props.setMap((prev: Map<number, number>) => new Map(prev).set(key, value));
-    }
-
-    const getStars = (key: number) => {
-        if (props.map.has(key)) {
-            return props.map.get(key)
-        } else {
-            return 0
-        }
-    }
-
+    const { width} = useWindowDimensions();
     const handleSort = (id: number) => {
         console.log(tableHeader)
         setTableHeader(prev => prev.map(a => {
@@ -164,18 +134,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
             }
             return a
         }))
-        console.log(tableHeader)
-
-        //TODO: sende request her til backend
-
-
     }
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.setRowsPerPage(+event.target.value);
-        props.setPage(0);
-    };
-
 
     const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
@@ -201,46 +160,29 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rows.slice(
-                            props.page * props.rowsPerPage, props.page * props.rowsPerPage + props.rowsPerPage)
-                            .map(row => (
+                        {props.data.pokemons.map(pokemon => (
                                 <ExpandableTableRow
-                                    className={teamMembers.includes(row.id) ? style.selected : style.notSelected}
-                                    key={capitalize(row.name)}
-                                    expandComponent={<TableCell colSpan={8}>
-                                        {<Details
-                                            getRating={getStars}
-                                            setRating={upsert}
-                                            id={row.id}
-                                            name={row.name}
-                                            type={row.type}
-                                            stats={row.stats}
-                                            weight={row.weight}
-                                            rating={row.rating}
-                                            number_of_ratings={10}
-                                            usage_percentage={row.usage_percentage}
-                                            sprite_url={row.sprite_url}
-                                        />
-                                        }
-                                    </TableCell>}
+                                    //className={teamMembers.includes(pokemon.id) ? style.selected : style.notSelected}
+                                    className={style.notSelected}
+                                    key={capitalize(pokemon.name)}
                                 >
                                     <TableCell component="th" scope="row">
-                                        <img src={row.sprite_url}/>{capitalize(row.name)}
+                                        <img src={pokemon.sprite_url} alt="pokemon"/>{capitalize(pokemon.name)}
                                     </TableCell>
-                                    {width>600?<>
-                                    <TableCell align="center">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
+                                    {/* {width>600?<>
+                                    <TableCell align="center">{pokemon.stats.find(e => e.name === "hp")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
+                                        align="center">{pokemon.stats.find(e => e.name === "attack")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
+                                        align="center">{pokemon.stats.find(e => e.name === "defence")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
+                                        align="center">{pokemon.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
+                                        align="center">{pokemon.stats.find(e => e.name === "sp.def")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
+                                        align="center">{pokemon.stats.find(e => e.name === "speed")?.value}</TableCell>
                                     <TableCell
-                                        align="center">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell></>:<></>}
+                                        align="center">{pokemon.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell></>:<></>} */}
                                 </ExpandableTableRow>
                             ))
                         }
@@ -248,11 +190,11 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                 </Table>
                 <TablePagination //TODO: https://mui.com/api/table-pagination/
                     rowsPerPageOptions={[5, 10, 15]}
-                    count={props.rows.length}
-                    page={props.page}
-                    rowsPerPage={props.rowsPerPage}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    count={props.data.count}
+                    page={1}
+                    rowsPerPage={15}
+                    onPageChange={()=> {}}
+                    onRowsPerPageChange={()=>{}}
                 />
             </Paper>
         </div>

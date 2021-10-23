@@ -5,17 +5,17 @@ import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 import { useQuery } from "@apollo/client";
 import { GET_ALL_TEAMS, GET_FILTERED_POKEMONS } from "../queries";
-import { FilterInput } from "../types/graphql";
+import { FilterInput } from "../utils/graphql";
 
 
 const OverviewPage = () => {
     //data
     const [filterInput, setFilterInput] = useState<FilterInput>({
         name: "",
-        pokeTypes: [""],
+        pokeTypes: [],
         rating: 0,
-        limit: 10,
-        offset: 10,
+        limit: 100,
+        offset: 0,
     });
     const {data, error, loading} = useQuery(GET_FILTERED_POKEMONS, {
         variables:{input: filterInput}
@@ -26,10 +26,6 @@ const OverviewPage = () => {
     const [stars, setStars] = useState<number>(0)
 
     //simpleTable
-    const [map, setMap] = useState(new Map<number,number>())
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-
     console.log(data);
     return (
         <div className={style.overview}>
@@ -43,14 +39,8 @@ const OverviewPage = () => {
                 stars={stars}
                 setType={setType}
                 type={type}/>
-            {/*<SimpleTable
-                map={map}
-                page={page}
-                rowsPerPage={rowsPerPage}
-                setMap={setMap}
-                setPage={setPage}
-                setRowsPerPage={setRowsPerPage}
-                rows={rows}/> */}
+            {loading? <p>Loading ...</p>: <SimpleTable
+                data={data.getFilteredPokemon}/>}
         </div>
     )
 }

@@ -1,6 +1,6 @@
 export type FilterInput = {
-    name: String,
-    pokeTypes: [String],
+    name: string,
+    pokeTypes: string[],
     rating: number,
     limit: number,
     offset: number
