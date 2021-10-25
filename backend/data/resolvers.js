@@ -16,7 +16,7 @@ export const resolvers = {
                     : Pokemons.find();
                 if(input.pokeTypes.length !== 0){
                     query.find({
-                        pokeTypes: {$in: input.pokeTypes},
+                        pokeTypes: {$all: input.pokeTypes},
                     })
                 }
                 if(input.rating > 0){
@@ -50,8 +50,22 @@ export const resolvers = {
                         else resolve(teams);
                     })
                 })
+            },
+        getPokemonById: (root,{input}) => {
+            return new Promise((resolve, reject) => {
+                const pokemon = Pokemons.findOne( {entry_number: input.id}, function (err, result) {
+                    if (err || !result) {
+                        reject(new Error(`Could not find the pokemon with the given id: ${input.id}`));
+                    }
+                    else {
+                        resolve(pokemon)
+                    }
+                    
+                })
             }
+            )
         },
+    },
     Mutation: {
         createTeam: (root, { input }) => {
 
