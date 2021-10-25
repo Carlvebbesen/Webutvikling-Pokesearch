@@ -21,17 +21,15 @@ const OverviewPage = () => {
     })
 
     //filter
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(0);
 
-    const changePage= (event : React.MouseEvent<HTMLButtonElement, MouseEvent> | null)=>{
-        console.log(event?.currentTarget.value);
-        // const newState = filterInput;
-        // newState.limit = parseInt(event.target.value);
-        // newState.name = "b";
-        // console.log(`changing count: ${event.target.value}`)
-        // console.log(newState);
-        // setFilterInput(newState);
-
+    const changePage= (value: number)=>{
+        console.log(value);
+        setPage(value);
+        const newState = filterInput;
+        newState.offset = value * newState.limit;
+        setFilterInput(newState);
+        refetch();
     };
     const changeName = (value: string)=>{
         const newState = filterInput;

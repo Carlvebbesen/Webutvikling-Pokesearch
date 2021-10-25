@@ -11,6 +11,7 @@ import Chip from '@mui/material/Chip';
 import {useTheme, Theme} from "@mui/material/styles";
 import style from "./Filter.module.css"
 import { isPropertyAccessChain } from "typescript";
+import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
 
 function getStyles(name: string, selected: readonly string[], theme: Theme) {
     return {
@@ -90,13 +91,13 @@ const Filter: FC<iFilter> = (props) => {
                     )}
                     MenuProps={MenuProps}
                 >
-                    {PokemonTypes.map((x) => (
+                    {PokemonTypes.map((type) => (
                         <MenuItem sx={{display: "block"}}
-                                  key={x}
-                                  value={x}
-                                  style={getStyles(x, props.type, theme)}
+                                  key={type}
+                                  value={type}
+                                  style={getStyles(type, props.type, theme)}
                         >
-                            {x}
+                            <><img style={{marginRight: "10px"}} height="20" alt="pokemonTypes" src={getPokeTypeIcon(type)}/>{type} </>
                         </MenuItem>
                     ))}
                 </Select>

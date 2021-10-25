@@ -21,6 +21,7 @@ import style from './SimpleTable.module.css';
 import { FilteredPokemon } from "../../queries";
 import { PokemonTypes } from "../../utils/Values";
 import { Polymer } from "@material-ui/icons";
+import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
 
 const teamMembers = [1, 2, 3, 4]
 
@@ -98,8 +99,8 @@ const Details: FC<iDetails> = (props) => {
 
 interface iSimpleTable {
     data: FilteredPokemon,
-    changePage: any,
-    changeRowsPerPage: any,
+    changePage: Function,
+    changeRowsPerPage: Function
     page: number,
     rowsPerPage: number,
 }
@@ -136,6 +137,9 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                                 <TableCell align="center" key={pokemon.entry_number+20000}>
                                         <p>{capitalize(pokemon.name)}</p>
                                 </TableCell>
+                                <TableCell>
+                                    {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                                </TableCell>
                                     </TableRow>
                         ))}
                     </TableBody>
@@ -145,7 +149,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     count={props.data.count}
                     page={props.page}
                     rowsPerPage={props.rowsPerPage}
-                    onPageChange={(event)=> props.changePage(event)}
+                    onPageChange={(event, page)=> props.changePage(page)}
                     onRowsPerPageChange={(event)=> props.changeRowsPerPage(event)}
                 />
             </Paper>
