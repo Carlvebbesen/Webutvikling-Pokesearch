@@ -24,7 +24,6 @@ const OverviewPage = () => {
     const [page, setPage] = useState<number>(0);
 
     const changePage= (value: number)=>{
-        console.log(value);
         setPage(value);
         const newState = filterInput;
         newState.offset = value * newState.limit;
