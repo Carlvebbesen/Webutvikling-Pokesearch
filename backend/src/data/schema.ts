@@ -46,15 +46,15 @@ export const typeDefs = gql`
         offset: Int!,
         sortBy: String,
         sortDesc: Boolean,
-    } 
-
-    input TeamInput {
-        name: String,
     }
+
     input PokemonByIdInput {
         id: Int!,
     }
 
+    input TeamInput {
+        name: String,
+    }
 
     input AddPokemonInput {
         teamName: String,
@@ -63,13 +63,13 @@ export const typeDefs = gql`
     }
 
     input RatePokemonInput {
-        entry_number: Int,
+        id: Int,
         rating: Float,
     }
 
     type Query {
         getFilteredPokemon(input: FilterInput): PokemonFilter,
-        getAllTeams:[Team],
+        getAllTeams:[Team]
         getPokemonById(input: PokemonByIdInput): Pokemon
     }
 
