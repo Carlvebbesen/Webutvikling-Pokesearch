@@ -51,6 +51,10 @@ export const typeDefs = gql`
     input TeamInput {
         name: String,
     }
+    input PokemonByIdInput {
+        id: Int!,
+    }
+
 
     input AddPokemonInput {
         teamName: String,
@@ -65,7 +69,8 @@ export const typeDefs = gql`
 
     type Query {
         getFilteredPokemon(input: FilterInput): PokemonFilter,
-        getAllTeams:[Team]
+        getAllTeams:[Team],
+        getPokemonById(input: PokemonByIdInput): Pokemon
     }
 
     type Mutation {
