@@ -19,6 +19,8 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {useWindowDimensions} from "../../utils/methods";
 import style from './SimpleTable.module.css';
 import { FilteredPokemon } from "../../queries";
+import { PokemonTypes } from "../../utils/Values";
+import { Polymer } from "@material-ui/icons";
 
 const teamMembers = [1, 2, 3, 4]
 
@@ -33,7 +35,6 @@ interface iSortingButton {
 const SortingButton: FC<iSortingButton> = (props) => {
 
     useEffect(() => { //TODO: delete after solve bug
-        console.log(props.id + ": decending changed to " + props.decending)
     }, [props.decending])
 
     const handleClick = () => {
@@ -96,73 +97,58 @@ const Details: FC<iDetails> = (props) => {
 }
 
 interface iSimpleTable {
-    data: FilteredPokemon
+    data: FilteredPokemon,
+    changePage: any,
+    changeRowsPerPage: any,
+    page: number,
+    rowsPerPage: number,
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
     const { width} = useWindowDimensions();
-    const handleSort = (id: number) => {
-        console.log(tableHeader)
-        setTableHeader(prev => prev.map(a => {
-            if (a.id === id) {
-                console.log("first", a.id, a.hide, a.decending)
-                if (a.hide) {
-                    a.hide = false
-                } else {
-                    a.decending = !a.decending //TODO: noe galt her
-                }
-                console.log("end", a.id, a.hide, a.decending)
-            } else {
-                a.hide = true
-            }
-            return a
-        }))
-    }
 
     const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
             const button: iSortingButton = {
-                decending: true, hide: true, id: index, name: name, onClick: handleSort
+                decending: true, hide: true, id: index, name: name, onClick: ()=>{},
             }
             return button
         }))
 
     return (
-        <div>
-            <p>hei, width = {width}</p>
             <Paper className={style.root}>
                 <Table stickyHeader className={style.table} aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"/>
-
-                            {(width>600?tableHeader:tableHeader.slice(0,1)).map(header => <TableCell align="right">
+                            {(width>600?tableHeader:tableHeader.slice(0,1)).map(header => <TableCell key={header.id} align="right">
                                 <SortingButton id={header.id} name={header.name} hide={header.hide}
                                                decending={header.decending} onClick={header.onClick}
                                 /></TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableHead>
                         {props.data.pokemons.map(pokemon => (
-                            <TableCell component="th" scope="row">
-                                        <img src={pokemon.sprite_url} alt="pokemon"/>{capitalize(pokemon.name)}
-                                    </TableCell>
-                            ))
-                        }
-                        </TableHead>
+                            <TableRow hover={true} key={pokemon.entry_number}>
+                                <TableCell align="center" key={pokemon.entry_number+10000}>
+                                        <img src={pokemon.sprite_url} alt="pokemon"/>
+                                </TableCell>
+                                <TableCell align="center" key={pokemon.entry_number+20000}>
+                                        <p>{capitalize(pokemon.name)}</p>
+                                </TableCell>
+                                    </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
                 <TablePagination //TODO: https://mui.com/api/table-pagination/
-                    rowsPerPageOptions={[5, 10, 15]}
+                    rowsPerPageOptions={[10, 25, 50]}
                     count={props.data.count}
-                    page={1}
-                    rowsPerPage={15}
-                    onPageChange={()=> {}}
-                    onRowsPerPageChange={()=>{}}
+                    page={props.page}
+                    rowsPerPage={props.rowsPerPage}
+                    onPageChange={(event)=> props.changePage(event)}
+                    onRowsPerPageChange={(event)=> props.changeRowsPerPage(event)}
                 />
             </Paper>
-        </div>
     )
         ;
 }

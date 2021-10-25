@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {useTheme, Theme} from "@mui/material/styles";
 import style from "./Filter.module.css"
+import { isPropertyAccessChain } from "typescript";
 
 function getStyles(name: string, selected: readonly string[], theme: Theme) {
     return {
@@ -24,10 +25,10 @@ function getStyles(name: string, selected: readonly string[], theme: Theme) {
 interface iFilter {
     type: string[]
     name: string
-    stars: number
+    rating: number
     setType: Function
     setName: Function
-    setStars: Function
+    setRating: Function
 }
 
 
@@ -48,9 +49,7 @@ const Filter: FC<iFilter> = (props) => {
 
 
     const handleChange = (event: SelectChangeEvent<typeof props.type>) => {
-        const {
-            target: {value},
-        } = event;
+        const value = event.target.value;
         if (value.length <= 2) {
             props.setType(
                 // On autofill we get a the stringified value.
@@ -106,11 +105,16 @@ const Filter: FC<iFilter> = (props) => {
                 <p>minimum rating:</p>
                 <Rating
                     name="simple-controlled"
-                    value={props.stars}
+                    value={props.rating}
                     precision={0.5}
                     onChange={(event, star) => {
                         if (star != null) {
-                            props.setStars(star);
+                            props.setRating(star);
+                        }
+                    }}
+                    onChangeActive={(event, star)=> {
+                        if(star=== -1){
+                            props.setRating(0);
                         }
                     }}
                 />
