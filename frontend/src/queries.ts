@@ -7,6 +7,7 @@ query GetFilteredPokemon($input: FilterInput){
             name,
             pokeTypes,
             sprite_url,
+            rating
         },
         count
     }

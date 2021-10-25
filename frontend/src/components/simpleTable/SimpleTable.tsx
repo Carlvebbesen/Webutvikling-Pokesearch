@@ -95,23 +95,6 @@ const Details: FC<iDetails> = (props) => {
     )
 }
 
-const ExpandableTableRow = ({children, ...otherProps}: any) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    return (
-        <>
-            <TableRow {...otherProps}>
-                <TableCell padding="checkbox">
-                    <IconButton onClick={() => setIsExpanded(!isExpanded)}>
-                        {isExpanded ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                    </IconButton>
-                </TableCell>
-                {children}
-            </TableRow>
-        </>
-    );
-};
-
 interface iSimpleTable {
     data: FilteredPokemon
 }
@@ -160,32 +143,14 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        <TableHead>
                         {props.data.pokemons.map(pokemon => (
-                                <ExpandableTableRow
-                                    //className={teamMembers.includes(pokemon.id) ? style.selected : style.notSelected}
-                                    className={style.notSelected}
-                                    key={capitalize(pokemon.name)}
-                                >
-                                    <TableCell component="th" scope="row">
+                            <TableCell component="th" scope="row">
                                         <img src={pokemon.sprite_url} alt="pokemon"/>{capitalize(pokemon.name)}
                                     </TableCell>
-                                    {/* {width>600?<>
-                                    <TableCell align="center">{pokemon.stats.find(e => e.name === "hp")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{pokemon.stats.find(e => e.name === "attack")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{pokemon.stats.find(e => e.name === "defence")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{pokemon.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{pokemon.stats.find(e => e.name === "sp.def")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{pokemon.stats.find(e => e.name === "speed")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{pokemon.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell></>:<></>} */}
-                                </ExpandableTableRow>
                             ))
                         }
+                        </TableHead>
                     </TableBody>
                 </Table>
                 <TablePagination //TODO: https://mui.com/api/table-pagination/
