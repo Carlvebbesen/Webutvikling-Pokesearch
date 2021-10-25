@@ -14,12 +14,12 @@ export const resolvers = {
                         name: { $regex: `^${input.name}`, $options: 'is' }
                     })
                     : Pokemons.find();
-                if(input.pokeTypes.length !== 0){
+                if(input.pokeTypes && input.pokeTypes.length !== 0){
                     query.find({
                         pokeTypes: {$all: input.pokeTypes},
                     })
                 }
-                if(input.rating > 0){
+                if(input.rating && input.rating > 0){
                     query.find({
                     rating: {$gte: input.rating},
                     })
