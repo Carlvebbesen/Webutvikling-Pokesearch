@@ -1,7 +1,8 @@
+import { UserInputError } from 'apollo-server-errors';
+import { rejects } from 'assert';
 import { IResolvers } from 'graphql-tools';
-import { Error } from 'mongoose';
 import { Pokemons, Teams } from '../db/dbConnector';
-import { FilterInput, SortOptions, TeamInput, RatePokemonInput, AddPokemonInput, Pokemon } from './resolver.types';
+import { FilterInput, SortOptions, TeamInput, RatePokemonInput, AddPokemonInput, Pokemon, GetPokemonByIdInput } from './resolver.types';
 
 /**
 * GraphQL Resolvers 
@@ -15,20 +16,21 @@ export const resolvers: IResolvers = {
                         name: { $regex: `^${args.input.name}`, $options: 'is' }
                     })
                     : Pokemons.find();
-                if(args.input.pokeTypes.length !== 0){
+                if(args.input.pokeTypes && args.input.pokeTypes.length !== 0){
                     query.find({
-                        pokeTypes: {$in: args.input.pokeTypes},
+                        pokeTypes: {$all: args.input.pokeTypes},
                     })
                 }
-                if(args.input.rating > 0){
+                if(args.input.rating && args.input.rating > 0){
                     query.find({
                     rating: {$gte: args.input.rating},
                     })
                 }
 
                 let sortingOptions: SortOptions = {}
-                sortingOptions[`stats.${args.input.sortBy}`] = args.input.sortDesc ? -1 : 1;
-
+                if (args.input.sortBy !== undefined) {
+                    sortingOptions[`stats.${args.input.sortBy}`] = args.input.sortDesc ? -1 : 1;
+                }
                 sortingOptions.entry_number = 1;
 
                 const searchCount = Pokemons.count(query);
@@ -46,14 +48,29 @@ export const resolvers: IResolvers = {
                         else resolve(teams);
                     })
                 })
-            }
+            },
+            getPokemonById:(_, args: {input: GetPokemonByIdInput}) => {
+                return new Promise((resolve, reject) => {
+                    const pokemon = Pokemons.findOne( {entry_number: args.input.id}, function (err: Error, result: Pokemon | undefined) {
+                        if (err || !result) {
+                            throw new UserInputError("The id does not match any existing pokemon.");
+                        }
+                        else {
+                            resolve(pokemon)
+                        }
+                        
+                    })
+                }
+                )
+            },
         },
     Mutation: {
-        createTeam: (_, args: {input: TeamInput}) => {
+        createTeam: async (_, args: {input: TeamInput}) => {
 
-            if (Teams.count({ name: args.input.name }) > 0) {
+            let teamsWithProvidedName = await Teams.countDocuments({ name: args.input.name });
+            if (teamsWithProvidedName > 0) {
                 return new Promise((resolve, reject) => {
-                    reject(new Error("The team name specified is not unique."));
+                    throw new UserInputError("The team name specified is not unique.");
                 })
             }
 
@@ -94,8 +111,10 @@ export const resolvers: IResolvers = {
                 })
             });
         },
-        ratePokemon: async  (_, args: {input: RatePokemonInput}) => {
-            let pokemon = await Pokemons.findOne({ entry_number: args.input.id });
+        ratePokemon: async (_, args: {input: RatePokemonInput}) => {
+            let pokemon = await Pokemons.findOne({ entry_number: args.input.id }, function(err: Error, result: Pokemon | null) {
+                if (err || !result) return new Promise((resolve, reject) => {reject(err)});
+            });
             let oldRating = parseFloat(pokemon.rating);
             let newRating = (oldRating * pokemon.rating_count + args.input.rating) / (pokemon.rating_count + 1.0);
             pokemon.rating = newRating;

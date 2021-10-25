@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvers = void 0;
-var mongoose_1 = require("mongoose");
+var apollo_server_errors_1 = require("apollo-server-errors");
 var dbConnector_1 = require("../db/dbConnector");
 exports.resolvers = {
     Query: {
@@ -47,18 +47,20 @@ exports.resolvers = {
                     name: { $regex: "^" + args.input.name, $options: 'is' }
                 })
                 : dbConnector_1.Pokemons.find();
-            if (args.input.pokeTypes.length !== 0) {
+            if (args.input.pokeTypes && args.input.pokeTypes.length !== 0) {
                 query.find({
-                    pokeTypes: { $in: args.input.pokeTypes },
+                    pokeTypes: { $all: args.input.pokeTypes },
                 });
             }
-            if (args.input.rating > 0) {
+            if (args.input.rating && args.input.rating > 0) {
                 query.find({
                     rating: { $gte: args.input.rating },
                 });
             }
             var sortingOptions = {};
-            sortingOptions["stats." + args.input.sortBy] = args.input.sortDesc ? -1 : 1;
+            if (args.input.sortBy !== undefined) {
+                sortingOptions["stats." + args.input.sortBy] = args.input.sortDesc ? -1 : 1;
+            }
             sortingOptions.entry_number = 1;
             var searchCount = dbConnector_1.Pokemons.count(query);
             query.sort(sortingOptions).skip(args.input.offset).limit(args.input.limit);
@@ -77,28 +79,48 @@ exports.resolvers = {
                         resolve(teams);
                 });
             });
-        }
-    },
-    Mutation: {
-        createTeam: function (_, args) {
-            if (dbConnector_1.Teams.count({ name: args.input.name }) > 0) {
-                return new Promise(function (resolve, reject) {
-                    reject(new mongoose_1.Error("The team name specified is not unique."));
-                });
-            }
-            var newTeam = new dbConnector_1.Teams({
-                name: args.input.name,
-                pokemon: [],
-            });
+        },
+        getPokemonById: function (_, args) {
             return new Promise(function (resolve, reject) {
-                newTeam.save(function (err) {
-                    if (err)
-                        reject(err);
-                    else
-                        resolve(newTeam);
+                var pokemon = dbConnector_1.Pokemons.findOne({ entry_number: args.input.id }, function (err, result) {
+                    if (err || !result) {
+                        throw new apollo_server_errors_1.UserInputError("The id does not match any existing pokemon.");
+                    }
+                    else {
+                        resolve(pokemon);
+                    }
                 });
             });
         },
+    },
+    Mutation: {
+        createTeam: function (_, args) { return __awaiter(void 0, void 0, void 0, function () {
+            var teamsWithProvidedName, newTeam;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, dbConnector_1.Teams.countDocuments({ name: args.input.name })];
+                    case 1:
+                        teamsWithProvidedName = _a.sent();
+                        if (teamsWithProvidedName > 0) {
+                            return [2, new Promise(function (resolve, reject) {
+                                    throw new apollo_server_errors_1.UserInputError("The team name specified is not unique.");
+                                })];
+                        }
+                        newTeam = new dbConnector_1.Teams({
+                            name: args.input.name,
+                            pokemon: [],
+                        });
+                        return [2, new Promise(function (resolve, reject) {
+                                newTeam.save(function (err) {
+                                    if (err)
+                                        reject(err);
+                                    else
+                                        resolve(newTeam);
+                                });
+                            })];
+                }
+            });
+        }); },
         addPokemon: function (_, args) { return __awaiter(void 0, void 0, void 0, function () {
             var team, newPokemon, teams_count, oldPokemon;
             return __generator(this, function (_a) {
@@ -141,7 +163,10 @@ exports.resolvers = {
             var pokemon, oldRating, newRating;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4, dbConnector_1.Pokemons.findOne({ entry_number: args.input.id })];
+                    case 0: return [4, dbConnector_1.Pokemons.findOne({ entry_number: args.input.id }, function (err, result) {
+                            if (err || !result)
+                                return new Promise(function (resolve, reject) { reject(err); });
+                        })];
                     case 1:
                         pokemon = _a.sent();
                         oldRating = parseFloat(pokemon.rating);

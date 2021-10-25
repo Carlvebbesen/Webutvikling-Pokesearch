@@ -46,7 +46,11 @@ export const typeDefs = gql`
         offset: Int!,
         sortBy: String,
         sortDesc: Boolean,
-    } 
+    }
+
+    input PokemonByIdInput {
+        id: Int!,
+    }
 
     input TeamInput {
         name: String,
@@ -66,6 +70,7 @@ export const typeDefs = gql`
     type Query {
         getFilteredPokemon(input: FilterInput): PokemonFilter,
         getAllTeams:[Team]
+        getPokemonById(input: PokemonByIdInput): Pokemon
     }
 
     type Mutation {

@@ -4,8 +4,12 @@ export interface FilterInput {
     rating: number,
     limit: number,
     offset: number,
-    sortBy: "hp" | "attack" | "defense" | "special-attack" | "special-defense" | "speed" | "total",
+    sortBy?: "hp" | "attack" | "defense" | "special-attack" | "special-defense" | "speed" | "total",
     sortDesc: Boolean,
+}
+
+export interface GetPokemonByIdInput {
+    id: number,
 }
 
 export interface TeamInput {
