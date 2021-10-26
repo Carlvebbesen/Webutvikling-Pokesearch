@@ -14,11 +14,19 @@ query GetFilteredPokemon($input: FilterInput){
 }
 `;
 export const GET_POKEMON_BY_ID = gql`
-query GetPokemonById($input: PokemonId){
+query GetPokemonById($input: PokemonByIdInput){
     getPokemonById(input: $input){
             name,
             pokeTypes,
-            stats,
+            stats{
+                hp,
+                attack,
+                defense,
+                special_attack,
+                special_defense,
+                speed,
+                total,
+            },
             weight,
             rating,
             rating_count,

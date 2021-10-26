@@ -109,12 +109,10 @@ interface iSimpleTable {
     changeRowsPerPage: Function
     page: number,
     rowsPerPage: number,
-    pokemonClicked: Function,
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
     const { width} = useWindowDimensions();
-
     const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
             const button: iSortingButton = {
@@ -137,7 +135,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     </TableHead>
                     <TableBody>
                         {props.data.pokemons.map(pokemon => (
-                            <TableRow hover={true} key={pokemon.entry_number} onClick={()=> props.pokemonClicked(pokemon.entry_number)}>
+                            <TableRow hover={true} key={pokemon.entry_number}>
                                 <TableCell align="center" key={pokemon.entry_number+10000}>
                                         <img src={pokemon.sprite_url} alt="pokemon"/>
                                 </TableCell>

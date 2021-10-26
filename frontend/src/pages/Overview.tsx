@@ -21,7 +21,6 @@ const OverviewPage = () => {
     const {data, error, loading, refetch} = useQuery(GET_FILTERED_POKEMONS, {
         variables:{input: filterInput}
     })
-    const [pokemonClickedId, setPokemonClickedId] = useState<number| null>(null);
 
     //filter
     const [page, setPage] = useState<number>(0);
@@ -83,9 +82,7 @@ const OverviewPage = () => {
                 changePage={changePage}
                 changeRowsPerPage={changeRowsPerPage}
                 data={data.getFilteredPokemon}
-                pokemonClicked={(id: number) =>setPokemonClickedId(id)}
                 />}
-        {pokemonClickedId && <PopUp show={()=> {}} pokemonId={pokemonClickedId}/>}
         </div> 
     )
 }
