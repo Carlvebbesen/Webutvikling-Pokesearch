@@ -13,7 +13,7 @@ import Popup from "../components/popup/Popup";
 const OverviewPage = () => {
     //popup
     const [buttonPopup, setButtonPopup] = useState(false)
-    const [popUpID, setPopUpID] = useState<number>(0)
+    const [popUpID, setPopUpID] = useState<number | null>(null);
 
     //data
     const [filterInput, setFilterInput] = useState<FilterInput>({
@@ -70,10 +70,10 @@ const OverviewPage = () => {
 
     return (
         <div className={style.overview}>
-            <Popup
+            {popUpID && <Popup
                 trigger={buttonPopup}
                 close={setButtonPopup}
-                pokemonID={popUpID}/>
+                pokemonID={popUpID}/>}
             {buttonPopup ? <></> : <>
                 <h1>
                     Overview Page
@@ -86,7 +86,7 @@ const OverviewPage = () => {
                     setType={changeType}
                     type={filterInput.pokeTypes ?? []}/>
 
-                {loading ?
+                {loading || error ?
                     <p>Loading ...</p>
                     :
                     <SimpleTable
