@@ -1,7 +1,6 @@
 import {Pokemon} from "../../pages/myTeamPage/myTeam";
 import {Accordion, AccordionDetails, AccordionSummary, Button, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import styles from "./pokemonInTeamComponent.module.css"
 import {useRecoilState} from "recoil";
 import {pokemonTeam} from "../../store";
 import { makeStyles } from "@material-ui/core/styles";
@@ -41,7 +40,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
                 <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
 
                         <Typography className={classes.typ}>
-                            <img className={styles.pokeImg} src={poke.pokemon.sprite_url} alt={""}/>
+                            <img src={poke.pokemon.sprite_url} alt={""}/>
                         </Typography>
                         <Typography className={classes.typ}>
                             {poke.pokemon.name}
