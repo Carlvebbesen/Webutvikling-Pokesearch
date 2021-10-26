@@ -1,0 +1,56 @@
+.table {
+    font-size: 1vm;
+}
+
+.wrapper {
+    display: unset;
+    grid-template-columns: 3fr 2fr 2fr 2fr;
+    align-items: center;
+}
+
+@media only screen and (min-width: 600px) {
+    .wrapper{
+        display: grid;
+    }
+
+}
+
+.bigpic{
+    display: block;
+    width: 70%;
+    height: auto;
+}
+.expanding{
+    background-color: lightgrey;
+}
+
+.detailsDiv{
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: 10px;
+    background-color: white;
+}
+
+.sortingButton{
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    justify-content: space-evenly;
+    align-items: center;
+    min-width: 100px;
+    height: 100%;
+}
+
+
+.selected{
+    background-color: #aee3ae;
+}
+
+.notSelected{
+    background-color: white;
+}
