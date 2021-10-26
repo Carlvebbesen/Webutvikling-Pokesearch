@@ -17,9 +17,43 @@ import RockIcon from './rock.png';
 import SteelIcon from './steel.png';
 import WaterIcon from './water.png';
 
-export {
-    BugIcon, DarkIcon, DragonIcon,
-    ElectricIcon, FairyIcon, FightingIcon,
-    FireIcon, FlyingIcon, GhostIcon, GrassIcon,
-    GroundIcon, IceIcon, NormalIcon, PoisonIcon,
-    PsychicIcon, RockIcon, SteelIcon, WaterIcon };
+export const getPokeTypeIcon = (icon: string)=>{
+ switch (icon) {
+     case "bug":
+         return BugIcon
+     case "dark":
+         return DarkIcon
+     case "dragon":
+         return DragonIcon
+     case "electric":
+         return ElectricIcon
+     case "fairy":
+         return FairyIcon
+     case "fighting":
+         return FightingIcon
+     case "fire":
+         return FireIcon
+     case "flying":
+         return FlyingIcon
+     case "ghost":
+         return GhostIcon
+     case "grass":
+         return GrassIcon
+     case "ground":
+         return GroundIcon
+     case "ice":
+         return IceIcon
+     case "normal":
+         return NormalIcon
+     case "poison":
+         return PoisonIcon
+     case "rock":
+         return RockIcon
+     case "steel":
+         return SteelIcon
+     case "water":
+         return WaterIcon
+     case "psychic":
+         return PsychicIcon
+ }
+}

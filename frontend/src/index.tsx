@@ -10,7 +10,7 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:8080/graphql',//TODO: Change when deploying backend to vm
+  uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
   cache: new InMemoryCache()
 });
 

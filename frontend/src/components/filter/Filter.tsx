@@ -10,6 +10,8 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {useTheme, Theme} from "@mui/material/styles";
 import style from "./Filter.module.css"
+import { isPropertyAccessChain } from "typescript";
+import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
 
 function getStyles(name: string, selected: readonly string[], theme: Theme) {
     return {
@@ -24,10 +26,10 @@ function getStyles(name: string, selected: readonly string[], theme: Theme) {
 interface iFilter {
     type: string[]
     name: string
-    stars: number
+    rating: number
     setType: Function
     setName: Function
-    setStars: Function
+    setRating: Function
 }
 
 
@@ -48,9 +50,7 @@ const Filter: FC<iFilter> = (props) => {
 
 
     const handleChange = (event: SelectChangeEvent<typeof props.type>) => {
-        const {
-            target: {value},
-        } = event;
+        const value = event.target.value;
         if (value.length <= 2) {
             props.setType(
                 // On autofill we get a the stringified value.
@@ -91,13 +91,13 @@ const Filter: FC<iFilter> = (props) => {
                     )}
                     MenuProps={MenuProps}
                 >
-                    {PokemonTypes.map((x) => (
+                    {PokemonTypes.map((type) => (
                         <MenuItem sx={{display: "block"}}
-                                  key={x}
-                                  value={x}
-                                  style={getStyles(x, props.type, theme)}
+                                  key={type}
+                                  value={type}
+                                  style={getStyles(type, props.type, theme)}
                         >
-                            {x}
+                            <><img style={{marginRight: "10px"}} height="20" alt="pokemonTypes" src={getPokeTypeIcon(type)}/>{type} </>
                         </MenuItem>
                     ))}
                 </Select>
@@ -106,11 +106,16 @@ const Filter: FC<iFilter> = (props) => {
                 <p>minimum rating:</p>
                 <Rating
                     name="simple-controlled"
-                    value={props.stars}
+                    value={props.rating}
                     precision={0.5}
                     onChange={(event, star) => {
                         if (star != null) {
-                            props.setStars(star);
+                            props.setRating(star);
+                        }
+                    }}
+                    onChangeActive={(event, star)=> {
+                        if(star=== -1){
+                            props.setRating(0);
                         }
                     }}
                 />

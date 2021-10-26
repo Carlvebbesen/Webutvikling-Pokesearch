@@ -5,53 +5,85 @@ import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 import { useQuery } from "@apollo/client";
 import { GET_ALL_TEAMS, GET_FILTERED_POKEMONS } from "../queries";
-import { FilterInput } from "../types/graphql";
+import { FilterInput } from "../utils/graphql";
+import { constants } from "http2";
+import { SelectChangeEvent } from "@mui/material";
+import popUp from "../components/popUp/popUp";
+import PopUp from "../components/popUp/popUp";
 
 
 const OverviewPage = () => {
     //data
     const [filterInput, setFilterInput] = useState<FilterInput>({
-        name: "",
-        pokeTypes: [""],
-        rating: 0,
-        limit: 10,
-        offset: 10,
+        limit: 50,
+        offset: 0,
     });
-    const {data, error, loading} = useQuery(GET_FILTERED_POKEMONS, {
+    const {data, error, loading, refetch} = useQuery(GET_FILTERED_POKEMONS, {
         variables:{input: filterInput}
     })
+
     //filter
-    const [type, setType] = useState<string[]>([])
-    const [name, setName] = useState<string>("")
-    const [stars, setStars] = useState<number>(0)
+    const [page, setPage] = useState<number>(0);
 
-    //simpleTable
-    const [map, setMap] = useState(new Map<number,number>())
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    const changePage= (value: number)=>{
+        setPage(value);
+        const newState = filterInput;
+        newState.offset = value * newState.limit;
+        setFilterInput(newState);
+        refetch();
+    };
+    const changeName = (value: string)=>{
+        const newState = filterInput;
+        newState.name = value;
+        newState.offset = 0;
+        setFilterInput(newState);
+        setPage(0);
+        refetch();
+    }
+    const changeRating = (value: number)=>{
+        const newState = filterInput;
+        newState.rating = value === -1 ? 0 : value;
+        newState.offset = 0;
+        setFilterInput(newState);
+        setPage(0);
+        refetch();
+    }
+    const changeType = (value: string[])=>{
+        const newState = filterInput;
+        newState.pokeTypes = value;
+        newState.offset = 0;
+        setFilterInput(newState);
+        setPage(0);
+        refetch();
+    }
+    
+    const changeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
+        const newState = filterInput;
+        newState.limit = parseInt(event.target.value);
+        setFilterInput(newState);
+        refetch();
+    }
 
-    console.log(data);
     return (
         <div className={style.overview}>
             <h1>
                 Overview Page
             </h1>
             <Filter
-                name={name}
-                setName={setName}
-                setStars={setStars}
-                stars={stars}
-                setType={setType}
-                type={type}/>
-            {/*<SimpleTable
-                map={map}
+                name={filterInput.name ?? ""}
+                setName={changeName}
+                rating={filterInput.rating ?? 0}
+                setRating={changeRating}
+                setType={changeType}
+                type={filterInput.pokeTypes ?? []}/>
+            {loading? <p>Loading ...</p>: <SimpleTable
+                rowsPerPage={filterInput.limit}
                 page={page}
-                rowsPerPage={rowsPerPage}
-                setMap={setMap}
-                setPage={setPage}
-                setRowsPerPage={setRowsPerPage}
-                rows={rows}/> */}
-        </div>
+                changePage={changePage}
+                changeRowsPerPage={changeRowsPerPage}
+                data={data.getFilteredPokemon}
+                />}
+        </div> 
     )
 }
 

@@ -18,10 +18,13 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import {useWindowDimensions} from "../../utils/methods";
 import style from './SimpleTable.module.css';
+import { FilteredPokemon, GET_POKEMON_BY_ID } from "../../queries";
+import { PokemonTypes } from "../../utils/Values";
+import { Polymer } from "@material-ui/icons";
+import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
+import { useQuery } from "@apollo/client";
 
 const teamMembers = [1, 2, 3, 4]
-
-
 
 interface iSortingButton {
     id: number
@@ -29,13 +32,11 @@ interface iSortingButton {
     hide: boolean,
     decending: boolean,
     onClick: Function
-}
-
+};
 
 const SortingButton: FC<iSortingButton> = (props) => {
 
     useEffect(() => { //TODO: delete after solve bug
-        console.log(props.id + ": decending changed to " + props.decending)
     }, [props.decending])
 
     const handleClick = () => {
@@ -52,210 +53,111 @@ const SortingButton: FC<iSortingButton> = (props) => {
     )
 }
 
-interface iDetails extends Pokemon {
-    setRating: Function;
-    getRating: Function;
+interface iDetails {
+    pokemonId: number
 }
 
 
-const Details: FC<iDetails> = (props) => {
-    return (
-        <div className={style.outerWrapper}>
-            <h1>{capitalize(props.name)}</h1>
-            <div className={style.wrapper}>
-                <div className={style.detailsDiv}>
-                    <img src={props.sprite_url} className={style.bigpic} alt="pokemon"/>
-                </div>
-                <div className={style.detailsDiv}>
-                    <p>type: {props.type}</p>
-                    <p>number: {props.id}</p>
-                    <p>weight: {props.weight}</p>
-                </div>
-                <div className={style.detailsDiv}>
-                    <div>
-                        <p>average rating of {props.number_of_ratings} people</p>
-                        <Rating name="read-only" defaultValue={0} precision={0.1} value={props.rating} readOnly/>
-                    </div>
-                    <p>Used by: {props.usage_percentage * 100}% of teams</p>
-                    <div>
-                        <p>your rating</p>
-                        <Rating
-                            name="simple-controlled"
-                            value={props.getRating(props.id)}
-                            precision={0.5}
-                            onChange={(event, newValue) => {
-                                props.setRating(props.id, newValue)
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className={style.detailsDiv}>
-                    <Team members={teamMembers} pokemonid={props.id}/>
-                </div>
-            </div>
-        </div>
-    )
+export const Details: FC<iDetails> = ({pokemonId}) => {
+    console.log(pokemonId)
+    const {data, loading, error} = useQuery(GET_POKEMON_BY_ID, {variables: {input:{id: pokemonId}}})
+
+    console.log(data);
+    return loading ? <p>Loading...</p> :
+    // (
+    //     <div className={style.outerWrapper}>
+    //         <h1>{capitalize(data.getPokemonById.name)}</h1>
+    //         <div className={style.wrapper}>
+    //             <div className={style.detailsDiv}>
+    //                 <img src={data.getPokemonById.sprite_url} className={style.bigpic} alt="pokemon"/>
+    //             </div>
+    //             <div className={style.detailsDiv}>
+    //                 <p>type: {data.getPokemonById.type}</p>
+    //                 <p>number: {data.getPokemonById.id}</p>
+    //                 <p>weight: {data.getPokemonById.weight}</p>
+    //             </div>
+    //             <div className={style.detailsDiv}>
+    //                 <div>
+    //                     <p>average rating of {data.getPokemonById.number_of_ratings} people</p>
+    //                     <Rating name="read-only" defaultValue={0} precision={0.1} value={data.getPokemonById.rating} readOnly/>
+    //                 </div>
+    //                 <p>Used by: {data.getPokemonById.usage_percentage * 100}% of teams</p>
+    //                 <div>
+    //                     <p>your rating</p>
+    //                     <Rating
+    //                         name="simple-controlled"
+    //                         value={data.getPokemonById.getRating(data.getPokemonById.id)}
+    //                         precision={0.5}
+    //                         // onChange={(event, newValue) => {
+    //                         //     data.getPokemonById.setRating(data.getPokemonById.id, newValue)
+    //                         // }}
+    //                     />
+    //                 </div>
+    //             </div>
+    //             <div className={style.detailsDiv}>
+    //                 <Team members={teamMembers} pokemonid={data.getPokemonById.id}/>
+    //             </div>
+    //         </div>
+    //     </div>
+    // );
+    <p>hei</p>
 }
-
-const ExpandableTableRow = ({children, expandComponent, ...otherProps}: any) => {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    return (
-        <>
-            <TableRow {...otherProps}>
-                <TableCell padding="checkbox">
-                    <IconButton onClick={() => setIsExpanded(!isExpanded)}>
-                        {isExpanded ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                    </IconButton>
-                </TableCell>
-                {children}
-            </TableRow>
-            {isExpanded && (
-                <TableRow className={style.expanding}>
-                    <TableCell padding="checkbox"/>
-                    {expandComponent}
-                </TableRow>
-            )}
-        </>
-    );
-};
 
 interface iSimpleTable {
-    rows: Pokemon[]
-    map: Map<number, number>
-    page: number
-    rowsPerPage: number
-    setMap: Function
-    setPage: Function
-    setRowsPerPage: Function
+    data: FilteredPokemon,
+    changePage: Function,
+    changeRowsPerPage: Function
+    page: number,
+    rowsPerPage: number,
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
-    const {height, width} = useWindowDimensions();
-    const handleChangePage = (event: unknown, newPage: number) => {
-        props.setPage(newPage);
-    };
-
-    const upsert = (key: number, value: number) => {
-        props.setMap((prev: Map<number, number>) => new Map(prev).set(key, value));
-    }
-
-    const getStars = (key: number) => {
-        if (props.map.has(key)) {
-            return props.map.get(key)
-        } else {
-            return 0
-        }
-    }
-
-    const handleSort = (id: number) => {
-        console.log(tableHeader)
-        setTableHeader(prev => prev.map(a => {
-            if (a.id === id) {
-                console.log("first", a.id, a.hide, a.decending)
-                if (a.hide) {
-                    a.hide = false
-                } else {
-                    a.decending = !a.decending //TODO: noe galt her
-                }
-                console.log("end", a.id, a.hide, a.decending)
-            } else {
-                a.hide = true
-            }
-            return a
-        }))
-        console.log(tableHeader)
-
-        //TODO: sende request her til backend
-
-
-    }
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        props.setRowsPerPage(+event.target.value);
-        props.setPage(0);
-    };
-
-
+    const { width} = useWindowDimensions();
     const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
             const button: iSortingButton = {
-                decending: true, hide: true, id: index, name: name, onClick: handleSort
+                decending: true, hide: true, id: index, name: name, onClick: ()=>{},
             }
             return button
         }))
 
     return (
-        <div>
-            <p>hei, width = {width}</p>
             <Paper className={style.root}>
                 <Table stickyHeader className={style.table} aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell padding="checkbox"/>
-
-                            {(width>600?tableHeader:tableHeader.slice(0,1)).map(header => <TableCell align="right">
+                            {(width>600?tableHeader:tableHeader.slice(0,1)).map(header => <TableCell key={header.id} align="right">
                                 <SortingButton id={header.id} name={header.name} hide={header.hide}
                                                decending={header.decending} onClick={header.onClick}
                                 /></TableCell>)}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {props.rows.slice(
-                            props.page * props.rowsPerPage, props.page * props.rowsPerPage + props.rowsPerPage)
-                            .map(row => (
-                                <ExpandableTableRow
-                                    className={teamMembers.includes(row.id) ? style.selected : style.notSelected}
-                                    key={capitalize(row.name)}
-                                    expandComponent={<TableCell colSpan={8}>
-                                        {<Details
-                                            getRating={getStars}
-                                            setRating={upsert}
-                                            id={row.id}
-                                            name={row.name}
-                                            type={row.type}
-                                            stats={row.stats}
-                                            weight={row.weight}
-                                            rating={row.rating}
-                                            number_of_ratings={10}
-                                            usage_percentage={row.usage_percentage}
-                                            sprite_url={row.sprite_url}
-                                        />
-                                        }
-                                    </TableCell>}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        <img src={row.sprite_url}/>{capitalize(row.name)}
-                                    </TableCell>
-                                    {width>600?<>
-                                    <TableCell align="center">{row.stats.find(e => e.name === "hp")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{row.stats.find(e => e.name === "attack")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{row.stats.find(e => e.name === "defence")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{row.stats.find(e => e.name === "sp.atk")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{row.stats.find(e => e.name === "sp.def")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{row.stats.find(e => e.name === "speed")?.value}</TableCell>
-                                    <TableCell
-                                        align="center">{row.stats.map(e => e.value as number).reduce((a, b) => a + b, 0)}</TableCell></>:<></>}
-                                </ExpandableTableRow>
-                            ))
-                        }
+                        {props.data.pokemons.map(pokemon => (
+                            <TableRow hover={true} key={pokemon.entry_number}>
+                                <TableCell align="center" key={pokemon.entry_number+10000}>
+                                        <img src={pokemon.sprite_url} alt="pokemon"/>
+                                </TableCell>
+                                <TableCell align="center" key={pokemon.entry_number+20000}>
+                                        <p>{capitalize(pokemon.name)}</p>
+                                </TableCell>
+                                <TableCell>
+                                    {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                                </TableCell>
+                                    </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
                 <TablePagination //TODO: https://mui.com/api/table-pagination/
-                    rowsPerPageOptions={[5, 10, 15]}
-                    count={props.rows.length}
+                    rowsPerPageOptions={[10, 25, 50]}
+                    count={props.data.count}
                     page={props.page}
                     rowsPerPage={props.rowsPerPage}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    onPageChange={(event, page)=> props.changePage(page)}
+                    onRowsPerPageChange={(event)=> props.changeRowsPerPage(event)}
                 />
             </Paper>
-        </div>
     )
         ;
 }
