@@ -13,6 +13,21 @@ query GetFilteredPokemon($input: FilterInput){
     }
 }
 `;
+export const GET_POKEMON_BY_ID = gql`
+query GetPokemonById($input: PokemonId){
+    getPokemonById(input: $input){
+            name,
+            pokeTypes,
+            stats,
+            weight,
+            rating,
+            rating_count,
+            usage_percentage,
+            sprite_url,
+    }
+}
+`;
+
 export const GET_ALL_TEAMS = gql`
 query GetAllTeams{
     getAllTeams{
@@ -35,6 +50,7 @@ export type FilteredPokemon = {
     pokemons: listPokemon[],
     count: number,
 }
+
 export type Stats = {
     hp: number,
     attack: number,

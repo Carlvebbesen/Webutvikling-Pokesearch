@@ -8,3 +8,7 @@ export type FilterInput = {
     offset: number,
 }
 
+export type PokemonId = {
+    id: number;
+}
+

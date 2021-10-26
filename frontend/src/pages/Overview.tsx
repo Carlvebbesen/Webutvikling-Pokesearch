@@ -8,6 +8,8 @@ import { GET_ALL_TEAMS, GET_FILTERED_POKEMONS } from "../queries";
 import { FilterInput } from "../utils/graphql";
 import { constants } from "http2";
 import { SelectChangeEvent } from "@mui/material";
+import popUp from "../components/popUp/popUp";
+import PopUp from "../components/popUp/popUp";
 
 
 const OverviewPage = () => {
@@ -19,6 +21,7 @@ const OverviewPage = () => {
     const {data, error, loading, refetch} = useQuery(GET_FILTERED_POKEMONS, {
         variables:{input: filterInput}
     })
+    const [pokemonClickedId, setPokemonClickedId] = useState<number| null>(null);
 
     //filter
     const [page, setPage] = useState<number>(0);
@@ -33,19 +36,25 @@ const OverviewPage = () => {
     const changeName = (value: string)=>{
         const newState = filterInput;
         newState.name = value;
+        newState.offset = 0;
         setFilterInput(newState);
+        setPage(0);
         refetch();
     }
     const changeRating = (value: number)=>{
         const newState = filterInput;
         newState.rating = value === -1 ? 0 : value;
+        newState.offset = 0;
         setFilterInput(newState);
+        setPage(0);
         refetch();
     }
     const changeType = (value: string[])=>{
         const newState = filterInput;
         newState.pokeTypes = value;
+        newState.offset = 0;
         setFilterInput(newState);
+        setPage(0);
         refetch();
     }
     
@@ -73,7 +82,10 @@ const OverviewPage = () => {
                 page={page}
                 changePage={changePage}
                 changeRowsPerPage={changeRowsPerPage}
-                data={data.getFilteredPokemon}/>}
+                data={data.getFilteredPokemon}
+                pokemonClicked={(id: number) =>setPokemonClickedId(id)}
+                />}
+        {pokemonClickedId && <PopUp show={()=> {}} pokemonId={pokemonClickedId}/>}
         </div> 
     )
 }
