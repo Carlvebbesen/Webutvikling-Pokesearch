@@ -52,7 +52,7 @@ export const resolvers: IResolvers = {
             return new Promise((resolve, reject) => {
                 const pokemon = Pokemons.findOne( {entry_number: args.input.id}, function (err: Error, result: Pokemon | undefined) {
                     if (err || !result) {
-                        throw new UserInputError("The id does not match any existing pokemon.");
+                        reject(new UserInputError("The id does not match any existing pokemon."));
                     }
                     else {
                         resolve(pokemon)
@@ -69,7 +69,7 @@ export const resolvers: IResolvers = {
             let teamsWithProvidedName = await Teams.countDocuments({ name: args.input.name });
             if (teamsWithProvidedName > 0) {
                 return new Promise((resolve, reject) => {
-                    throw new UserInputError("The team name specified is not unique.");
+                    reject(new UserInputError("The team name specified is not unique."));
                 })
             }
 
@@ -86,16 +86,21 @@ export const resolvers: IResolvers = {
             })
         },
         addPokemon: async (_, args: {input: AddPokemonInput}) => {
-            let team = await Teams.findOne({ name: args.input.teamName }, function(err: Error, result: Team | null) {
-                if (err || !result) throw new UserInputError("The team with the specified name does not exist.");
-            });
-            let newPokemon = await Pokemons.findOne({ entry_number: args.input.pokemonId }, function(err: Error, result: Pokemon | null) {
-                if (err || !result) throw new UserInputError("The pokemon with the specified id does not exist.");
-            });
+            let team = await Teams.findOne({ name: args.input.teamName });
 
-            if (team.pokemon.some((pokemon: Pokemon) => pokemon.name === newPokemon.name)) throw new UserInputError("The pokemon is already on the team.");
+            if (team === null) return new Promise((resolve, reject) => reject(new UserInputError("The team with the specified name does not exist.")));
 
-            let teams_count = await Teams.count();
+            let newPokemon = await Pokemons.findOne({ entry_number: args.input.pokemonId });
+
+            if (newPokemon === null) return new Promise((resolve, reject) => reject(new UserInputError("The pokemon with the specified id does not exist.")));
+
+            if (team.pokemon.some((pokemon: Pokemon) => pokemon.name === newPokemon.name)) {
+                return new Promise((resolve, reject) => {
+                    reject(new UserInputError("The pokemon is already on the team."));
+                })
+            }
+
+            let teams_count = await Teams.countDocuments();
 
             if (team.pokemon.length === 6) {
                 let oldPokemon = await Pokemons.findOne({ name: team.pokemon[args.input.index].name });
@@ -114,9 +119,8 @@ export const resolvers: IResolvers = {
             });
         },
         ratePokemon: async (_, args: {input: RatePokemonInput}) => {
-            let pokemon = await Pokemons.findOne({ entry_number: args.input.id }, function(err: Error, result: Pokemon | null) {
-                if (err || !result) return new Promise((resolve, reject) => {reject(err)});
-            });
+            let pokemon = await Pokemons.findOne({ entry_number: args.input.id });
+            if (pokemon === null) return new Promise((resolve, reject) => reject(new UserInputError("The pokemon with the specified id does not exists.")));
             let oldRating = parseFloat(pokemon.rating);
             let newRating = (oldRating * pokemon.rating_count + args.input.rating) / (pokemon.rating_count + 1.0);
             pokemon.rating = newRating;
