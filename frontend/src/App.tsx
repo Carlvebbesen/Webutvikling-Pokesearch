@@ -4,7 +4,7 @@ import {BrowserRouter} from 'react-router-dom'
 import OverviewPage from "./pages/Overview";
 import Test from "./components/Test"
 import "./index.css"
-import './App.css';
+//import './App.css';
 import {MyTeam} from "./pages/myTeamPage/myTeam";
 
 function App() {

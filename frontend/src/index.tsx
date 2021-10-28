@@ -8,13 +8,14 @@ import {
   InMemoryCache,
   ApolloProvider,
 } from "@apollo/client";
+import {RecoilRoot} from "recoil";
 
 const client = new ApolloClient({
   uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
   cache: new InMemoryCache()
 });
 
-import {RecoilRoot} from "recoil";
+
 
 ReactDOM.render(
     <RecoilRoot>
