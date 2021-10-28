@@ -6,12 +6,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {capitalize, Rating} from "@mui/material";
 import Team from "../team/Team";
 import Stats from "../stats/Stats";
+import {Pokemon} from "../../utils/Pokemon";
 
 
 interface iPopip {
     pokemonID: number,
     trigger: boolean,
-    close: Function
+    setOpen: Function
 }
 
 const Popup: FC<iPopip> = (props) => {
@@ -21,6 +22,10 @@ const Popup: FC<iPopip> = (props) => {
     })
     console.log(data);
 
+    const handleRating=() => {
+        //TODO: send inn rating
+    }
+
     return (props.trigger) ? (
         <div className={style.popupOuter}>
             <div className={style.popupInner}>
@@ -28,7 +33,7 @@ const Popup: FC<iPopip> = (props) => {
                     :
                     <div>
                         <button
-                            onClick={() => props.close(false)}
+                            onClick={() => props.setOpen(false)}
                             className={style.close}>close
                         </button>
                         <div>
@@ -44,7 +49,7 @@ const Popup: FC<iPopip> = (props) => {
 
 
                             <div className={style.innerWrapper}>
-                                <Team members={[1, 2, 3, 4]} pokemonid={props.pokemonID}/>
+                                <Team currentPokemon={data?.getPokemonById as Pokemon}/>
                             </div>
 
 
@@ -70,10 +75,11 @@ const Popup: FC<iPopip> = (props) => {
                                             setRating(newValue ? newValue : 0)
                                         }}
                                     />
+                                    <button onClick={handleRating} disabled={rating===0}>Send rating!</button>
                                 </div>
                                 <div>
                                     <b>Types:</b>
-                                    {data?.getPokemonById.pokeTypes.map((a: string)=><p>{a}</p>)}
+                                    {data?.getPokemonById.pokeTypes.map((a: string) => <p>{a}</p>)}
                                 </div>
                             </div>
                         </div>

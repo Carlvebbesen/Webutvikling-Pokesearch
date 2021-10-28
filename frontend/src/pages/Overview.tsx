@@ -72,7 +72,7 @@ const OverviewPage = () => {
         <div className={style.overview}>
             {popUpID && <Popup
                 trigger={buttonPopup}
-                close={setButtonPopup}
+                setOpen={setButtonPopup}
                 pokemonID={popUpID}/>}
             {buttonPopup ? <></> : <>
                 <h1>
