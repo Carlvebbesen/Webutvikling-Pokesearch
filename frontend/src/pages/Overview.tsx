@@ -8,8 +8,6 @@ import { GET_ALL_TEAMS, GET_FILTERED_POKEMONS } from "../queries";
 import { FilterInput } from "../utils/graphql";
 import { constants } from "http2";
 import { SelectChangeEvent } from "@mui/material";
-import popUp from "../components/popUp/popUp";
-import PopUp from "../components/popUp/popUp";
 
 
 const OverviewPage = () => {

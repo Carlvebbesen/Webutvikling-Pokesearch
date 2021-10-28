@@ -1,9 +1,11 @@
-import {Pokemon} from "../../pages/myTeamPage/myTeam";
+import {Pokemon} from "../../utils/Pokemon";
 import {Accordion, AccordionDetails, AccordionSummary, Button, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {useRecoilState} from "recoil";
 import {pokemonTeam} from "../../store";
 import { makeStyles } from "@material-ui/core/styles";
+import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
+import React from "react";
 
 interface pokeProps {
     pokemon: Pokemon
@@ -13,7 +15,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
     const [pokemon, setPokemon] = useRecoilState(pokemonTeam)
 
     const removeFromTeam = () => {
-        const newList: number[] = pokemon.filter(pokeID => pokeID !== poke.pokemon.id)
+        const newList: Pokemon[] = pokemon.filter(pokemon => pokemon.id !== poke.pokemon.id)
         try {
             setPokemon(newList)
         } catch (e) {
@@ -40,13 +42,13 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
                 <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
 
                         <Typography className={classes.typ}>
-                            <img src={poke.pokemon.sprite_url} alt={""}/>
+                            <img src={poke.pokemon.sprite_url} alt={"Photo of pokemon"}/>
                         </Typography>
                         <Typography className={classes.typ}>
                             {poke.pokemon.name}
                         </Typography>
                         <Typography className={classes.typ}>
-                            {poke.pokemon.type}
+                            {poke.pokemon.type.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
                         </Typography>
 
                     </AccordionSummary >

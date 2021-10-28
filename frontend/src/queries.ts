@@ -42,7 +42,8 @@ query GetAllTeams{
     name,
     pokemon {
         name,
-        weight,
+        pokeTypes,
+        sprite_url,
     },
     }
 }
