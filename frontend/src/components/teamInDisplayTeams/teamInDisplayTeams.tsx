@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from "./teamInDisplayTeams.module.css";
 import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
+import {Card, CardContent, Grid, Typography} from "@mui/material";
 
 
 export type PokemonInTeam = {
@@ -27,16 +28,38 @@ export const TeamInDisplayTeams = (team : teamProps) => {
     return (
         <div>
             <div className={styles.teamName}> {name} </div>
-            {pokemon.map((poke) =>
-                <div className={styles.teamIn}>
-                    <img src={poke.sprite_url} alt={"Photo of pokemon"} className={styles.pict}/>
-                    <div className={styles.name}>{poke.name}</div>
-                    <div className={styles.types} >
-                        {poke.type.map(type => <img height="50" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
+            <Grid container spacing={2} /*className={styles.teamWithName}*/ >
+                {/*pokemon.map((poke) =>
+                    <div className={styles.teamIn}>
+                        <img height="60" src={poke.sprite_url} alt={"Photo of pokemon"} className={styles.pict}/>
+                        <div className={styles.name}>{poke.name}</div>
+                        <div className={styles.types} >
+                            {poke.type.map(type => <img height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
+                        </div>
                     </div>
-                </div>
-            )}
+                )*/}
 
+                {pokemon.map((poke) =>
+                    <Grid item xs={4}>
+                        <Card /*className={styles.teamIn}*/>
+                            <CardContent>
+                                <Typography>
+                                    <img height="60" src={poke.sprite_url} alt={"Photo of pokemon"} className={styles.pict}/>
+                                </Typography>
+                                <Typography>
+                                <div className={styles.name}>{poke.name}</div>
+                                </Typography>
+                                <Typography>
+                                    <div className={styles.types} >
+                                        {poke.type.map(type => <img height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
+                                    </div>
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                )}
+
+            </Grid>
         </div>
     );
 }

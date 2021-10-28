@@ -32,13 +32,16 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
             flexShrink: 0,
             alignSelf: "center",
             textTransform: "capitalize"
+        },
+        acc: {
+            marginBottom: "20px"
         }
     });
 
     const classes = useStyles();
 
     return (
-            <Accordion >
+            <Accordion className={classes.acc}>
                 <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
 
                         <Typography className={classes.typ}>
@@ -48,7 +51,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
                             {poke.pokemon.name}
                         </Typography>
                         <Typography className={classes.typ}>
-                            {poke.pokemon.type.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                            {poke.pokemon.type.map(type => <img style={{marginRight: "10px"}} height="30" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
                         </Typography>
 
                     </AccordionSummary >
