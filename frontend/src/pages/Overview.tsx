@@ -1,15 +1,11 @@
 import React, {FC, useEffect, useState} from "react"
 import style from "./Overview.module.css"
-import {Pokemon} from "../utils/Pokemon";
 import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 import { useQuery } from "@apollo/client";
-import { GET_ALL_TEAMS, GET_FILTERED_POKEMONS } from "../queries";
+import { GET_FILTERED_POKEMONS } from "../queries";
 import { FilterInput } from "../utils/graphql";
-import { constants } from "http2";
-import { SelectChangeEvent } from "@mui/material";
-import popUp from "../components/popUp/popUp";
-import PopUp from "../components/popUp/popUp";
+import { FilteredPokemon } from "../utils/Pokemon";
 
 
 const OverviewPage = () => {
@@ -81,7 +77,7 @@ const OverviewPage = () => {
                 page={page}
                 changePage={changePage}
                 changeRowsPerPage={changeRowsPerPage}
-                data={data.getFilteredPokemon}
+                data={data.getFilteredPokemon as FilteredPokemon}
                 />}
         </div> 
     )
