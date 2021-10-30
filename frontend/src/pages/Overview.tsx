@@ -1,15 +1,10 @@
-import React, {FC, useEffect, useState} from "react"
+import React, { useEffect, useState} from "react"
 import style from "./Overview.module.css"
-import {Pokemon} from "../utils/Pokemon";
 import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 import { useQuery } from "@apollo/client";
-import { GET_ALL_TEAMS, GET_FILTERED_POKEMONS } from "../queries";
+import {  GET_FILTERED_POKEMONS } from "../queries";
 import { FilterInput } from "../utils/graphql";
-import { constants } from "http2";
-import { SelectChangeEvent } from "@mui/material";
-import popUp from "../components/popUp/popUp";
-import PopUp from "../components/popUp/popUp";
 
 
 const OverviewPage = () => {
@@ -21,9 +16,22 @@ const OverviewPage = () => {
     const {data, error, loading, refetch} = useQuery(GET_FILTERED_POKEMONS, {
         variables:{input: filterInput}
     })
+    const [name, setName] = useState<string>("");
 
     //filter
     const [page, setPage] = useState<number>(0);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const newState = filterInput;
+        newState.name = name;
+        newState.offset = 0;
+        setFilterInput(newState);
+        setPage(0);
+        refetch();
+        }, 200);
+        return () => clearTimeout(timer);
+      }, [name]);
 
     const changePage= (value: number)=>{
         setPage(value);
@@ -33,12 +41,7 @@ const OverviewPage = () => {
         refetch();
     };
     const changeName = (value: string)=>{
-        const newState = filterInput;
-        newState.name = value;
-        newState.offset = 0;
-        setFilterInput(newState);
-        setPage(0);
-        refetch();
+        setName(value);
     }
     const changeRating = (value: number)=>{
         const newState = filterInput;
@@ -63,6 +66,14 @@ const OverviewPage = () => {
         setFilterInput(newState);
         refetch();
     }
+    const changeSortBy = (name: string, decending: boolean) => {
+        const newState = filterInput;
+        newState.sortBy = name;
+        newState.sortDesc = decending;
+        setFilterInput(newState);
+        setPage(0);
+        refetch();
+    }
 
     return (
         <div className={style.overview}>
@@ -70,19 +81,18 @@ const OverviewPage = () => {
                 Overview Page
             </h1>
             <Filter
-                name={filterInput.name ?? ""}
+                name={name}
                 setName={changeName}
                 rating={filterInput.rating ?? 0}
                 setRating={changeRating}
                 setType={changeType}
                 type={filterInput.pokeTypes ?? []}/>
-            {loading? <p>Loading ...</p>: <SimpleTable
+            {loading || error? <p>Loading ...</p>: <SimpleTable
                 rowsPerPage={filterInput.limit}
                 page={page}
                 changePage={changePage}
                 changeRowsPerPage={changeRowsPerPage}
-                data={data.getFilteredPokemon}
-                />}
+                data={data.getFilteredPokemon} activeSortButton={filterInput.sortBy} sortPokemon={changeSortBy}/>}
         </div> 
     )
 }
