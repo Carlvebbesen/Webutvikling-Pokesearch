@@ -49,18 +49,18 @@ const Popup: FC<iPopup> = (props) => {
 
 
                             <div className={style.innerWrapper}>
-                                <Team currentPokemon={//data?.getPokemonByID as Pokemon
+                                <Team currentPokemon={
                                     {
-                                    id: props.pokemonID,
-                                    name: data?.getPokemonById?.name,
-                                    type: data?.getPokemonById?.pokeTypes,
-                                    stats: data?.getPokemonById?.stats,
-                                    weight: data?.getPokemonById?.weight,
-                                    rating: data?.getPokemonById?.rating,
-                                    number_of_ratings: data?.getPokemonById?.rating_count,
-                                    usage_percentage: data?.getPokemonById?.usage_percentage,
-                                    sprite_url: data?.getPokemonById?.sprite_url,
-                                } as Pokemon}/>
+                                        id: props.pokemonID,
+                                        name: data?.getPokemonById?.name,
+                                        type: data?.getPokemonById?.pokeTypes,
+                                        stats: data?.getPokemonById?.stats,
+                                        weight: data?.getPokemonById?.weight,
+                                        rating: data?.getPokemonById?.rating,
+                                        number_of_ratings: data?.getPokemonById?.rating_count,
+                                        usage_percentage: data?.getPokemonById?.usage_percentage,
+                                        sprite_url: data?.getPokemonById?.sprite_url,
+                                    } as Pokemon}/>
                             </div>
 
 

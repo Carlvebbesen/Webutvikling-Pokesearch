@@ -9,6 +9,7 @@ interface iTeamMember {
     TeamMember: Pokemon | null
     handleSwap: Function
     handleAdd: Function
+    index: number
 }
 
 const TeamMember: FC<iTeamMember> = (props) => {
@@ -19,7 +20,7 @@ const TeamMember: FC<iTeamMember> = (props) => {
             <div className={style.teamMember}>
                 <img src={props.TeamMember.sprite_url}/>
                 <p>{props.TeamMember.name}</p>
-                <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={() => props.handleSwap(props.TeamMember?.id)}/>
+                <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={() => props.handleSwap(props.index)}/>
             </div>
         )
     }
@@ -43,30 +44,24 @@ const Team: FC<iTeam> = (props) => {
     });
 
     const [pokemons, setPokemons] = useRecoilState(pokemonTeam)
-    const team = pokemons.map(pokemon => <li><TeamMember TeamMember={pokemon}
-                                                         handleAdd={handleAdd} handleSwap={handleSwap}/></li>)
+    const team = pokemons.map((pokemon,index) => <li><TeamMember TeamMember={pokemon}
+                                                         handleAdd={handleAdd} handleSwap={handleSwap} index={index}/></li>)
 
-    function handleSwap(remove_id: number) {
-        console.log(props.currentPokemon)
-        console.log("handle swap, remove: " +remove_id) //TODO: undefined, returnerer
+    function handleSwap(remove_index: number) {
         let copy = pokemons
-        copy.forEach(a=>console.log(a.id))
-        let index = copy.map(a => a.id).indexOf(remove_id)
-        console.log("INDEX = " +index)
-        if (index > -1) {
-            setPokemons([...copy.slice(0, index), props.currentPokemon, ...copy.slice(index+1)])
+        if (remove_index > -1) {
+            setPokemons([...copy.slice(0, remove_index), props.currentPokemon, ...copy.slice(remove_index+1)])
         }
     }
 
     function handleAdd() {
-        console.log("handle add")
         setPokemons(prev => ([...prev, props.currentPokemon]))
     }
 
 
     if (team.length < 6) {
         team.push(<li><TeamMember TeamMember={null} handleAdd={handleAdd}
-                                  handleSwap={handleSwap}/></li>)
+                                  handleSwap={handleSwap} index={team.length}/></li>)
     }
     return (
         <div className={style.team}>
