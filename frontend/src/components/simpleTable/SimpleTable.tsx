@@ -34,17 +34,9 @@ interface iSortingButton {
 };
 
 const SortingButton: FC<iSortingButton> = (props) => {
-
-    useEffect(() => { //TODO: delete after solve bug
-        console.log("HEI")
-    }, [props.decending, props.hide])
-
-    const handleClick = () => {
-        props.clickFunc(props.index)
-    }
-
+    console.log(props.index,props.hide)
     return (
-        <button className={style.sortingButton} onClick={handleClick}>
+        <button className={style.sortingButton} onClick={()=>props.clickFunc(props.index)}>
             <p>{props.name}</p>
             {props.hide
                 ? <FilterAltIcon/> :
@@ -105,7 +97,6 @@ interface iSimpleTable {
     data: FilteredPokemon,
     changePage: Function,
     changeRowsPerPage: Function
-    setPopUp: Function
     setPopUpID: Function,
     page: number,
     rowsPerPage: number,
@@ -113,7 +104,8 @@ interface iSimpleTable {
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
     const {width} = useWindowDimensions();
-    const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
+    const [tableHeader, setTableHeader] = useState<iSortingButton[]>(
+        ["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
             const button: iSortingButton = {
                 decending: true, hide: true, index: index, name: name, clickFunc: filterClick
@@ -121,25 +113,23 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
             return button
         }))
 
-    useEffect(() => {
-        console.log("Endring")
-    }, [tableHeader])
 
     function filterClick(index: number) {
-        let copy :iSortingButton[] = tableHeader
+        console.log(tableHeader)
+        const copy: iSortingButton[] = tableHeader
         if (copy[index].hide) {
             copy.forEach(a => a.hide = true)
             copy[index].hide = false
         } else {
             copy[index].decending = !copy[index].decending
         }
+        console.log(tableHeader)
         setTableHeader(copy)
         console.log(tableHeader)
     }
 
     function sendPopUpData(id: number) {
         props.setPopUpID(id)
-        props.setPopUp(true)
     }
 
     return (
@@ -153,7 +143,8 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                             align="right">
                             <SortingButton index={header.index} name={header.name} hide={header.hide}
                                            decending={header.decending} clickFunc={header.clickFunc}
-                            /></TableCell>)}
+                            />
+                        </TableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>

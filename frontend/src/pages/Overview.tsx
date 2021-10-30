@@ -9,10 +9,10 @@ import {FilterInput} from "../utils/graphql";
 import {constants} from "http2";
 import {SelectChangeEvent} from "@mui/material";
 import Popup from "../components/popup/Popup";
+import Backdrop from "../components/backdrop/Backdrop"
 
 const OverviewPage = () => {
     //popup
-    const [buttonPopup, setButtonPopup] = useState(false)
     const [popUpID, setPopUpID] = useState<number | null>(null);
 
     //data
@@ -67,14 +67,14 @@ const OverviewPage = () => {
     }
 
 
-
     return (
-        <div className={style.overview}>
+        <div>
+            <Backdrop clicked={() => setPopUpID(null)} show={popUpID !== null}/>
             {popUpID && <Popup
-                trigger={buttonPopup}
-                setOpen={setButtonPopup}
+                trigger={popUpID !== null}
+                setOpen={setPopUpID}
                 pokemonID={popUpID}/>}
-            {buttonPopup ? <></> : <>
+            <div className={style.overview}>
                 <h1>
                     Overview Page
                 </h1>
@@ -94,13 +94,10 @@ const OverviewPage = () => {
                         page={page}
                         changePage={changePage}
                         changeRowsPerPage={changeRowsPerPage}
-                        setPopUp={setButtonPopup}
                         setPopUpID={setPopUpID}
                         data={data.getFilteredPokemon}
                     />}
-            </>
-            }
-
+            </div>
         </div>
     )
 }
