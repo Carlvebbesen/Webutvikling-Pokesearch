@@ -15,25 +15,35 @@ interface iPopup {
     setOpen: Function
 }
 
+
+
 const Popup: FC<iPopup> = (props) => {
     const [rating, setRating] = useState<number>(0)
+    const [disable, setDisable] = useState<boolean>(false)
     const {data, error, loading, refetch} = useQuery(GET_POKEMON_BY_ID, {
         variables: {input: {id: props.pokemonID}}
     })
-    console.log(data);
+
 
     const handleRating = () => {
+        setDisable(true)
+        alert("Rating sent")
         //TODO: send inn rating
     }
 
     return (props.trigger) ? (
         <div className={style.popupOuter}>
-            <div className={style.popupInner}>
+            <div id="inner" className={style.popupInner}>
                 {loading ? <CircularProgress/>
                     :
                     <div>
                         <button
-                            onClick={() => props.setOpen(false)}
+                            onClick={() => {
+                                setRating(0)
+                                setDisable(false)
+                                props.setOpen(false)
+
+                            }}
                             className={style.close}>close
                         </button>
                         <div>
@@ -91,8 +101,9 @@ const Popup: FC<iPopup> = (props) => {
                                         onChange={(event, newValue) => {
                                             setRating(newValue ? newValue : 0)
                                         }}
+                                        disabled={disable}
                                     />
-                                    <button onClick={handleRating} disabled={rating === 0}>Send rating!</button>
+                                    <button onClick={handleRating} disabled={(rating === 0)||disable}>Send rating!</button>
                                 </div>
                                 <div>
                                     <b>Types:</b>
