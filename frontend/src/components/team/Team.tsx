@@ -36,6 +36,7 @@ interface iTeam {
 }
 
 const Team: FC<iTeam> = (props) => {
+    console.log(props.currentPokemon as unknown as string)
     const pokemonTeam = atom<Pokemon[]>({
         key: "pokemonTeam",
         default: []
@@ -46,6 +47,7 @@ const Team: FC<iTeam> = (props) => {
                                                          handleAdd={handleAdd} handleSwap={handleSwap}/></li>)
 
     function handleSwap(remove_id: number) {
+        console.log(props.currentPokemon)
         console.log("handle swap, remove: " +remove_id) //TODO: undefined, returnerer
         let copy = pokemons
         copy.forEach(a=>console.log(a.id))

@@ -6,23 +6,23 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {capitalize, Rating} from "@mui/material";
 import Team from "../team/Team";
 import Stats from "../stats/Stats";
-import {Pokemon} from "../../utils/Pokemon";
+import {Attribute, Pokemon} from "../../utils/Pokemon";
 
 
-interface iPopip {
+interface iPopup {
     pokemonID: number,
     trigger: boolean,
     setOpen: Function
 }
 
-const Popup: FC<iPopip> = (props) => {
+const Popup: FC<iPopup> = (props) => {
     const [rating, setRating] = useState<number>(0)
     const {data, error, loading, refetch} = useQuery(GET_POKEMON_BY_ID, {
         variables: {input: {id: props.pokemonID}}
     })
     console.log(data);
 
-    const handleRating=() => {
+    const handleRating = () => {
         //TODO: send inn rating
     }
 
@@ -49,13 +49,30 @@ const Popup: FC<iPopip> = (props) => {
 
 
                             <div className={style.innerWrapper}>
-                                <Team currentPokemon={data?.getPokemonById as Pokemon}/>
+                                <Team currentPokemon={//data?.getPokemonByID as Pokemon
+                                    {
+                                    id: props.pokemonID,
+                                    name: data?.getPokemonById?.name,
+                                    type: data?.getPokemonById?.pokeTypes,
+                                    stats: data?.getPokemonById?.stats,
+                                    weight: data?.getPokemonById?.weight,
+                                    rating: data?.getPokemonById?.rating,
+                                    number_of_ratings: data?.getPokemonById?.rating_count,
+                                    usage_percentage: data?.getPokemonById?.usage_percentage,
+                                    sprite_url: data?.getPokemonById?.sprite_url,
+                                } as Pokemon}/>
                             </div>
 
 
                             <div className={style.innerWrapper}>
                                 <h3>Stats: </h3>
-                                <Stats Hp={10} Atk={5} Def={10} SpAtk={12} SpDef={13} Speed={1}/>
+                                <Stats
+                                    Hp={data?.getPokemonById.stats.hp}
+                                    Atk={data?.getPokemonById.stats.attack}
+                                    Def={data?.getPokemonById.stats.defense}
+                                    SpAtk={data?.getPokemonById.stats.special_attack}
+                                    SpDef={data?.getPokemonById.stats.special_defense}
+                                    Speed={data?.getPokemonById.stats.speed}/>
                             </div>
 
 
@@ -75,7 +92,7 @@ const Popup: FC<iPopip> = (props) => {
                                             setRating(newValue ? newValue : 0)
                                         }}
                                     />
-                                    <button onClick={handleRating} disabled={rating===0}>Send rating!</button>
+                                    <button onClick={handleRating} disabled={rating === 0}>Send rating!</button>
                                 </div>
                                 <div>
                                     <b>Types:</b>
