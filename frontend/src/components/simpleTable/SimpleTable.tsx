@@ -24,23 +24,23 @@ import {Polymer} from "@material-ui/icons";
 import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
 import {useQuery} from "@apollo/client";
 
-const teamMembers = [1, 2, 3, 4]
 
 interface iSortingButton {
-    id: number
+    index: number
     name: string,
     hide: boolean,
     decending: boolean,
-    onClick: Function
+    clickFunc: Function
 };
 
 const SortingButton: FC<iSortingButton> = (props) => {
 
     useEffect(() => { //TODO: delete after solve bug
-    }, [props.decending])
+        console.log("HEI")
+    }, [props.decending, props.hide])
 
     const handleClick = () => {
-        props.onClick(props.id)
+        props.clickFunc(props.index)
     }
 
     return (
@@ -59,10 +59,8 @@ interface iDetails {
 
 
 export const Details: FC<iDetails> = ({pokemonId}) => {
-    console.log(pokemonId)
     const {data, loading, error} = useQuery(GET_POKEMON_BY_ID, {variables: {input: {id: pokemonId}}})
 
-    console.log(data);
     return loading ? <p>Loading...</p> :
         // (
         //     <div className={style.outerWrapper}>
@@ -118,13 +116,28 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
     const [tableHeader, setTableHeader] = useState<iSortingButton[]>(["Pokemon ID", "HP", "Attack", "Defence", "Sp. Atk", "Sp. Def", "Speed", "Total"]
         .map((name, index) => {
             const button: iSortingButton = {
-                decending: true, hide: true, id: index, name: name, onClick: () => {
-                },
+                decending: true, hide: true, index: index, name: name, clickFunc: filterClick
             }
             return button
         }))
 
-    function sendPopUpData(id:number){
+    useEffect(() => {
+        console.log("Endring")
+    }, [tableHeader])
+
+    function filterClick(index: number) {
+        let copy :iSortingButton[] = tableHeader
+        if (copy[index].hide) {
+            copy.forEach(a => a.hide = true)
+            copy[index].hide = false
+        } else {
+            copy[index].decending = !copy[index].decending
+        }
+        setTableHeader(copy)
+        console.log(tableHeader)
+    }
+
+    function sendPopUpData(id: number) {
         props.setPopUpID(id)
         props.setPopUp(true)
     }
@@ -135,16 +148,18 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                 <TableHead>
                     <TableRow>
                         <TableCell padding="checkbox"/>
-                        {(width > 600 ? tableHeader : tableHeader.slice(0, 1)).map(header => <TableCell key={header.id}
-                                                                                                        align="right">
-                            <SortingButton id={header.id} name={header.name} hide={header.hide}
-                                           decending={header.decending} onClick={header.onClick}
+                        {(width > 600 ? tableHeader : tableHeader.slice(0, 1)).map(header => <TableCell
+                            key={header.index}
+                            align="right">
+                            <SortingButton index={header.index} name={header.name} hide={header.hide}
+                                           decending={header.decending} clickFunc={header.clickFunc}
                             /></TableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.data.pokemons.map(pokemon => (
-                        <TableRow hover={true} key={pokemon.entry_number} onClick={()=>sendPopUpData(pokemon.entry_number)}>
+                        <TableRow hover={true} key={pokemon.entry_number}
+                                  onClick={() => sendPopUpData(pokemon.entry_number)}>
                             <TableCell align="center" key={pokemon.entry_number + 10000}>
                                 <img src={pokemon.sprite_url} alt="pokemon"/>
                             </TableCell>
