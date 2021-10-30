@@ -2,47 +2,66 @@ import React, {FC} from "react";
 import SwapHorizontalCircleOutlinedIcon from "@mui/icons-material/SwapHorizontalCircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import style from "./Team.module.css"
+import {Pokemon} from "../../utils/Pokemon";
+import {atom, useRecoilState} from "recoil";
 
 interface iTeamMember {
-    teamId: number
-    pokemonid: number
+    TeamMember: Pokemon | null
+    handleSwap: Function
+    handleAdd: Function
+    index: number
 }
 
 const TeamMember: FC<iTeamMember> = (props) => {
-    function handleSwap() {
-        alert("remove " + props.teamId + " and add " + props.pokemonid)
-    }
-
-    function handleAdd() {
-        alert("add " + props.pokemonid)
-    }
 
 
-    if (props.teamId !== 0) {
+    if (props.TeamMember !== null) {
         return (
             <div className={style.teamMember}>
-                <p>{props.teamId}</p>
-                <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={handleSwap}/>
+                <img src={props.TeamMember.sprite_url}/>
+                <p>{props.TeamMember.name}</p>
+                <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={() => props.handleSwap(props.index)}/>
             </div>
         )
     }
     return (
         <div className={style.emptyTeamMember}>
-            <AddCircleOutlineIcon className={style.addButton} onClick={handleAdd}/>
+            <AddCircleOutlineIcon className={style.addButton} onClick={() => props.handleAdd()}/>
         </div>
     )
 }
 
 
 interface iTeam {
-    members: number[]
-    pokemonid: number
+    currentPokemon: Pokemon
 }
 
 const Team: FC<iTeam> = (props) => {
-    const team = props.members.map(id => <li><TeamMember teamId={id} pokemonid={props.pokemonid}/></li>)
-    while (team.length < 6) {
-        team.push(<li><TeamMember teamId={0} pokemonid={props.pokemonid}/></li>)
+    console.log(props.currentPokemon as unknown as string)
+    const pokemonTeam = atom<Pokemon[]>({
+        key: "pokemonTeam",
+        default: []
+    });
+
+    const [pokemons, setPokemons] = useRecoilState(pokemonTeam)
+    const team = pokemons.map((pokemon,index) => <li><TeamMember TeamMember={pokemon}
+                                                         handleAdd={handleAdd} handleSwap={handleSwap} index={index}/></li>)
+
+    function handleSwap(remove_index: number) {
+        let copy = pokemons
+        if (remove_index > -1) {
+            setPokemons([...copy.slice(0, remove_index), props.currentPokemon, ...copy.slice(remove_index+1)])
+        }
+    }
+
+    function handleAdd() {
+        setPokemons(prev => ([...prev, props.currentPokemon]))
+    }
+
+
+    if (team.length < 6) {
+        team.push(<li><TeamMember TeamMember={null} handleAdd={handleAdd}
+                                  handleSwap={handleSwap} index={team.length}/></li>)
     }
     return (
         <div className={style.team}>
