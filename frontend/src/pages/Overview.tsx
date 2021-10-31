@@ -10,6 +10,7 @@ import {constants} from "http2";
 import {SelectChangeEvent} from "@mui/material";
 import Popup from "../components/popup/Popup";
 import Backdrop from "../components/backdrop/Backdrop"
+import Navbar from "../components/navbar/Navbar";
 
 const OverviewPage = () => {
     //popup
@@ -75,6 +76,7 @@ const OverviewPage = () => {
                 setOpen={setPopUpID}
                 pokemonID={popUpID}/>}
             <div className={style.overview}>
+                <Navbar/>
                 <h1>
                     Overview Page
                 </h1>
