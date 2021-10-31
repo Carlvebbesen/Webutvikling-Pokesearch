@@ -2,19 +2,23 @@ import React, { useEffect, useState} from "react"
 import style from "./Overview.module.css"
 import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
-import { useQuery } from "@apollo/client";
-import {  GET_FILTERED_POKEMONS } from "../queries";
-import { FilterInput } from "../utils/graphql";
-
+import {useQuery} from "@apollo/client";
+import { GET_FILTERED_POKEMONS} from "../queries";
+import {FilterInput} from "../utils/graphql";
+import Popup from "../components/popup/Popup";
 
 const OverviewPage = () => {
+    //popup
+    const [buttonPopup, setButtonPopup] = useState(false)
+    const [popUpID, setPopUpID] = useState<number | null>(null);
+
     //data
     const [filterInput, setFilterInput] = useState<FilterInput>({
         limit: 50,
         offset: 0,
     });
     const {data, error, loading, refetch} = useQuery(GET_FILTERED_POKEMONS, {
-        variables:{input: filterInput}
+        variables: {input: filterInput}
     })
     const [name, setName] = useState<string>("");
 
@@ -23,7 +27,7 @@ const OverviewPage = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            const newState = filterInput;
+        const newState = filterInput;
         newState.name = name;
         newState.offset = 0;
         setFilterInput(newState);
@@ -43,7 +47,7 @@ const OverviewPage = () => {
     const changeName = (value: string)=>{
         setName(value);
     }
-    const changeRating = (value: number)=>{
+    const changeRating = (value: number) => {
         const newState = filterInput;
         newState.rating = value === -1 ? 0 : value;
         newState.offset = 0;
@@ -51,7 +55,7 @@ const OverviewPage = () => {
         setPage(0);
         refetch();
     }
-    const changeType = (value: string[])=>{
+    const changeType = (value: string[]) => {
         const newState = filterInput;
         newState.pokeTypes = value;
         newState.offset = 0;
@@ -59,8 +63,8 @@ const OverviewPage = () => {
         setPage(0);
         refetch();
     }
-    
-    const changeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
+
+    const changeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const newState = filterInput;
         newState.limit = parseInt(event.target.value);
         setFilterInput(newState);
@@ -75,25 +79,44 @@ const OverviewPage = () => {
         refetch();
     }
 
+
+
     return (
         <div className={style.overview}>
-            <h1>
-                Overview Page
-            </h1>
-            <Filter
-                name={name}
-                setName={changeName}
-                rating={filterInput.rating ?? 0}
-                setRating={changeRating}
-                setType={changeType}
-                type={filterInput.pokeTypes ?? []}/>
-            {loading || error? <p>Loading ...</p>: <SimpleTable
-                rowsPerPage={filterInput.limit}
-                page={page}
-                changePage={changePage}
-                changeRowsPerPage={changeRowsPerPage}
-                data={data.getFilteredPokemon} activeSortButton={filterInput.sortBy} sortPokemon={changeSortBy}/>}
-        </div> 
+            {popUpID && <Popup
+                trigger={buttonPopup}
+                setOpen={setButtonPopup}
+                pokemonID={popUpID}/>}
+            {buttonPopup ? <></> : <>
+                <h1>
+                    Overview Page
+                </h1>
+                <Filter
+                    name={name}
+                    setName={changeName}
+                    rating={filterInput.rating ?? 0}
+                    setRating={changeRating}
+                    setType={changeType}
+                    type={filterInput.pokeTypes ?? []}/>
+
+                {loading || error ?
+                    <p>Loading ...</p>
+                    :
+                    <SimpleTable
+                        activeSortButton={filterInput.sortBy}
+                        sortPokemon={changeSortBy}
+                        rowsPerPage={filterInput.limit}
+                        page={page}
+                        changePage={changePage}
+                        changeRowsPerPage={changeRowsPerPage}
+                        setPopUp={setButtonPopup}
+                        setPopUpID={setPopUpID}
+                        data={data.getFilteredPokemon}
+                    />}
+            </>
+            }
+
+        </div>
     )
 }
 

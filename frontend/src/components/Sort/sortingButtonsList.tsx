@@ -13,8 +13,8 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
     const sortValues = ["hp",
         "attack",
         "defense",
-        "special_attack",
-        "special_defense",
+        "special-attack",
+        "special-defense",
         "speed",
         "total"]
         const width = useWindowDimensions().width;

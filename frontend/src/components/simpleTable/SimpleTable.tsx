@@ -15,9 +15,7 @@ import TablePagination from "@mui/material/TablePagination";
 import {capitalize} from "@mui/material";
 import {useWindowDimensions} from "../../utils/methods";
 import style from './SimpleTable.module.css';
-import { FilteredPokemon, GET_POKEMON_BY_ID } from "../../queries";
-import { PokemonTypes } from "../../utils/Values";
-import { Polymer } from "@material-ui/icons";
+import { FilteredPokemon } from "../../queries";
 import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
 import SortingButtonsList from "../Sort/sortingButtonsList";
 
@@ -26,6 +24,8 @@ interface iSimpleTable {
     data: FilteredPokemon,
     changePage: Function,
     changeRowsPerPage: Function
+    setPopUp: Function
+    setPopUpID: Function,
     page: number,
     rowsPerPage: number,
     activeSortButton: string | undefined,
@@ -33,38 +33,44 @@ interface iSimpleTable {
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
+    function sendPopUpData(id:number){
+        props.setPopUpID(id)
+        props.setPopUp(true)
+    }
+
     return (
-            <Paper className={style.root}>
-                <Table stickyHeader className={style.table} aria-label="sticky table">
-                    <TableHead>
+        <Paper className={style.root}>
+            <Table stickyHeader className={style.table} aria-label="sticky table">
+            <TableHead>
                         <SortingButtonsList activeButton={props.activeSortButton} sortByValue={props.sortPokemon}
                     />
                     </TableHead>
-                    <TableBody>
-                        {props.data.pokemons.map(pokemon => (
-                            <TableRow hover={true} key={pokemon.entry_number}>
-                                <TableCell align="center" key={pokemon.entry_number+10000}>
-                                        <img src={pokemon.sprite_url} alt="pokemon"/>
-                                </TableCell>
-                                <TableCell align="center" key={pokemon.entry_number+20000}>
-                                        <p>{capitalize(pokemon.name)}</p>
-                                </TableCell>
-                                <TableCell>
-                                    {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
-                                </TableCell>
-                                    </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                <TablePagination //TODO: https://mui.com/api/table-pagination/
-                    rowsPerPageOptions={[10, 25, 50]}
-                    count={props.data.count}
-                    page={props.page}
-                    rowsPerPage={props.rowsPerPage}
-                    onPageChange={(event, page)=> props.changePage(page)}
-                    onRowsPerPageChange={(event)=> props.changeRowsPerPage(event)}
-                />
-            </Paper>
+                <TableBody>
+                    {props.data.pokemons.map(pokemon => (
+                        <TableRow hover={true} key={pokemon.entry_number} onClick={()=>sendPopUpData(pokemon.entry_number)}>
+                            <TableCell align="center" key={pokemon.entry_number + 10000}>
+                                <img src={pokemon.sprite_url} alt="pokemon"/>
+                            </TableCell>
+                            <TableCell align="center" key={pokemon.entry_number + 20000}>
+                                <p>{capitalize(pokemon.name)}</p>
+                            </TableCell>
+                            <TableCell>
+                                {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}} height="50"
+                                                                    src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            <TablePagination //TODO: https://mui.com/api/table-pagination/
+                rowsPerPageOptions={[10, 25, 50]}
+                count={props.data.count}
+                page={props.page}
+                rowsPerPage={props.rowsPerPage}
+                onPageChange={(event, page) => props.changePage(page)}
+                onRowsPerPageChange={(event) => props.changeRowsPerPage(event)}
+            />
+        </Paper>
     )
         ;
 }
