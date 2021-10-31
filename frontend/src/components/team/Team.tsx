@@ -4,8 +4,9 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {capitalize} from "@mui/material";
 import style from "./Team.module.css"
 import {Pokemon} from "../../utils/Pokemon";
-import {atom, useRecoilState} from "recoil";
+import { useRecoilState} from "recoil";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { pokemonTeam } from "../../store";
 
 interface iTeamMember {
     TeamMember: Pokemon | null
@@ -45,19 +46,14 @@ interface iTeam {
 }
 
 const Team: FC<iTeam> = ({currentPokemon}) => {
-    const pokemonTeam = atom<Pokemon[]>({
-        key: "PokemonTeam",
-        default: []
-    });
-
     const [pokemons, setPokemons] = useRecoilState(pokemonTeam)
-    const team = pokemons.map((pokemon, index) => <li><TeamMember TeamMember={pokemon}
+    const team = pokemons.map((pokemon, index) => <TeamMember TeamMember={pokemon}
                                                                   handleAdd={handleAdd} handleSwap={handleSwap}
-                                                                  index={index} handleRemove={handleRemove}/></li>)
+                                                                  index={index} handleRemove={handleRemove}/>)
 
     function handleSwap(remove_index: number) {
         let copy = pokemons
-        if (remove_index > -1) {
+        if (remove_index > -1 && !pokemons.find(pokemon => pokemon.entry_number === currentPokemon.entry_number)) {
             setPokemons([...copy.slice(0, remove_index), currentPokemon, ...copy.slice(remove_index + 1)])
         }
     }
@@ -70,6 +66,7 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
     }
 
     function handleAdd() {
+        if(!pokemons.find(pokemon => pokemon.entry_number === currentPokemon.entry_number)){
             setPokemons(prev => ([...prev,   {entry_number: currentPokemon.entry_number,
                 name: currentPokemon.name,
                 pokeTypes: currentPokemon.pokeTypes,
@@ -80,19 +77,20 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
                 usage_percentage: currentPokemon.usage_percentage,
                 sprite_url: currentPokemon.sprite_url,
                 id: currentPokemon.entry_number}]))
+            }
     }
 
 
-    if (team.length < 6) {
-        team.push(<li><TeamMember TeamMember={null} handleAdd={handleAdd}
-                                  handleSwap={handleSwap} index={team.length} handleRemove={handleRemove}/></li>)
+    if (team.length < 6 && !pokemons.find(pokemon => pokemon.entry_number === currentPokemon.entry_number)) {
+        team.push(<TeamMember TeamMember={null} handleAdd={handleAdd}
+                                  handleSwap={handleSwap} index={team.length} handleRemove={handleRemove}/>)
     }
     return (
         <div className={style.team}>
             <h4>Current Team</h4>
-            <ul className={style.teamList}>
+            <div className={style.wrapperTeams}>
                 {team}
-            </ul>
+            </div>
         </div>
     )
 }

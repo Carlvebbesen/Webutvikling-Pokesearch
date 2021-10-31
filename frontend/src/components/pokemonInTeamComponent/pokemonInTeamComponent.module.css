@@ -1,0 +1,25 @@
+.pokeContainer{
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    justify-content: center;
+}
+
+.pokeImg {
+    grid-column-start: 1;
+    justify-self: center;
+}
+
+.pokeName{
+    grid-column-start: 2;
+    justify-self: center;
+
+}
+
+.pokeType {
+    grid-column-start: 3;
+    justify-self: stretch;
+}
+
+.MuiAccordionSummary-root {
+    flex-direction: row;
+}

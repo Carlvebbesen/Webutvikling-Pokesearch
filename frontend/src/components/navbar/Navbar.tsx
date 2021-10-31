@@ -11,11 +11,11 @@ const Navbar = ()=>{
 
     return(
         <div className={style.navbar}>
-            <div className={style.icon} onClick={()=>history.push("/")}>
+            <div className={style.icon} onClick={()=>history.push("/prosjekt3/")}>
                 <StorageIcon/>
                 <p className={style.text}>Database</p>
             </div>
-            <div className={style.icon} onClick={()=>history.push("/Teams")}>
+            <div className={style.icon} onClick={()=>history.push("/prosjekt3/my-team")}>
                 <GroupWorkIcon/>
                 <p className={style.text}>Pokémon Teams</p>
             </div>

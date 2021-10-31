@@ -25,6 +25,7 @@ query GetFilteredPokemon($input: FilterInput){
 export const GET_POKEMON_BY_ID = gql`
 query GetPokemonById($input: PokemonByIdInput){
     getPokemonById(input: $input){
+            entry_number,
             name,
             pokeTypes,
             stats{
@@ -51,7 +52,8 @@ query GetAllTeams{
     name,
     pokemon {
         name,
-        weight,
+        pokeTypes,
+        sprite_url,
     },
     }
 }
@@ -62,5 +64,14 @@ mutation RatePokemon($input: RatePokemonInput){
     ratePokemon(input: $input){
         rating,
         rating_count,
-    }}
+    }
+}
+`;
+
+export const CREATE_TEAM = gql`
+mutation CreateTeam($input: TeamInput){
+    createTeam(input: $input){
+        name
+    }
+}
 `;

@@ -30,7 +30,7 @@ export const typeDefs = gql`
 
     type Team {
         name: String,
-        pokemon: [Pokemon]!,
+        pokemon: [Pokemon],
     }
 
     input StatInput {
@@ -54,6 +54,7 @@ export const typeDefs = gql`
 
     input TeamInput {
         name: String,
+        pokemons: [Int],
     }
 
     input AddPokemonInput {
@@ -75,7 +76,6 @@ export const typeDefs = gql`
 
     type Mutation {
         createTeam(input:TeamInput):Team,
-        addPokemon(input:AddPokemonInput):Team,
         ratePokemon(input:RatePokemonInput):Pokemon,
     }
 
