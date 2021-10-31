@@ -25,6 +25,7 @@ query GetFilteredPokemon($input: FilterInput){
 export const GET_POKEMON_BY_ID = gql`
 query GetPokemonById($input: PokemonByIdInput){
     getPokemonById(input: $input){
+            entry_number,
             name,
             pokeTypes,
             stats{
