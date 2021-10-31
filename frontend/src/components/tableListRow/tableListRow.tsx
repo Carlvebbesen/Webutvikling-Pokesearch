@@ -23,7 +23,7 @@ const TableListRow: React.FC<TableListRowProps> = ({pokemon, setPopUpShow}) => {
                                                     src={getPokeTypeIcon(type)} alt={type}/>)}
             </TableCell>
             {Object.values(pokemon.stats).slice(1)
-                .map((value, index) => <TableCell className={style.statList}  padding={"none"} align={"center"}  key={index}>{value === null ? '-' : value}</TableCell>)}
+                .map((value, index) => <TableCell data-cy={`stat_${index}`} className={style.statList}  padding={"none"} align={"center"}  key={index}>{value === null ? '-' : value}</TableCell>)}
         </TableRow>
     )
 };

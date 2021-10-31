@@ -110,6 +110,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                         <div>
                             <h5>Give rating</h5>
                             <Rating
+                                data-cy="rating-input"
                                 name="simple-controlled"
                                 value={rating}
                                 precision={0.5}
@@ -118,7 +119,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 }}
                                 disabled={disable}
                             />
-                            <button className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
+                            <button data-cy="rating_submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
                     </div>
                 </div>}

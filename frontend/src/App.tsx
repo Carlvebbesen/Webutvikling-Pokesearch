@@ -24,7 +24,7 @@ function App() {
                 pauseOnHover/>
             <BrowserRouter>
                 <Switch>
-                    <Route exact path={"/prosjekt3/"}>
+                    <Route exact path={"/prosjekt3"}>
                         <OverviewPage/>
                     </Route>                   
                     <Route exact path={"/prosjekt3/my-team"}>
