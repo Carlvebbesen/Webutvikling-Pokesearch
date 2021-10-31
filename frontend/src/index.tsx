@@ -6,8 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import {
   ApolloClient,
   InMemoryCache,
-  ApolloProvider,  
+  ApolloProvider,
 } from "@apollo/client";
+import {RecoilRoot} from "recoil";
 
 const client = new ApolloClient({
   uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
@@ -15,12 +16,15 @@ const client = new ApolloClient({
 });
 
 
+
 ReactDOM.render(
+    <RecoilRoot>
   <React.StrictMode>
     <ApolloProvider client={client}>
     <App />
     </ApolloProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
+    </RecoilRoot>,
   document.getElementById('root')
 );
 

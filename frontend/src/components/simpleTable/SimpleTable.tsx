@@ -5,7 +5,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TablePagination from "@mui/material/TablePagination";
 import style from './SimpleTable.module.css';
-import SortingButtonsList from "../Sort/sortingButtonsList";
+import SortingButtonsList from "../sort/sortingButtonsList";
 import { FilteredPokemon, Pokemon } from "../../utils/Pokemon";
 import TableListRow from "../tableListRow/tableListRow";
 

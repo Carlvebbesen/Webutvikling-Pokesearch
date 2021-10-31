@@ -1,14 +1,59 @@
-.popupInner{
+.popupInner {
     box-shadow: 0px 2px 12px 5px rgba(17,16,16,0.87);
-    position: absolute;
-    padding: 32px;
+    position: fixed;
     margin: 50px auto;
-    width: 40%;
-    left: 30%;
-    max-width: 800px;
-    background-color: lightcyan;
+    width: 90%;
+    left: 5%;
+    height: fit-content;
+    background-color: #F1F1F1;
     box-sizing: border-box;
-    z-index: 200
+    z-index: 200;
+    max-height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.spriteSection {
+    width: 45%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.dataSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 45%;
+    height: 80%;
+}
+
+.dataEntry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px lightgray solid;
+    margin-bottom: 10px;
+}
+
+.rating{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
 }
 
 .close{
@@ -16,20 +61,53 @@
     top: 16px;
     right: 16px;
 }
+.close:hover {
+    cursor: pointer;
+}
 
 .wrapper{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: block;
     align-items: center;
 }
 
 .innerWrapper{
     width: 100%;
     height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    margin: auto;
 }
 
-
 .spritePic{
-    width: 100%;
-    height: auto;
+    width: 100px;
+}
+
+@media screen and (max-width: 700px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .popupInner {
+        height: 700px;
+    }
+    .spritePic {
+        width: 80px;
+    }
+    .dataSection {
+        margin-bottom: 40px;
+        width: calc(70% - 30px);
+    }
+    span {
+        font-size: 15px;
+    }
+    h5 {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    h3 {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }

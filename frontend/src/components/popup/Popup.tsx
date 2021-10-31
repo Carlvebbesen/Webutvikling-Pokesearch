@@ -1,116 +1,129 @@
-import React, {FC, useState} from "react"
+import React, {FC, useEffect, useState} from "react"
 import style from "./Popup.module.css"
-import {useQuery} from "@apollo/client";
-import {GET_POKEMON_BY_ID} from "../../queries";
+import {useMutation, useQuery} from "@apollo/client";
+import {ADD_RATING_BY_POKEMONID, GET_POKEMON_BY_ID} from "../../queries";
 import CircularProgress from '@mui/material/CircularProgress';
 import {capitalize, Rating} from "@mui/material";
-import Team from "../team/Team";
-import Stats from "../stats/Stats";
-import { Pokemon } from "../../utils/Pokemon";
+import SendIcon from '@mui/icons-material/Send';
+import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
+import { StatTable } from "../statTable/statTable";
+import { BsXSquare } from 'react-icons/bs';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface iPopup {
-    pokemonID: number,
-    setOpen: Function
+    pokemonId: number,
+    setOpen: (id: number|null)=> void,
 }
 
 
-
-const Popup: FC<iPopup> = (props) => {
+const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
     const [rating, setRating] = useState<number>(0)
     const [disable, setDisable] = useState<boolean>(false)
     const {data, error, loading} = useQuery(GET_POKEMON_BY_ID, {
-        variables: {input: {id: props.pokemonID}}
-    })
+        variables: {input: {id: pokemonId}}
+    });
+    const [totalRating, setTotalRating] = useState<number| null>(null);
+    const [mutateFunction] = useMutation(ADD_RATING_BY_POKEMONID);
+
+    useEffect(()=>{
+        const previousRating = localStorage.getItem(pokemonId.toString());
+        if(previousRating!== null) {
+            setRating(parseInt(previousRating));
+            setDisable(true);
+        }
+    },[]);
 
 
     const handleRating = () => {
-        setDisable(true)
-        alert("Rating sent")
-        //TODO: send inn rating
+        setDisable(true);
+        localStorage.setItem(pokemonId.toString(), rating.toString());
+        mutateFunction({variables: {input:{
+            id: pokemonId,
+            rating: rating,
+        }}}).then((response) => {
+            setTotalRating(response.data.ratePokemon.rating)
+            toast.success("Rating submitted");
+        });
     }
 
     return (
-            <div id="inner" className={style.popupInner}>
-                {loading || error? <CircularProgress/>
-                    :
-                    <div>
-                        <button
-                            onClick={() => {
-                                setRating(0)
-                                setDisable(false)
-                                props.setOpen(false)
-                                
-                            }}
-                            className={style.close}>close
-                        </button>
+        <div id="inner" className={style.popupInner}>
+            {loading || error ? <CircularProgress/>
+                :
+                <div className={style.container}>
+                    <div
+                        className={style.close}>
+                        <BsXSquare onClick={() => {
+                            setOpen(null)
+                        }}/>
+                    </div>
+                    <div className={style.spriteSection}>
+                        <h2>{capitalize(data?.getPokemonById.name)}</h2>
+                        <img
+                            className={style.spritePic}
+                            src={data?.getPokemonById.sprite_url}
+                            alt={"Picture of " + data?.getPokemonById.name}/>
+                        <div className={style.dataEntry}>
+                            <span>Dex number</span>
+                            <span>{pokemonId}</span>
+                        </div>
+                        <div className={style.dataEntry}>
+                            <span>Typing</span>
+                            <div>
+                                {data?.getPokemonById.pokeTypes.map((type: string) =>
+                                    <img
+                                        style={{marginRight: "10px"}}
+                                        height="20"
+                                        src={getPokeTypeIcon(type)}
+                                        alt={type}/>)}
+                            </div>
+                        </div>
+                        <div className={style.dataEntry}>
+                            <span>Weight</span>
+                            <span>{data?.getPokemonById.weight} kg</span>
+                        </div>
+                        <div className={style.dataEntry}>
+                            <span>Average rating</span>
+                            <Rating
+                                name="read-only"
+                                defaultValue={0}
+                                precision={0.1}
+                                value={data?.getPokemonById.rating}
+                                readOnly
+                                size="small"/>
+                        </div>
+                        <div className={style.dataEntry}>
+                            <span>Usage percentage</span>
+                            <span>{data?.getPokemonById.usage_percentage}%</span>
+                        </div>
+                    </div>
+                    <div className={style.dataSection}>
+                        <StatTable stats={[
+                            {name: 'hp', value: data?.getPokemonById.stats.hp},
+                            {name: 'attack', value: data?.getPokemonById.stats.attack},
+                            {name: 'defense', value: data?.getPokemonById.stats.defense},
+                            {name: 'special-attack', value: data?.getPokemonById.stats.special_attack},
+                            {name: 'sepcial-defense', value: data?.getPokemonById.stats.special_defense},
+                            {name: 'speed', value: data?.getPokemonById.stats.speed},
+                        ]} />
                         <div>
-                            <h1>{capitalize(data?.getPokemonById.name)}</h1>
+                            <h5>Give rating</h5>
+                            <Rating
+                                name="simple-controlled"
+                                value={rating}
+                                precision={0.5}
+                                onChange={(event, newValue) => {
+                                    setRating(newValue ? newValue : 0)
+                                }}
+                                disabled={disable}
+                            />
+                            <button className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
-                        <div className={style.wrapper}>
-
-
-                            <div className={style.innerWrapper}>
-                                <img className={style.spritePic} src={data?.getPokemonById.sprite_url}
-                                     alt={"Picture of " + data?.getPokemonById.name}/>
-                            </div>
-
-
-                            <div className={style.innerWrapper}>
-                                <Team currentPokemon={
-                                    {
-                                        entry_number: props.pokemonID,
-                                        name: data?.getPokemonById?.name,
-                                        pokeTypes: data?.getPokemonById?.pokeTypes,
-                                        stats: data?.getPokemonById?.stats,
-                                        weight: data?.getPokemonById?.weight,
-                                        rating: data?.getPokemonById?.rating,
-                                        number_of_ratings: data?.getPokemonById?.rating_count,
-                                        usage_percentage: data?.getPokemonById?.usage_percentage,
-                                        sprite_url: data?.getPokemonById?.sprite_url,
-                                    } as Pokemon}/>
-                            </div>
-
-
-                            <div className={style.innerWrapper}>
-                                <h3>Stats: </h3>
-                                <Stats
-                                    Hp={data?.getPokemonById.stats.hp}
-                                    Atk={data?.getPokemonById.stats.attack}
-                                    Def={data?.getPokemonById.stats.defense}
-                                    SpAtk={data?.getPokemonById.stats.special_attack}
-                                    SpDef={data?.getPokemonById.stats.special_defense}
-                                    Speed={data?.getPokemonById.stats.speed}/>
-                            </div>
-
-
-                            <div className={style.innerWrapper}>
-                                <div>
-                                    <p>average rating of {data?.getPokemonById.rating_count} people</p>
-                                    <Rating name="read-only" defaultValue={0} precision={0.1}
-                                            value={data?.getPokemonById.rating} readOnly/></div>
-                                <p>Used by: {data?.getPokemonById.usage_percentage * 100}% of teams</p>
-                                <div>
-                                    <p>your rating</p>
-                                    <Rating
-                                        name="simple-controlled"
-                                        value={rating}
-                                        precision={0.5}
-                                        onChange={(event, newValue) => {
-                                            setRating(newValue ? newValue : 0)
-                                        }}
-                                        disabled={disable}
-                                        />
-                                    <button onClick={handleRating} disabled={(rating === 0)||disable}>Send rating!</button>
-                                </div>
-                                <div>
-                                    <b>Types:</b>
-                                    {data?.getPokemonById.pokeTypes.map((type: string) => <p>{type}</p>)}
-                                </div>
-                            </div>
-                        </div>
-                    </div>}
-
-            </div>
-    )}
+                    </div>
+                </div>}
+        </div>
+    );
+}
 
 export default Popup

@@ -1,0 +1,11 @@
+
+.container {
+    width: 100%;
+}
+
+.statEntry {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+}

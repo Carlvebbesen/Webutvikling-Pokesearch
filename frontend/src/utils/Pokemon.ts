@@ -24,3 +24,13 @@ export interface FilteredPokemon {
     pokemons: Pokemon[],
     count: number,
 }
+
+export type PokemonInTeam = {
+    name: string,
+    pokeTypes: string[],
+    sprite_url: string
+}
+export type Team = {
+    name: string,
+    pokemon: PokemonInTeam[]
+}

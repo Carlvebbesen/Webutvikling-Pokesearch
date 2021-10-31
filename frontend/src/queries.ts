@@ -51,8 +51,17 @@ query GetAllTeams{
     name,
     pokemon {
         name,
-        weight,
+        pokeTypes,
+        sprite_url,
     },
     }
 }
+`;
+
+export const ADD_RATING_BY_POKEMONID =gql`
+mutation RatePokemon($input: RatePokemonInput){
+    ratePokemon(input: $input){
+        rating,
+        rating_count,
+    }}
 `;
