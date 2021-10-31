@@ -13,6 +13,16 @@
     max-height: 100%;
 }
 
+
+.rating{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
 .close{
     position: absolute;
     top: 16px;

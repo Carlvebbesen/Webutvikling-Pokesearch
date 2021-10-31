@@ -90,9 +90,6 @@ const OverviewPage = () => {
             }
             {pokemonId && <Backdrop show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
             <Navbar/>
-            <h1>
-                Overview Page
-            </h1>
             <Filter
                 name={name}
                 setName={changeName}

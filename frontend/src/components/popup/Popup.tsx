@@ -74,7 +74,7 @@ const Popup: FC<iPopup> = (props) => {
                                 }}
                                 disabled={disable}
                             />
-                            <button onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
+                            <button className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
 
 
