@@ -1,6 +1,6 @@
 .popupInner{
     box-shadow: 0px 2px 12px 5px rgba(17,16,16,0.87);
-    position: absolute;
+    position: fixed;
     padding: 32px;
     margin: 50px auto;
     width: 50%;
@@ -8,7 +8,9 @@
     max-width: 800px;
     background-color: lightcyan;
     box-sizing: border-box;
-    z-index: 200
+    z-index: 200;
+    overflow-y: scroll;
+    max-height: 100%;
 }
 
 .close{
@@ -18,8 +20,7 @@
 }
 
 .wrapper{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: block;
     align-items: center;
 }
 
@@ -29,10 +30,23 @@
     align-items: center;
     justify-content: center;
     padding-top: 20px;
+    margin: auto;
 }
 
 
 .spritePic{
     width: 100%;
     height: auto;
+}
+
+@media only screen and (min-width: 600px) {
+    body {
+        font-family: Epilogue;
+        font-size: 2vw;
+    }
+
+    .wrapper{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 }

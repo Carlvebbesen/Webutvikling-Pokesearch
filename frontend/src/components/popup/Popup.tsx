@@ -63,7 +63,7 @@ const Popup: FC<iPopup> = (props) => {
                             <Rating name="read-only" defaultValue={0} precision={0.1}
                                     value={data?.getPokemonById.rating} readOnly/>
                             <p>Used by: {data?.getPokemonById.usage_percentage * 100}% of teams</p>
-                            <p>Weight: {data?.getPokemonById.weight/10} kg</p>
+                            <p>Weight: {data?.getPokemonById.weight / 10} kg</p>
                             <p>Your rating:</p>
                             <Rating
                                 name="simple-controlled"
