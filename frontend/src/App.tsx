@@ -10,7 +10,7 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Switch>
-                    <Route exact path={"/"}>
+                    <Route exact path={"/prosjekt3"}>
                         <OverviewPage/>
                     </Route>
                     <Route exact path={"/test"}>
@@ -18,7 +18,7 @@ function App() {
                             <Test/>
                         </div>
                     </Route>
-                    <Redirect to={"/"}/>
+                    <Redirect to={"/prosjekt3"}/>
                 </Switch>
             </BrowserRouter>
         </div>

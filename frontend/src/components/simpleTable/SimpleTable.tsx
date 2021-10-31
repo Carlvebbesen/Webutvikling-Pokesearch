@@ -149,7 +149,8 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                         ))}
                     </TableBody>
                 </Table>
-                <TablePagination //TODO: https://mui.com/api/table-pagination/
+                <TablePagination
+                    data-cy='pagination-table'
                     rowsPerPageOptions={[10, 25, 50]}
                     count={props.data.count}
                     page={props.page}

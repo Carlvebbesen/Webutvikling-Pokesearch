@@ -1,5 +1,6 @@
 {
   "name": "poke-search",
+  "homepage": "/prosjekt3",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
