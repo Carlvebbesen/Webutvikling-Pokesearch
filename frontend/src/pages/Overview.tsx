@@ -6,11 +6,11 @@ import {useQuery} from "@apollo/client";
 import { GET_FILTERED_POKEMONS} from "../queries";
 import {FilterInput} from "../utils/graphql";
 import Popup from "../components/popup/Popup";
+import Backdrop from "../components/backdrop/backdrop";
 
 const OverviewPage = () => {
     //popup
-    const [buttonPopup, setButtonPopup] = useState(false)
-    const [popUpID, setPopUpID] = useState<number | null>(null);
+    const [pokemonId, setPokemonId] = useState<number | null>(null);
 
     //data
     const [filterInput, setFilterInput] = useState<FilterInput>({
@@ -83,11 +83,12 @@ const OverviewPage = () => {
 
     return (
         <div className={style.overview}>
-            {popUpID && <Popup
-                trigger={buttonPopup}
-                setOpen={setButtonPopup}
-                pokemonID={popUpID}/>}
-            {buttonPopup ? <></> : <>
+            {pokemonId && 
+            <Popup
+                setOpen={setPokemonId}
+                pokemonID={pokemonId}/>
+}
+{pokemonId && <Backdrop show={pokemonId !== null} clicked={()=> setPokemonId(null)}/>}
                 <h1>
                     Overview Page
                 </h1>
@@ -98,7 +99,6 @@ const OverviewPage = () => {
                     setRating={changeRating}
                     setType={changeType}
                     type={filterInput.pokeTypes ?? []}/>
-
                 {loading || error ?
                     <p>Loading ...</p>
                     :
@@ -109,13 +109,10 @@ const OverviewPage = () => {
                         page={page}
                         changePage={changePage}
                         changeRowsPerPage={changeRowsPerPage}
-                        setPopUp={setButtonPopup}
-                        setPopUpID={setPopUpID}
+                        setPopUpId={setPokemonId}
                         data={data.getFilteredPokemon}
-                    />}
-            </>
-            }
-
+                    />
+                    }
         </div>
     )
 }

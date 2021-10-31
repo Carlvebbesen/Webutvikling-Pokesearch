@@ -6,12 +6,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {capitalize, Rating} from "@mui/material";
 import Team from "../team/Team";
 import Stats from "../stats/Stats";
-import {Attribute, Pokemon} from "../../utils/Pokemon";
-
+import { Pokemon } from "../../utils/Pokemon";
 
 interface iPopup {
     pokemonID: number,
-    trigger: boolean,
     setOpen: Function
 }
 
@@ -20,7 +18,7 @@ interface iPopup {
 const Popup: FC<iPopup> = (props) => {
     const [rating, setRating] = useState<number>(0)
     const [disable, setDisable] = useState<boolean>(false)
-    const {data, error, loading, refetch} = useQuery(GET_POKEMON_BY_ID, {
+    const {data, error, loading} = useQuery(GET_POKEMON_BY_ID, {
         variables: {input: {id: props.pokemonID}}
     })
 
@@ -31,10 +29,9 @@ const Popup: FC<iPopup> = (props) => {
         //TODO: send inn rating
     }
 
-    return (props.trigger) ? (
-        <div className={style.popupOuter}>
+    return (
             <div id="inner" className={style.popupInner}>
-                {loading ? <CircularProgress/>
+                {loading || error? <CircularProgress/>
                     :
                     <div>
                         <button
@@ -42,7 +39,7 @@ const Popup: FC<iPopup> = (props) => {
                                 setRating(0)
                                 setDisable(false)
                                 props.setOpen(false)
-
+                                
                             }}
                             className={style.close}>close
                         </button>
@@ -61,9 +58,9 @@ const Popup: FC<iPopup> = (props) => {
                             <div className={style.innerWrapper}>
                                 <Team currentPokemon={
                                     {
-                                        id: props.pokemonID,
+                                        entry_number: props.pokemonID,
                                         name: data?.getPokemonById?.name,
-                                        type: data?.getPokemonById?.pokeTypes,
+                                        pokeTypes: data?.getPokemonById?.pokeTypes,
                                         stats: data?.getPokemonById?.stats,
                                         weight: data?.getPokemonById?.weight,
                                         rating: data?.getPokemonById?.rating,
@@ -102,20 +99,18 @@ const Popup: FC<iPopup> = (props) => {
                                             setRating(newValue ? newValue : 0)
                                         }}
                                         disabled={disable}
-                                    />
+                                        />
                                     <button onClick={handleRating} disabled={(rating === 0)||disable}>Send rating!</button>
                                 </div>
                                 <div>
                                     <b>Types:</b>
-                                    {data?.getPokemonById.pokeTypes.map((a: string) => <p>{a}</p>)}
+                                    {data?.getPokemonById.pokeTypes.map((type: string) => <p>{type}</p>)}
                                 </div>
                             </div>
                         </div>
                     </div>}
 
             </div>
-        </div>
-    ) : <></>
-}
+    )}
 
 export default Popup

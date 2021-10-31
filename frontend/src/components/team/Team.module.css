@@ -1,3 +1,6 @@
+.teamSprite {
+    height: 70px;
+}
 
 .teamMember{
     background-color: lightblue;
@@ -10,7 +13,7 @@
     padding-left: 25px;
     padding-right: 25px;
     margin-top: 3px;
-    height: 40px;
+    height: 60px;
 }
 .teamMember:hover{
     background-color: lightgreen;
