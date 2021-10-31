@@ -119,7 +119,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 }}
                                 disabled={disable}
                             />
-                            <button data-cy="rating_submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
+                            <button data-cy="rating-submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
                     </div>
                 </div>}

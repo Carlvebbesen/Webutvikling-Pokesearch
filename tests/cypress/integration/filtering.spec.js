@@ -1,25 +1,38 @@
-describe("Verify filtering gives correct pokemon", () => {
+describe('Verify filtering options renders correct pokemon', () => {
 
     beforeEach(() => {
-        cy.visit('http://it2810-11.idi.ntnu.no/prosjekt3/');
+        cy.visit('http://localhost:3000/prosjekt3');
     })
 
-    it("Test filter on name", () => {
+    it("Verify resulting pokemon contain search input", () => {
         cy.clock();
         cy.get('[data-cy=name_input]').type("b");
         cy.tick(5000);
-
-        cy.get('[data-cy=pokemon]').each((item, index, list) => {
-            expect(Cypress.$(item)).to.match(/^B/);
-        })
+        let firstPagePokemons = []
+        cy.get('[data-cy=pokemon-name]').each((item, index, list) => {
+            expect(Cypress.$(item).text()).to.match(/^B/);
+            firstPagePokemons.push(Cypress.$(item).text());
+        });
+        cy.get('[data-testid=KeyboardArrowRightIcon]').click();
+        cy.get('[data-cy=pokemon-name]').each((item, index, list) => {
+            expect(Cypress.$(item).text()).to.match(/^B/);
+        });
+        cy.get('[data-testid=KeyboardArrowLeftIcon]').click();
+        cy.get('[data-cy=pokemon-name]').each((item, index, list) => {
+            expect(firstPagePokemons[index]).to.be.eq(Cypress.$(item).text());
+        });
     })
 
-    it("Test filter on type", () => {
+    it('Verify resulting pokemon has correct type input', () => {
         cy.get('[data-cy=type-selector]').click();
-        cy.get('[data-cy=poison]').click();
-        cy.get('[data-cy=grass]').click();
+        cy.get('[data-cy=type-option-electric]').click();
+        cy.get('[data-cy=type-container]').find('[data-cy=electric]').should('have.length', 50);
 
-        cy.get('[data-cy=pokemon').find('[data-cy=grass]').to.have.length(16);
-        cy.get('[data-cy=pokemon').find('[data-cy=poison]').to.have.length(16);
+        cy.get('[data-cy=type-option-electric]').click();
+        cy.get('[data-cy=type-option-grass]').click();
+        cy.get('[data-cy=type-option-poison]').click();
+
+        cy.get('[data-cy=type-container]').find('[data-cy=grass]').should('have.length', 16);
+        cy.get('[data-cy=type-container]').find('[data-cy=poison]').should('have.length', 16);
     })
 })

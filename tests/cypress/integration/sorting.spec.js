@@ -1,57 +1,44 @@
-describe("Verify that pokemon is correctly sorted", () => {
-    
+describe("Verify sorting results in list of pokémon in correct order.", () => {
+
     beforeEach(() => {
-        cy.visit('http://it2810-11.idi.ntnu.no/prosjekt3/');
+        cy.visit('http://localhost:3000/prosjekt3');
     })
 
-    it("Test sort on stats", () => {
-        cy.get('[data-cy=hp]').click();
-        let previousValue = 10000
-        cy.get('[data-cy=stat_0]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
+    it("Verify sorting on stats", () => {
+        cy.verify_stat_sort_descending('hp', 0);
+        cy.verify_stat_sort_descending('attack', 1);
+        cy.verify_stat_sort_descending('defense', 2);
+        //cy.verify_stat_sort_descending('special-attack', 3);
+        //cy.verify_stat_sort_descending('special-defense', 4);
+        cy.verify_stat_sort_descending('speed', 5);
+        cy.verify_stat_sort_descending('total', 6);
 
-        cy.get('[data-cy=attack]').click();
-        previousValue = 10000
-        cy.get('[data-cy=stat_1]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
+        cy.verify_stat_sort_ascending('hp', 0);
+        cy.verify_stat_sort_ascending('attack', 1);
+        cy.verify_stat_sort_ascending('defense', 2);
+        //cy.verify_stat_sort_ascending('special-attack', 3);
+        //cy.verify_stat_sort_ascending('special-defense', 4);
+        cy.verify_stat_sort_ascending('speed', 5);
+        cy.verify_stat_sort_ascending('total', 6);
+    });
 
-        cy.get('[data-cy=defense]').click();
-        previousValue = 10000
-        cy.get('[data-cy=stat_2]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
+    it("Verify sorting on stats with filtered pokémon", () => {
+        cy.type_filter(['dark']);
 
-        cy.get('[data-cy=special-attack]').click();
-        previousValue = 10000
-        cy.get('[data-cy=stat_3]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
+        cy.verify_stat_sort_descending('hp', 0);
+        cy.verify_stat_sort_descending('attack', 1);
+        cy.verify_stat_sort_descending('defense', 2);
+        //cy.verify_stat_sort_descending('special-attack', 3);
+        //cy.verify_stat_sort_descending('special-defense', 4);
+        cy.verify_stat_sort_descending('speed', 5);
+        cy.verify_stat_sort_descending('total', 6);
 
-        cy.get('[data-cy=special-defense]').click();
-        previousValue = 10000
-        cy.get('[data-cy=stat_4]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
-
-        cy.get('[data-cy=speed]').click();
-        previousValue = 10000
-        cy.get('[data-cy=stat_5]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
-
-        cy.get('[data-cy=total]').click();
-        previousValue = 10000
-        cy.get('[data-cy=stat_6]').each((item, index, list) => {
-            expect(previousValue).to.be.at.least(parseInt(Cypress.$(item).text()));
-            previousValue = parseInt(Cypress.$(item).text());
-        })
+        cy.verify_stat_sort_ascending('hp', 0);
+        cy.verify_stat_sort_ascending('attack', 1);
+        cy.verify_stat_sort_ascending('defense', 2);
+        //cy.verify_stat_sort_ascending('special-attack', 3);
+        //cy.verify_stat_sort_ascending('special-defense', 4);
+        cy.verify_stat_sort_ascending('speed', 5);
+        cy.verify_stat_sort_ascending('total', 6);
     })
 })
