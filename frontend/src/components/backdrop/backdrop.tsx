@@ -7,8 +7,8 @@ interface iBackdrop {
     clicked: Function
 }
 
-const Backdrop: FC<iBackdrop> = (props) => (
-    props.show ? <div className={style.Backdrop} onClick={() => props.clicked()}>
+const Backdrop: FC<iBackdrop> = ({show, clicked}) => (
+    show ? <div className={style.Backdrop} onClick={() => clicked()}>
 
     </div> : null
 );
