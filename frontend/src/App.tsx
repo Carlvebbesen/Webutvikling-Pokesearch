@@ -4,10 +4,12 @@ import {BrowserRouter} from 'react-router-dom'
 import OverviewPage from "./pages/Overview";
 import Test from "./components/Test"
 import "./index.css"
+import {RecoilRoot} from "recoil";
 
 function App() {
     return (
         <div className="App">
+            <RecoilRoot>
             <BrowserRouter>
                 <Switch>
                     <Route exact path={"/prosjekt3"}>
@@ -21,6 +23,7 @@ function App() {
                     <Redirect to={"/prosjekt3"}/>
                 </Switch>
             </BrowserRouter>
+            </RecoilRoot>
         </div>
     );
 }
