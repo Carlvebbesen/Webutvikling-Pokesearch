@@ -1,7 +1,7 @@
 import { TableRow , TableCell} from '@mui/material';
 import React from 'react';
-import { useWindowDimensions } from '../../utils/methods';
 import SortingButton from './sortingButton';
+import style from "./../tableListRow/tableListRow.module.css";
 
 interface SortingButtonsListProps {
     sortByValue: (name:string, decending: boolean) => void
@@ -17,17 +17,19 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
         "special-defense",
         "speed",
         "total"]
-        const width = useWindowDimensions().width;
-    return (
+        return (
         <TableRow>
             <TableCell>
                 <SortingButton name={"pokemonId"} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>
-            {width > 600 ?sortValues.map((name) => 
-            <TableCell>
+            <TableCell/>
+            <TableCell/>
+            {
+            sortValues.map((name) => 
+            <TableCell className={style.statList}>
                 <SortingButton name={name} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>          
-                ): null}
+                )}
             </TableRow>
     );
 };

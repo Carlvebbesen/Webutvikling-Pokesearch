@@ -14,8 +14,7 @@ interface iSimpleTable {
     data: FilteredPokemon,
     changePage: Function,
     changeRowsPerPage: Function
-    setPopUp: Function
-    setPopUpID: Function,
+    setPopUpId: Function,
     page: number,
     rowsPerPage: number,
     activeSortButton: string | undefined,
@@ -31,7 +30,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     />
                     </TableHead>
                     <TableBody>
-                        {props.data.pokemons.map((pokemon: Pokemon) => <TableListRow pokemon={pokemon}/>)}
+                        {props.data.pokemons.map((pokemon: Pokemon) => <TableListRow  setPopUpShow={props.setPopUpId} pokemon={pokemon}/>)}
                     </TableBody>
                 </Table>
                 <TablePagination

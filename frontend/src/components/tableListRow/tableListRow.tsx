@@ -6,18 +6,19 @@ import style from "./tableListRow.module.css";
 
 interface TableListRowProps {
     pokemon: Pokemon;
+    setPopUpShow: Function;
 }
 
-const TableListRow: React.FC<TableListRowProps> = ({ pokemon }) => {
+const TableListRow: React.FC<TableListRowProps> = ({ pokemon, setPopUpShow }) => {
     return (
 
         
-            <TableRow hover={true} key={pokemon.entry_number}>
+            <TableRow onClick={()=> setPopUpShow(pokemon.entry_number)} hover={true} key={pokemon.entry_number}>
                 <TableCell padding="none" align="center" key={pokemon.entry_number+10000}>
                         <img src={pokemon.sprite_url} alt="pokemon"/>
                 </TableCell>
                 <TableCell padding={"none"} align="center" key={pokemon.entry_number+20000}>
-                        <p>{capitalize(pokemon.name)}</p>
+                        <p style={{width: "100px"}}>{capitalize(pokemon.name)}</p>
                 </TableCell>
                 <TableCell padding={"none"} align="center">
                     {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
