@@ -7,7 +7,7 @@ import {GET_FILTERED_POKEMONS} from "../queries";
 import {FilterInput} from "../utils/graphql";
 import Popup from "../components/popup/Popup";
 import Navbar from "../components/navbar/Navbar";
-import Backdrop from "../components/backdrop/Backdrop";
+import Backdrop from "../components/backdrop/Backdrop"
 
 const OverviewPage = () => {
     //popup

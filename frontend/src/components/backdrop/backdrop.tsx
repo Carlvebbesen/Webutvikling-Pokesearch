@@ -8,9 +8,7 @@ interface iBackdrop {
 }
 
 const Backdrop: FC<iBackdrop> = ({show, clicked}) => (
-    show ? <div className={style.Backdrop} onClick={() => clicked()}>
-
-    </div> : null
+    show ? <div className={style.Backdrop} onClick={() => clicked()}/>: null
 );
 
 export default Backdrop;
