@@ -5,7 +5,6 @@ import {capitalize} from "@mui/material";
 import style from "./Team.module.css"
 import {Pokemon} from "../../utils/Pokemon";
 import {atom, useRecoilState} from "recoil";
-import { Delete } from "@material-ui/icons";
 
 interface iTeamMember {
     TeamMember: Pokemon | null

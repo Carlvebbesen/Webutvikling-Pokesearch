@@ -21,7 +21,7 @@ const TableListRow: React.FC<TableListRowProps> = ({ pokemon, setPopUpShow }) =>
                         <p style={{width: "100px"}}>{capitalize(pokemon.name)}</p>
                 </TableCell>
                 <TableCell padding={"none"} align="center">
-                    {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                    {pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}}height="50" src={getPokeTypeIcon(type)} alt={`PokeType: ${type}`} title={type}/>)}
                 </TableCell>
                 {Object.values(pokemon.stats).slice(1).map((value, index) => <TableCell className={style.statList} padding={"none"} align={"center"} key={index}>{value === null ? '-' : value}</TableCell>)}
                     </TableRow>
