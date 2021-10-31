@@ -63,5 +63,14 @@ mutation RatePokemon($input: RatePokemonInput){
     ratePokemon(input: $input){
         rating,
         rating_count,
-    }}
+    }
+}
+`;
+
+export const CREATE_TEAM = gql`
+mutation CreateTeam($input: TeamInput){
+    createTeam(input: $input){
+        name
+    }
+}
 `;
