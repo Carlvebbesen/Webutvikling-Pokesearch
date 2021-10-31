@@ -3,6 +3,7 @@ import style from "./sortingButton.module.css";
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from  '@mui/icons-material/FilterAlt';
+import {capitalize} from "@mui/material";
 
 interface iSortingButton {
     name: string,
@@ -18,7 +19,7 @@ interface iSortingButton {
     }
     return (
         <button className={style.sortingButton} onClick={sortBy}>
-            <p>{name}</p>
+            <p>{capitalize(name)}</p>
             {currentSort !== name
                 ? <FilterAltIcon/> :
                 decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}

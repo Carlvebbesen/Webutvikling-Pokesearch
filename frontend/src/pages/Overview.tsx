@@ -1,12 +1,13 @@
-import React, { useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 import style from "./Overview.module.css"
 import Filter from "../components/filter/Filter"
 import SimpleTable from "../components/simpleTable/SimpleTable"
 import {useQuery} from "@apollo/client";
-import { GET_FILTERED_POKEMONS} from "../queries";
+import {GET_FILTERED_POKEMONS} from "../queries";
 import {FilterInput} from "../utils/graphql";
 import Popup from "../components/popup/Popup";
 import Backdrop from "../components/backdrop/backdrop";
+import Navbar from "../components/navbar/Navbar";
 
 const OverviewPage = () => {
     //popup
@@ -27,24 +28,24 @@ const OverviewPage = () => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-        const newState = filterInput;
-        newState.name = name;
-        newState.offset = 0;
-        setFilterInput(newState);
-        setPage(0);
-        refetch();
+            const newState = filterInput;
+            newState.name = name;
+            newState.offset = 0;
+            setFilterInput(newState);
+            setPage(0);
+            refetch();
         }, 200);
         return () => clearTimeout(timer);
-      }, [name]);
+    }, [name]);
 
-    const changePage= (value: number)=>{
+    const changePage = (value: number) => {
         setPage(value);
         const newState = filterInput;
         newState.offset = value * newState.limit;
         setFilterInput(newState);
         refetch();
     };
-    const changeName = (value: string)=>{
+    const changeName = (value: string) => {
         setName(value);
     }
     const changeRating = (value: number) => {
@@ -80,39 +81,39 @@ const OverviewPage = () => {
     }
 
 
-
     return (
         <div className={style.overview}>
-            {pokemonId && 
+            {pokemonId &&
             <Popup
                 setOpen={setPokemonId}
                 pokemonID={pokemonId}/>
-}
-{pokemonId && <Backdrop show={pokemonId !== null} clicked={()=> setPokemonId(null)}/>}
-                <h1>
-                    Overview Page
-                </h1>
-                <Filter
-                    name={name}
-                    setName={changeName}
-                    rating={filterInput.rating ?? 0}
-                    setRating={changeRating}
-                    setType={changeType}
-                    type={filterInput.pokeTypes ?? []}/>
-                {loading || error ?
-                    <p>Loading ...</p>
-                    :
-                    <SimpleTable
-                        activeSortButton={filterInput.sortBy}
-                        sortPokemon={changeSortBy}
-                        rowsPerPage={filterInput.limit}
-                        page={page}
-                        changePage={changePage}
-                        changeRowsPerPage={changeRowsPerPage}
-                        setPopUpId={setPokemonId}
-                        data={data.getFilteredPokemon}
-                    />
-                    }
+            }
+            {pokemonId && <Backdrop show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
+            <Navbar/>
+            <h1>
+                Overview Page
+            </h1>
+            <Filter
+                name={name}
+                setName={changeName}
+                rating={filterInput.rating ?? 0}
+                setRating={changeRating}
+                setType={changeType}
+                type={filterInput.pokeTypes ?? []}/>
+            {loading || error ?
+                <p>Loading ...</p>
+                :
+                <SimpleTable
+                    activeSortButton={filterInput.sortBy}
+                    sortPokemon={changeSortBy}
+                    rowsPerPage={filterInput.limit}
+                    page={page}
+                    changePage={changePage}
+                    changeRowsPerPage={changeRowsPerPage}
+                    setPopUpId={setPokemonId}
+                    data={data.getFilteredPokemon}
+                />
+            }
         </div>
     )
 }
