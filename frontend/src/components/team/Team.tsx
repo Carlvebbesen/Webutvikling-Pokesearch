@@ -46,7 +46,7 @@ interface iTeam {
 
 const Team: FC<iTeam> = ({currentPokemon}) => {
     const pokemonTeam = atom<Pokemon[]>({
-        key: `PokemonTeam`,
+        key: "PokemonTeam",
         default: []
     });
 

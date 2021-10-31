@@ -8,8 +8,6 @@ import Team from "../team/Team";
 import Stats from "../stats/Stats";
 import SendIcon from '@mui/icons-material/Send';
 import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
-import { Pokemon } from "../../utils/Pokemon";
-import { PinDropSharp } from "@material-ui/icons";
 
 interface iPopup {
     pokemonId: number,
