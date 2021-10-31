@@ -6,6 +6,7 @@ import style from "./Team.module.css"
 import {Pokemon} from "../../utils/Pokemon";
 import {atom, useRecoilState} from "recoil";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { pokemonTeam } from "../../store";
 
 interface iTeamMember {
     TeamMember: Pokemon | null
@@ -45,11 +46,6 @@ interface iTeam {
 }
 
 const Team: FC<iTeam> = ({currentPokemon}) => {
-    const pokemonTeam = atom<Pokemon[]>({
-        key: "PokemonTeam",
-        default: []
-    });
-
     const [pokemons, setPokemons] = useRecoilState(pokemonTeam)
     const team = pokemons.map((pokemon, index) => <li><TeamMember TeamMember={pokemon}
                                                                   handleAdd={handleAdd} handleSwap={handleSwap}

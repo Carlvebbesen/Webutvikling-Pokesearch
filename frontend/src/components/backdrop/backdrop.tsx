@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 
-import style from "./Backdrop.module.css"
+import style from "./backdrop.module.css"
 
 interface iBackdrop {
     show: boolean
