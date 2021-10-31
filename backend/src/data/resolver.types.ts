@@ -14,6 +14,7 @@ export interface GetPokemonByIdInput {
 
 export interface TeamInput {
     name: String,
+    pokemons: number[],
 }
 
 export interface AddPokemonInput {

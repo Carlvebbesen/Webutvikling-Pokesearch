@@ -1,7 +1,7 @@
 import { UserInputError } from 'apollo-server-errors';
 import { IResolvers } from 'graphql-tools';
 import { Pokemons, Teams } from '../db/dbConnector';
-import { FilterInput, SortOptions, TeamInput, RatePokemonInput, AddPokemonInput, Pokemon, GetPokemonByIdInput, Team } from './resolver.types';
+import { FilterInput, SortOptions, TeamInput, RatePokemonInput, Pokemon, GetPokemonByIdInput } from './resolver.types';
 
 /**
 * GraphQL Resolvers 
@@ -65,56 +65,27 @@ export const resolvers: IResolvers = {
     },
     Mutation: {
         createTeam: async (_, args: {input: TeamInput}) => {
-
             let teamsWithProvidedName = await Teams.countDocuments({ name: args.input.name });
             if (teamsWithProvidedName > 0) {
                 return new Promise((resolve, reject) => {
                     reject(new UserInputError("The team name specified is not unique."));
                 })
             }
-
+                var teams_count = await Teams.countDocuments();
+                var pokemons = await Pokemons.find().where('entry_number').in(args.input.pokemons).exec();
+            if (pokemons.length== 0 || pokemons.length> 6) {
+                return new Promise((resolve, reject) => {
+                    reject(new UserInputError("You can't have an empty team or a team with more than 6 members"));
+                })
+            }
             const newTeam = new Teams({
                 name: args.input.name,
-                pokemon: [],
+                pokemon: pokemons,
             });
-
             return new Promise((resolve, reject) => {
                 newTeam.save((err) => {
                     if(err) reject(err);
                     else resolve(newTeam);
-                })
-            })
-        },
-        addPokemon: async (_, args: {input: AddPokemonInput}) => {
-            let team = await Teams.findOne({ name: args.input.teamName });
-
-            if (team === null) return new Promise((resolve, reject) => reject(new UserInputError("The team with the specified name does not exist.")));
-
-            let newPokemon = await Pokemons.findOne({ entry_number: args.input.pokemonId });
-
-            if (newPokemon === null) return new Promise((resolve, reject) => reject(new UserInputError("The pokemon with the specified id does not exist.")));
-
-            if (team.pokemon.some((pokemon: Pokemon) => pokemon.name === newPokemon.name)) {
-                return new Promise((resolve, reject) => {
-                    reject(new UserInputError("The pokemon is already on the team."));
-                })
-            }
-
-            let teams_count = await Teams.countDocuments();
-
-            if (team.pokemon.length === 6) {
-                let oldPokemon = await Pokemons.findOne({ name: team.pokemon[args.input.index].name });
-                oldPokemon.usage_percentage = (oldPokemon.usage_percentage * teams_count - 1.0) / (teams_count)
-                team.pokemon[args.input.index] = newPokemon;
-            } else {
-                team.pokemon.push(newPokemon);
-            }
-            newPokemon.usage_percentage = (newPokemon.usage_percentage * teams_count + 1.0) / (teams_count);
-
-            return new Promise((resolve, reject) => {
-                team.save((err: Error) => {
-                    if(err) reject(err);
-                    else resolve(team);
                 })
             });
         },
