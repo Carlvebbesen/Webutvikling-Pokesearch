@@ -14,8 +14,7 @@ test('renders the App Component', () => {
     <OverviewPage/>
     </MockedProvider>
     );
-   const hp =  wrapper.find("hp")
-    expect(hp.prop(name) == "hp");
+
   });
 
 
