@@ -23,7 +23,7 @@ export const MyTeam = () => {
     return (
         <div className={styles.myTeamPage}>
             <ArrowBackIcon sx={{ fontSize: 60 }} onClick={()=> history.push("/prosjekt3/")}/>
-            <h2 className={styles.myTeamHeadline}>My team</h2>
+            <h2 className={styles.myTeamHeadline}>Current Team</h2>
             <MyTeamOverviewComponent />
             <DisplayTeams />
         </div>
