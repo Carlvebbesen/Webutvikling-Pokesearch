@@ -2,7 +2,6 @@ import React from 'react';
 import {Redirect, Route, Switch} from "react-router"
 import {BrowserRouter} from 'react-router-dom'
 import OverviewPage from "./pages/Overview";
-import Test from "./components/Test"
 import "./index.css"
 import {RecoilRoot} from "recoil";
 import Navbar from "./components/navbar/Navbar";
@@ -15,11 +14,6 @@ function App() {
                     <Switch>
                         <Route exact path={"/"}>
                             <OverviewPage/>
-                        </Route>
-                        <Route exact path={"/test"}>
-                            <div>
-                                <Test/>
-                            </div>
                         </Route>
                         <Redirect to={"/"}/>
                     </Switch>

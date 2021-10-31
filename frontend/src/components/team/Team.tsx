@@ -9,32 +9,32 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 interface iTeamMember {
     TeamMember: Pokemon | null
-    handleSwap: Function
-    handleAdd: Function
-    handleRemove: Function
+    handleSwap: (index: number)=> void
+    handleAdd: ()=> void
+    handleRemove: (index: number)=> void
     index: number
 }
 
-const TeamMember: FC<iTeamMember> = (props) => {
+const TeamMember: FC<iTeamMember> = ({TeamMember, handleAdd, handleRemove, handleSwap, index}) => {
 
 
-    if (props.TeamMember !== null) {
+    if (TeamMember !== null) {
         return (
             <div className={style.teamMember}>
                 <div className={style.innerTeamMember}>
-                    <img className={style.teamSprite} src={props.TeamMember.sprite_url} alt="pokemonTeamMembers"/>
-                    <p>{capitalize(props.TeamMember.name)}</p></div>
+                    <img className={style.teamSprite} src={TeamMember.sprite_url} alt="pokemonTeamMembers"/>
+                    <p>{capitalize(TeamMember.name)}</p></div>
                 <div className={style.innerTeamMember}>
                     <SwapHorizontalCircleOutlinedIcon className={style.removeButton}
-                                                      onClick={() => props.handleSwap(props.index)}/>
-                    <HighlightOffIcon className={style.removeButton} onClick={() => props.handleRemove(props.index)}/>
+                                                      onClick={() => handleSwap(index)}/>
+                    <HighlightOffIcon className={style.removeButton} onClick={() => handleRemove(index)}/>
                 </div>
             </div>
         )
     }
     return (
         <div className={style.emptyTeamMember}>
-            <AddCircleOutlineIcon className={style.addButton} onClick={() => props.handleAdd()}/>
+            <AddCircleOutlineIcon className={style.addButton} onClick={handleAdd}/>
         </div>
     )
 }
@@ -44,9 +44,9 @@ interface iTeam {
     currentPokemon: Pokemon
 }
 
-const Team: FC<iTeam> = (props) => {
+const Team: FC<iTeam> = ({currentPokemon}) => {
     const pokemonTeam = atom<Pokemon[]>({
-        key: "pokemonTeam",
+        key: `PokemonTeam`,
         default: []
     });
 
@@ -58,7 +58,7 @@ const Team: FC<iTeam> = (props) => {
     function handleSwap(remove_index: number) {
         let copy = pokemons
         if (remove_index > -1) {
-            setPokemons([...copy.slice(0, remove_index), props.currentPokemon, ...copy.slice(remove_index + 1)])
+            setPokemons([...copy.slice(0, remove_index), currentPokemon, ...copy.slice(remove_index + 1)])
         }
     }
 
@@ -70,7 +70,16 @@ const Team: FC<iTeam> = (props) => {
     }
 
     function handleAdd() {
-        setPokemons(prev => ([...prev, props.currentPokemon]))
+            setPokemons(prev => ([...prev,   {entry_number: currentPokemon.entry_number,
+                name: currentPokemon.name,
+                pokeTypes: currentPokemon.pokeTypes,
+                stats: currentPokemon.stats,
+                weight: currentPokemon.weight,
+                rating: currentPokemon.rating,
+                number_of_ratings: currentPokemon.number_of_ratings,
+                usage_percentage: currentPokemon.usage_percentage,
+                sprite_url: currentPokemon.sprite_url,
+                id: currentPokemon.entry_number}]))
     }
 
 

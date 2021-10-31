@@ -1,33 +1,52 @@
-import React, {FC, useState} from "react"
+import React, {FC, useEffect, useState} from "react"
 import style from "./Popup.module.css"
-import {useQuery} from "@apollo/client";
-import {GET_POKEMON_BY_ID} from "../../queries";
+import {useMutation, useQuery} from "@apollo/client";
+import {ADD_RATING_BY_POKEMONID, GET_POKEMON_BY_ID} from "../../queries";
 import CircularProgress from '@mui/material/CircularProgress';
 import {capitalize, Rating} from "@mui/material";
 import Team from "../team/Team";
 import Stats from "../stats/Stats";
-import {Pokemon} from "../../utils/Pokemon";
 import SendIcon from '@mui/icons-material/Send';
 import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
+import { Pokemon } from "../../utils/Pokemon";
+import { PinDropSharp } from "@material-ui/icons";
 
 interface iPopup {
-    pokemonID: number,
-    setOpen: Function
+    pokemonId: number,
+    setOpen: (id: number|null)=> void,
 }
 
 
-const Popup: FC<iPopup> = (props) => {
+const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
     const [rating, setRating] = useState<number>(0)
     const [disable, setDisable] = useState<boolean>(false)
     const {data, error, loading} = useQuery(GET_POKEMON_BY_ID, {
-        variables: {input: {id: props.pokemonID}}
-    })
+        variables: {input: {id: pokemonId}}
+    });
+    const [totalRating, setTotalRating] = useState<number| null>(null);
+    const [totalRatingCount, setTotalRatingCount] = useState<number|null>(null);
+
+    const [mutateFunction] = useMutation(ADD_RATING_BY_POKEMONID);
+    useEffect(()=>{
+        const previousRating = localStorage.getItem(pokemonId.toString());
+        if(previousRating!== null) {
+            setRating(parseInt(previousRating));
+            setDisable(true);
+        }
+    },[]);
 
 
     const handleRating = () => {
-        setDisable(true)
-        alert("Rating sent")
-        //TODO: send inn rating
+        setDisable(true);
+        localStorage.setItem(pokemonId.toString(), rating.toString());
+        mutateFunction({variables: {input:{
+            id: pokemonId,
+            rating: rating,
+        }}, onCompleted: (data)=> {
+            console.log(data)
+            setTotalRating(data.addRating.rating)
+            setTotalRatingCount(data.addRating.rating_count)
+        }});
     }
 
     return (
@@ -37,10 +56,7 @@ const Popup: FC<iPopup> = (props) => {
                 <div>
                     <button
                         onClick={() => {
-                            setRating(0)
-                            setDisable(false)
-                            props.setOpen(false)
-
+                            setOpen(null)
                         }}
                         className={style.close}>close
                     </button>
@@ -58,10 +74,10 @@ const Popup: FC<iPopup> = (props) => {
                                      alt={type}/>)}
                         </div>
                         <div className={style.innerWrapper}>
-                            <p>Average rating of {data?.getPokemonById.rating_count}
-                                {data?.getPokemonById.rating_count === 1 ? " person" : " people"}</p>
+                            <p>Average rating of {totalRatingCount ? totalRatingCount: data?.getPokemonById.rating_count}
+                                {totalRatingCount ? totalRatingCount:data?.getPokemonById.rating_count === 1 ? " person" : " people"}</p>
                             <Rating name="read-only" defaultValue={0} precision={0.1}
-                                    value={data?.getPokemonById.rating} readOnly/>
+                                    value={totalRating ? totalRatingCount : data?.getPokemonById.rating} readOnly/>
                             <p>Used by: {data?.getPokemonById.usage_percentage * 100}% of teams</p>
                             <p>Weight: {data?.getPokemonById.weight / 10} kg</p>
                             <p>Your rating:</p>
@@ -79,18 +95,8 @@ const Popup: FC<iPopup> = (props) => {
 
 
                         <div className={style.innerWrapper}>
-                            <Team currentPokemon={
-                                {
-                                    entry_number: props.pokemonID,
-                                    name: data?.getPokemonById?.name,
-                                    pokeTypes: data?.getPokemonById?.pokeTypes,
-                                    stats: data?.getPokemonById?.stats,
-                                    weight: data?.getPokemonById?.weight,
-                                    rating: data?.getPokemonById?.rating,
-                                    number_of_ratings: data?.getPokemonById?.rating_count,
-                                    usage_percentage: data?.getPokemonById?.usage_percentage,
-                                    sprite_url: data?.getPokemonById?.sprite_url,
-                                } as Pokemon}/>
+                            <Team currentPokemon={data?.getPokemonById}
+                            />
                         </div>
 
 
