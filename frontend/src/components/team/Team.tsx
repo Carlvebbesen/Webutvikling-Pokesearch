@@ -1,9 +1,11 @@
 import React, {FC} from "react";
 import SwapHorizontalCircleOutlinedIcon from "@mui/icons-material/SwapHorizontalCircleOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {capitalize} from "@mui/material";
 import style from "./Team.module.css"
 import {Pokemon} from "../../utils/Pokemon";
 import {atom, useRecoilState} from "recoil";
+import { Delete } from "@material-ui/icons";
 
 interface iTeamMember {
     TeamMember: Pokemon | null
@@ -18,8 +20,8 @@ const TeamMember: FC<iTeamMember> = (props) => {
     if (props.TeamMember !== null) {
         return (
             <div className={style.teamMember}>
-                <img src={props.TeamMember.sprite_url}/>
-                <p>{props.TeamMember.name}</p>
+                <img className={style.teamSprite} src={props.TeamMember.sprite_url} alt="pokemonTeamMembers"/>
+                <p>{capitalize(props.TeamMember.name)}</p>
                 <SwapHorizontalCircleOutlinedIcon className={style.removeButton} onClick={() => props.handleSwap(props.index)}/>
             </div>
         )
@@ -37,7 +39,6 @@ interface iTeam {
 }
 
 const Team: FC<iTeam> = (props) => {
-    console.log(props.currentPokemon as unknown as string)
     const pokemonTeam = atom<Pokemon[]>({
         key: "pokemonTeam",
         default: []
