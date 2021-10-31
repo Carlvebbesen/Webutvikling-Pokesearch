@@ -1,0 +1,9 @@
+.sortingButton{
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    justify-content: space-evenly;
+    align-items: center;
+    min-width: 100px;
+    height: 100%;
+}
