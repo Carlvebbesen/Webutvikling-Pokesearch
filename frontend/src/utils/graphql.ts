@@ -3,7 +3,7 @@ export type FilterInput = {
     pokeTypes?: string[],
     rating?: number,
     sortDesc?: boolean,
-    sortBy?: "hp" |"attack"| "defense"| "special-attack" |"special-defence" |"speed"| "total",
+    sortBy?: string,
     limit: number,
     offset: number,
 }

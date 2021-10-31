@@ -58,7 +58,7 @@ export const typeDefs = gql`
 
     input AddPokemonInput {
         teamName: String,
-        newPokemonName: String,
+        pokemonId: Int,
         index: Int,
     }
 

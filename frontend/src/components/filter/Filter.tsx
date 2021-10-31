@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react"
+import React, {FC} from "react"
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -10,7 +10,6 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import {useTheme, Theme} from "@mui/material/styles";
 import style from "./Filter.module.css"
-import { isPropertyAccessChain } from "typescript";
 import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
 
 function getStyles(name: string, selected: readonly string[], theme: Theme) {
@@ -71,7 +70,7 @@ const Filter: FC<iFilter> = (props) => {
                        label="Name"
                        type="search"
                        value={props.name}
-                       onChange={event => props.setName(event.target.value)}
+                       onChange={(event) => props.setName(event.target.value)}
             />
             <FormControl sx={{m: 1, width: 300}}>
                 <InputLabel id="demo-multiple-chip-label">Type (Max 2)</InputLabel>
@@ -104,6 +103,7 @@ const Filter: FC<iFilter> = (props) => {
             </FormControl>
             <div>
                 <p>minimum rating:</p>
+                <div onClick={()=> props.setRating(0)}>
                 <Rating
                     name="simple-controlled"
                     value={props.rating}
@@ -112,13 +112,12 @@ const Filter: FC<iFilter> = (props) => {
                         if (star != null) {
                             props.setRating(star);
                         }
-                    }}
-                    onChangeActive={(event, star)=> {
-                        if(star=== -1){
+                        else {
                             props.setRating(0);
                         }
                     }}
-                />
+                    />
+                    </div>
             </div>
 
         </div>

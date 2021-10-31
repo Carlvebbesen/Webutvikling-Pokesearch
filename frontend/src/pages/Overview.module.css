@@ -1,5 +1,7 @@
 .overview{
     text-align: center;
+    position: absolute;
+    top: 0px;
 }
 
 body{
@@ -12,7 +14,6 @@ body{
 
 @media only screen and (min-width: 600px) {
     body {
-        font-family: Epilogue;
         font-size: 2vw;
     }
 }

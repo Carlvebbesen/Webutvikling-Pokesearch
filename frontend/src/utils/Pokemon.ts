@@ -1,8 +1,8 @@
 export interface Pokemon {
-    id: number,
+    entry_number: number,
     name: string,
-    type: string[],
-    stats: Attribute[],
+    pokeTypes: string[],
+    stats: Stats,
     weight: number,
     rating: number,
     number_of_ratings: number,
@@ -10,8 +10,17 @@ export interface Pokemon {
     sprite_url: string
 }
 
+export interface Stats {
+    attack: number,
+    defense: number,
+    hp: number,
+    special_attack: number | null,
+    special_defense: number | null,
+    speed: number,
+    total: number,
+}
 
-export interface Attribute {
-    name: string,
-    value: number
+export interface FilteredPokemon {
+    pokemons: Pokemon[],
+    count: number,
 }
