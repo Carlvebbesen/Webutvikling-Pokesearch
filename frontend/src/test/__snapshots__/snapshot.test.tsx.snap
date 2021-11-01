@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot test for App component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for Backdrop component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for Filter component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for ListPokemonRow component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for PopUp component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for SimpleTable component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for SortButton component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for SortList component 1`] = `ShallowWrapper {}`;
+
+exports[`Snapshot test for Stats component 1`] = `ShallowWrapper {}`;

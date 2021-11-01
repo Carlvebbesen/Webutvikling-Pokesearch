@@ -10,6 +10,8 @@ import { StatTable } from "../statTable/statTable";
 import { BsXSquare } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Team from "../team/Team";
+import { useResetRecoilState } from "recoil";
 
 interface iPopup {
     pokemonId: number,
@@ -50,7 +52,9 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
     return (
         <div id="inner" className={style.popupInner}>
             {loading || error ? <CircularProgress/>
-                :
+                :<>
+                <div className={style.wrapper}>
+
                 <div className={style.container}>
                     <div
                         className={style.close}>
@@ -73,10 +77,10 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                             <div>
                                 {data?.getPokemonById.pokeTypes.map((type: string) =>
                                     <img
-                                        style={{marginRight: "10px"}}
-                                        height="20"
-                                        src={getPokeTypeIcon(type)}
-                                        alt={type}/>)}
+                                    style={{marginRight: "10px"}}
+                                    height="20"
+                                    src={getPokeTypeIcon(type)}
+                                    alt={type}/>)}
                             </div>
                         </div>
                         <div className={style.dataEntry}>
@@ -118,11 +122,15 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                     setRating(newValue ? newValue : 0)
                                 }}
                                 disabled={disable}
-                            />
+                                />
                             <button data-cy="rating-submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
                     </div>
-                </div>}
+                </div>
+                <Team currentPokemon={data?.getPokemonById}/>   
+                </div>
+                </>
+                }
         </div>
     );
 }

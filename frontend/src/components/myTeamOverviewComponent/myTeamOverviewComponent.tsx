@@ -12,13 +12,13 @@ const MyTeamOverviewComponent = () => {
     const [team, setTeam] = useRecoilState(pokemonTeam)
     const [name, setName] = useState<string>("");
     const [mutateFunction] = useMutation(CREATE_TEAM);
-
     const saveTeam = () => {
-        console.log(team)
         mutateFunction({variables: {input:{
             name: name,
-            pokemons: [1,24,56],
+            pokemons: team.map(pokemon => pokemon.entry_number),
         }}});
+    setName("");
+    setTeam([]);
     }
 
     return (
@@ -30,9 +30,13 @@ const MyTeamOverviewComponent = () => {
                 :team.map((poke, key) =>
                 <PokemonInTeamComponent pokemon={poke} key={key}/>
             )}
-            <TextField value={name} disabled={team.length ===0} id="outlined-basic" variant="outlined" label="A unique Team Name"
+            <TextField value={name} 
+            disabled={team.length ===0} 
+            id="outlined-basic" variant="outlined" label="A unique Team Name"
                        onChange={(e) => setName(String(e.target.value))}/>
-            <Button disabled={team.length===0|| name.trim() === ""} variant="contained" onClick={saveTeam}>Save team</Button>
+            <Button 
+            disabled={team.length===0|| name.trim() === ""} 
+            variant="contained" onClick={saveTeam}>Save team</Button>
         </div>
 
     );
