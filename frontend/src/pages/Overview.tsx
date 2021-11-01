@@ -7,7 +7,7 @@ import {GET_FILTERED_POKEMONS} from "../queries";
 import {FilterInput} from "../utils/graphql";
 import Popup from "../components/popup/Popup";
 import Navbar from "../components/navbar/Navbar";
-import Backdrop from "../components/backdrop/backdrop";
+import BackgroundPopUp from "../components/backgroundPopup/backgroudPopUp";
 
 const OverviewPage = () => {
     //popup
@@ -88,7 +88,7 @@ const OverviewPage = () => {
                 setOpen={(id:number|null)=>setPokemonId(id)}
                 pokemonId={pokemonId}/>
             }
-            {pokemonId && <Backdrop show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
+            {pokemonId && <BackgroundPopUp show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
             <Navbar/>
             <Filter
                 name={name}
