@@ -6,6 +6,12 @@
     padding-bottom: 50px;
 }
 
+@media only screen and (max-width: 600px) {
+    .myTeamPage {
+        grid-template-columns: 1fr 10fr 1fr;
+    }
+}
+
 .myTeamHeadline {
     text-align: center;
     grid-row-start: 1;

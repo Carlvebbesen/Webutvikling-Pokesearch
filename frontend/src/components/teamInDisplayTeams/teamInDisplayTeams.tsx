@@ -11,11 +11,28 @@ interface IteamProps {
 
 export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
 
-    const useStyles =  makeStyles({
+    const useStyles =  makeStyles((theme) => ({
         teamContainer: {
             marginBottom: "35px"
+        },
+        pokeName: {
+            [theme.breakpoints.down("xs")]: {
+                fontSize: "15px"
+            }
+
+        },
+        pokeCard: {
+            [theme.breakpoints.down("xs")]: {
+                height: "170px"
+            }
+        },
+        pokeType: {
+
+        },
+        pokeImage: {
+
         }
-    });
+    }));
 
     const classes = useStyles();
 
@@ -25,12 +42,12 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
             <Grid container spacing={2} className={classes.teamContainer}>
                 {team.pokemon.map((poke, number) =>
                     <Grid item xs={6} key={number}>
-                        <Card>
+                        <Card className={classes.pokeCard}>
                             <CardContent>
                                 <Typography>
                                     <img height="60" src={poke.sprite_url} alt={poke.name} />
                                 </Typography>
-                                <Typography>
+                                <Typography className={classes.pokeName}>
                                     {poke.name}
                                 </Typography>
                                 <Typography>
