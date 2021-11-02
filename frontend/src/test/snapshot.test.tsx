@@ -8,8 +8,8 @@ import Filter from '../components/filter/Filter';
 import Popup from '../components/popup/Popup';
 import SimpleTable from '../components/simpleTable/SimpleTable';
 import { mocks, filteredData } from './testData';
-import SortingButtonsList from '../components/Sort/sortingButtonsList';
-import SortingButton from '../components/Sort/sortingButton';
+import SortingButtonsList from '../components/sort/sortingButtonsList';
+import SortingButton from '../components/sort/sortingButton';
 import Stats from '../components/stats/Stats';
 import TableListRow from '../components/tableListRow/tableListRow';
 
