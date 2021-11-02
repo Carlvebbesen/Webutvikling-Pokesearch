@@ -36,6 +36,16 @@ describe("Verify team functionality", () => {
         cy.get('[data-cy=team-gallade]');
         cy.get('[data-cy=team-snorlax]');
         cy.get('[data-cy=close-popup]').click();
+
+        cy.add_pokemon_to_current_team('umbreon');
+
+        cy.get('[data-cy=team-sceptile]');
+        cy.get('[data-cy=team-arcanine]');
+        cy.get('[data-cy=team-braviary]');
+        cy.get('[data-cy=team-gallade]');
+        cy.get('[data-cy=team-snorlax]');
+        cy.get('[data-cy=team-umbreon]');
+        cy.get('[data-cy=close-popup]').click();
     })
 
     it("Test submitting a team", () => {
@@ -49,11 +59,15 @@ describe("Verify team functionality", () => {
         cy.get('[data-cy=close-popup]').click();
         cy.add_pokemon_to_current_team('snorlax');
         cy.get('[data-cy=close-popup]').click();
+        cy.add_pokemon_to_current_team('umbreon');
+        cy.get('[data-cy=close-popup]').click();
 
         cy.get('[data-cy=nav-teams]').click();
-        const uniqueNumber = Math.random(1000000) + Math.random(1000000);
+        const uniqueNumber = parseInt(Math.random(1000000) * Math.random(1000000) * 1000000);
         cy.get('[data-cy=team-name-input]').type(`Team-from-testing-${uniqueNumber}`);
         cy.get('[data-cy=team-submit]').click();
+        cy.clock();
+        cy.tick(10000);
         cy.get(`[data-cy=team-Team-from-testing-${uniqueNumber}]`);
     })
 

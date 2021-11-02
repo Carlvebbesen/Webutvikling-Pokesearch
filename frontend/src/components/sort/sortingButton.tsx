@@ -7,10 +7,11 @@ import {capitalize} from "@mui/material";
 
 interface iSortingButton {
     name: string,
+    label: string,
     currentSort: string | undefined,
     sort: (name: string, decending: boolean) => void
 };
- const SortingButton: FC<iSortingButton> = ({name, currentSort, sort}) => {
+ const SortingButton: FC<iSortingButton> = ({name, label, currentSort, sort}) => {
     const [decending, setdecending] = useState<boolean>(false);
     const sortBy =()=>{
         const newState = !decending;
@@ -19,7 +20,7 @@ interface iSortingButton {
     }
     return (
         <button data-cy={name} className={style.sortingButton} onClick={sortBy}>
-            <p>{capitalize(name.replace('_', " "))}</p>
+            <p>{label}</p>
             {currentSort !== name
                 ? <FilterAltIcon/> :
                 decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}

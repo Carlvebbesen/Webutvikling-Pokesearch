@@ -9,25 +9,27 @@ interface SortingButtonsListProps {
 }
 
 const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, activeButton }) => {
-    
-    const sortValues = ["hp",
-        "attack",
-        "defense",
-        "sp. Atk",
-        "sp. Def",
-        "speed",
-        "total"]
+
+    const sortOptions = [
+        { name: "hp", label: "Hp"},
+        { name: "attack", label: "Attack"},
+        { name: "defense", label: "Defense"},
+        { name: "special_attack", label: "Sp. Atk"},
+        { name: "special_defense", label: "Sp. Def"},
+        { name: "speed", label: "Speed"},
+        { name: "total", label: "Total"},
+    ]
         return (
         <TableRow>
             <TableCell>
-                <SortingButton name={"pokemonId"} currentSort={activeButton} sort={sortByValue}/>
+                <SortingButton name={""} label={"PokemonId"} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>
             <TableCell/>
             <TableCell/>
             {
-            sortValues.map((name) => 
-            <TableCell className={style.statList} key={name}>
-                <SortingButton name={name} currentSort={activeButton} sort={sortByValue}/>
+            sortOptions.map((option) => 
+            <TableCell className={style.statList} key={option.name}>
+                <SortingButton name={option.name} label={option.label} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>          
                 )}
             </TableRow>
