@@ -3,7 +3,6 @@ import MyTeamOverviewComponent from "../components/myTeamOverviewComponent/myTea
 import styles from "./myTeam.module.css";
 import {DisplayTeams} from "../components/displayTeams/displayTeams";
 
-
 export type Pokemon = {
     id: number,
     name: string,

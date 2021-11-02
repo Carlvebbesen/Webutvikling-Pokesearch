@@ -3,18 +3,24 @@ import style from "./Navbar.module.css"
 import StorageIcon from '@mui/icons-material/Storage';
 import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import {useHistory} from "react-router";
+import { useLocation } from 'react-router-dom'
 
 const Navbar = ()=>{
     let history=useHistory();
+    const location = useLocation();
 
     const [overviewStyle, setOverviewStyle] = useState(style.chosenIcon);
     const [teamStyle, setTeamStyle] = useState(style.icon);
 
     const changeView = (path : string) => {
-        history.push(path);
-        const a = teamStyle;
-        setTeamStyle(overviewStyle);
-        setOverviewStyle(a);
+
+        if (path !== location.pathname) {
+            history.push(path);
+            const a = teamStyle;
+            setTeamStyle(overviewStyle);
+            setOverviewStyle(a);
+        }
+
     };
 
     return(

@@ -13,8 +13,8 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
     const sortValues = ["hp",
         "attack",
         "defense",
-        "special-attack",
-        "special-defense",
+        "special_attack",
+        "special_defense",
         "speed",
         "total"]
         return (
@@ -26,7 +26,7 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
             <TableCell/>
             {
             sortValues.map((name) => 
-            <TableCell className={style.statList}>
+            <TableCell className={style.statList} key={name}>
                 <SortingButton name={name} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>          
                 )}

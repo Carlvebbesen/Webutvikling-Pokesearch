@@ -19,7 +19,7 @@ interface iSortingButton {
     }
     return (
         <button data-cy={name} className={style.sortingButton} onClick={sortBy}>
-            <p>{capitalize(name)}</p>
+            <p>{capitalize(name.replace('_', " "))}</p>
             {currentSort !== name
                 ? <FilterAltIcon/> :
                 decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}
