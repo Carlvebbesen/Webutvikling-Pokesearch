@@ -4,6 +4,6 @@
     cursor: pointer;
     justify-content: space-evenly;
     align-items: center;
-    min-width: 100px;
+    min-width: 10px;
     height: 100%;
 }

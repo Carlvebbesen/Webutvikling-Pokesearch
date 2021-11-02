@@ -13,8 +13,8 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
     const sortValues = ["hp",
         "attack",
         "defense",
-        "special-attack",
-        "special-defense",
+        "sp.-atk",
+        "sp.-def",
         "speed",
         "total"]
         return (
