@@ -1,67 +1,14 @@
 import TestRenderer from 'react-test-renderer';
 import {MockedProvider} from '@apollo/client/testing';
 import OverviewPage from '../../src/pages/Overview';
-import {GET_POKEMON_BY_ID, GET_FILTERED_POKEMONS} from "../queries"
 import TableListRow from "../components/tableListRow/tableListRow";
 import {Pokemon, Stats} from "../utils/Pokemon";
 import SortingButton from "../components/sort/sortingButton";
 import {StatTable} from "../components/statTable/statTable";
-import Team from "../components/team/Team";
 import Filter from "../components/filter/Filter";
+import {overviewMocks} from "./testData";
 
 
-
-
-const mocks = [
-    {
-        request: {
-            query: GET_FILTERED_POKEMONS,
-            variables: {
-                input: {
-                    limit: 50,
-                    name: "",
-                    offset: 0,
-                }
-            },
-        },
-        result: {
-            data: {
-                pokemons: [
-                    {
-                        name: "grassPoison",
-                        pokeTypes: ["grass", "posion"],
-                        sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-                        entry_number: "1",
-                        stats: {
-                            hp: 1,
-                            attack: 2,
-                            defense: 3,
-                            special_attack: 4,
-                            special_defense: 5,
-                            speed: 6,
-                            total: 7,
-                        }
-                    },
-                    {
-                        name: "fire",
-                        pokeTypes: ["fire"],
-                        sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
-                        entry_number: "2",
-                        stats: {
-                            hp: 14,
-                            attack: 122,
-                            defense: 23,
-                            special_attack: 42,
-                            special_defense: 25,
-                            speed: 26,
-                            total: 27,
-                        }
-                    }],
-                count: 2
-            }
-        }
-    }
-];
 
 
 const single_pokemon_mock = {
@@ -88,7 +35,7 @@ const single_pokemon_mock = {
 
 it('renders without error', () => {
     const component = TestRenderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
+        <MockedProvider mocks={overviewMocks} addTypename={false}>
             <OverviewPage/>
         </MockedProvider>,
     );
@@ -99,7 +46,7 @@ it('renders without error', () => {
 
 it('renders one table row correctly', () => {
     const component = TestRenderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
+        <MockedProvider mocks={overviewMocks} addTypename={false}>
             <TableListRow pokemon={single_pokemon_mock as unknown as Pokemon} setPopUpShow={() => {
             }}/>
         </MockedProvider>,
@@ -118,71 +65,9 @@ it('renders one table row correctly', () => {
 });
 
 
-// it('renders popup without error', async () => {
-//     const pokeMock = {
-//         request: {
-//             query: GET_POKEMON_BY_ID,
-//             variables: {
-//                 input: {id: 6}
-//             },
-//             result: {
-//                 data: {
-//                     getPokemonById: {
-//                         name: "Charizard",
-//                         pokeTypes: ["fire", "flying"],
-//                         sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/6.png",
-//                         entry_number: "6",
-//                         stats: {
-//                             hp: 78,
-//                             attack: 84,
-//                             defense: 78,
-//                             special_attack: 109,
-//                             special_defense: 85,
-//                             speed: 100,
-//                             total: 534,
-//                         },
-//                         weight: 90.5,
-//                         rating: 4,
-//                         number_of_ratings: 2,
-//                         usage_count: 2
-//                     }
-//                 }
-//             },
-//         },
-//     };
-//     const component = TestRenderer.create(
-//         <MockedProvider mocks={[pokeMock]} addTypename={false}>
-//             <Popup pokemonId={6} setOpen={() => {
-//             }}/>
-//         </MockedProvider>,
-//     );
-//     await new Promise(resolve => setTimeout(resolve, 50));
-//     console.log(component.root)
-//     const p = component.root.findByType('h2');
-//     expect(p.children.join('')).toContain('Charizard');
-// });
-
-
-
-//export const RecoilObserver = ((node: typeof atom, onChange: Function) => {
-//     const value = useRecoilValue(node);
-//     useEffect(() => onChange(value), [onChange, value]);
-//     return null;
-// };
-
-// it('renders team component without error', () => {
-//     render(
-//         <RecoilRoot>
-//             <RecoilObserver node={nameAtom} onChange={onChange} />
-//             <Form />
-//         </RecoilRoot>
-//     );
-// });
-
-
 it('renders sorting button without error', () => {
     const component = TestRenderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
+        <MockedProvider mocks={overviewMocks} addTypename={false}>
             <SortingButton currentSort={"Ascending"} label={"Button"} name={"test"} sort={()=>{}}/>
         </MockedProvider>,
     );
@@ -199,7 +84,7 @@ it('renders stat table without error', () => {
         {name: "Sp. Def", value: 5},
         {name: "Speed", value: 6}]
     const component = TestRenderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
+        <MockedProvider mocks={overviewMocks} addTypename={false}>
             <StatTable  stats={stats}/>
         </MockedProvider>,
     );
@@ -221,7 +106,7 @@ it('renders stat table without error', () => {
 
 it('renders filter without error', () => {
     const component = TestRenderer.create(
-        <MockedProvider mocks={mocks} addTypename={false}>
+        <MockedProvider mocks={overviewMocks} addTypename={false}>
             <Filter name={""} rating={0} setName={()=>{}} setRating={()=>{}} setType={()=>{}} type={[""]}/>
         </MockedProvider>
     );
@@ -229,5 +114,4 @@ it('renders filter without error', () => {
     expect(correct_input.length).toBeGreaterThanOrEqual(13) //one for each half a star = 11 + Name and type
     const correct_p = component.root.findAllByType("p").map(a => a.children).join("");
     expect(correct_p).toContain('Minimum rating:');
-
 });
