@@ -15,5 +15,3 @@ exports[`Snapshot test for SimpleTable component 1`] = `ShallowWrapper {}`;
 exports[`Snapshot test for SortButton component 1`] = `ShallowWrapper {}`;
 
 exports[`Snapshot test for SortList component 1`] = `ShallowWrapper {}`;
-
-exports[`Snapshot test for Stats component 1`] = `ShallowWrapper {}`;
