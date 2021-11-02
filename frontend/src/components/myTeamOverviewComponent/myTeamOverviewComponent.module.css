@@ -2,3 +2,14 @@
     grid-column-start: 2;
     grid-row-start: 2;
 }
+
+.emptyTeam {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.message {
+    text-align: center;
+    padding-bottom: 30px;
+}
