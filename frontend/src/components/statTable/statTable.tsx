@@ -25,9 +25,10 @@ export const StatTable = (props: IStatProps) => {
             <div style={{ display: 'flex', flexDirection: 'column'}}>
                 {props.stats.map((stat) =>
                     <div className={style.statEntry}>
-                        <span style={{ width: '35%', fontSize: '12px', textAlign: 'start'}}>{stat.name}</span>
-                        <span style={{ width: '10%'}}>{stat.value}</span>
-                        <div style={{ marginLeft: '10px', width: `calc(60px / 100 * ${stat.value})`, height: '10px', background: colorByValue(stat.value), borderRadius: '2%'}}></div>
+                        <span className={style.statName}>{stat.name}</span>
+                        <span className={style.statValue}>{stat.value}</span>
+                        <div className={style.statBar}
+                            style={{ width: `calc(60px / 100 * ${stat.value})`, background: colorByValue(stat.value)}}></div>
                     </div>
                 )}
             </div>
