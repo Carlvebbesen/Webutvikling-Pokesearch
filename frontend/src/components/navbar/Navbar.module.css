@@ -5,7 +5,6 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    padding-top: 10px;
 }
 
 
@@ -13,18 +12,26 @@
     display: flex;
     flex-direction: row;
     cursor: pointer;
-    justify-content: left;
-    padding-left: 20px;
+    justify-content: center;
     align-items: center;
-    border-radius: 20px;
-    height: 2em;
-    border: 1px black solid;
-    width: 10em;
-    margin: 5px;
+    width: 50%;
+    border-bottom: 1px dimgrey solid;
 }
 
+.chosenIcon {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
 
-
+    border-top: 1px dimgrey solid;
+    border-left: 1px dimgrey solid;
+    border-right: 1px dimgrey solid;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
 
 .icon:hover{
     background-color: lightgrey;
