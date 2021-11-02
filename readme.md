@@ -45,6 +45,10 @@ bildet fortsatt en beskrivelse av hva det er.
 Vi har valgt å ha hovedfokus på ende-til-ende-testing, fordi vi mener det tester nettsiden på den beste måten. Vi har
 også må enhetstester der vi ser på det som nødvendig, i tillegg til at vi ville ha de med for å lære oss å bruke det.
 
+### State management
+
+Vi har i dette prosjektet valgt å bruke recoil for state management. Dette er et bibliotek utviklet av facebook som gir samme funksjonalitet som andre state-manegement-biblioteker som for eksempel redux, bare med en ryddigere løsning, synes vi. Derfor valgte vi å bruke dette.
+
 ### Annet
 
 - Grunnen til at ikke dependency-arrayet til useEffecten i overview-page er fylt opp er at dette ikke vil gi ønsket
