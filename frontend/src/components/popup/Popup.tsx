@@ -45,7 +45,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
             rating: rating,
         }}}).then((response) => {
             refetch()
-            toast.success("Rating submitted");
+            toast.success("Rating submitted", {autoClose: 2000});
         });
     }
 
@@ -82,6 +82,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                     <div>
                                         {data?.getPokemonById.pokeTypes.map((type: string) =>
                                             <img
+                                                key={type}
                                                 style={{marginRight: "10px"}}
                                                 height="20"
                                                 src={getPokeTypeIcon(type)}
@@ -122,7 +123,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 ]} />
                             </div>
                         </div>
-                        <div>
+                        <div className={style.ratingSection}>
                             <h5>Give rating</h5>
                             <Rating
                                 data-cy="rating-input"

@@ -11,8 +11,7 @@ import {
 import {RecoilRoot} from "recoil";
 
 const client = new ApolloClient({
-  //uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
-  uri: 'http://localhost:8080/graphql',
+  uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
   cache: new InMemoryCache()
 });
 

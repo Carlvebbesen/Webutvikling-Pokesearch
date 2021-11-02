@@ -20,7 +20,7 @@ interface iSortingButton {
     return (
         <button data-cy={name} className={style.sortingButton} onClick={sortBy}>
             <p>{label}</p>
-            {currentSort !== name
+            {currentSort !== name && (currentSort !== undefined || name !== "pokemonId")
                 ? <FilterAltIcon/> :
                 decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}
         </button>

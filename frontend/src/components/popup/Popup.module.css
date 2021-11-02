@@ -20,8 +20,7 @@
 .container {
     display: grid;
     grid-template-columns: 47.5% 5% 47.5%;
-    grid-template-rows: 30% 70%;
-    align-items: center;
+    grid-template-rows: 35% 65%;
     padding: 15px;
 }
 
@@ -29,6 +28,7 @@
     grid-row: 1;
     grid-column-start: 1;
     grid-column-end: 4;
+    justify-self: center;
 }
 
 .infoSection {
@@ -39,7 +39,8 @@
     justify-content: flex-start;
     align-items: center;
     margin-left: 50px;
-    align-self: baseline;
+    align-self: flex-end;
+    height: 250px;
 }
 
 .dataSection {
@@ -50,7 +51,8 @@
     justify-content: flex-start;
     align-items: center;
     margin-right: 50px;
-    align-self: baseline;
+    align-self: flex-end;
+    height: 250px;
 }
 
 .dataEntry {
@@ -61,6 +63,10 @@
     width: 100%;
     border-bottom: 1px lightgray solid;
     margin-bottom: 10px;
+}
+
+.ratingSection {
+    align-self: center;
 }
 
 .rating{
@@ -83,7 +89,6 @@
 
 .wrapper{
     display: block;
-    align-items: center;
 }
 
 .innerWrapper{
@@ -96,10 +101,10 @@
 }
 
 .spritePic{
-    width: 100px;
+    width: 150px;
 }
 
-h5, h2 {
+h5, h2, h3 {
     text-align: center;
 }
 
@@ -120,8 +125,9 @@ h5, h2 {
     }
     .infoSection {
         width: 80%;
-        margin-left: 10%;
         margin-bottom: 20px;
+        margin-left: 0;
+        align-self: center;
     }
     .dataSection {
         margin-left: 10%;
