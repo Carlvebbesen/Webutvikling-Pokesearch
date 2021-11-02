@@ -1,11 +1,8 @@
 import React, {FC} from "react";
-import SwapHorizontalCircleOutlinedIcon from "@mui/icons-material/SwapHorizontalCircleOutlined";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {capitalize} from "@mui/material";
 import style from "./Team.module.css"
 import {Pokemon} from "../../utils/Pokemon";
 import { useRecoilState} from "recoil";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { pokemonTeam } from "../../store";
 import { BsFillPlusSquareFill, BsTrash, BsArrowRepeat } from 'react-icons/bs';
 

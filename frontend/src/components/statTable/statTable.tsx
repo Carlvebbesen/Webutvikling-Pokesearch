@@ -2,7 +2,7 @@
 import style from './statTable.module.css';
 
 interface IStatEntry {
-    name: String,
+    name: string,
     value: Number   
 }
 
@@ -24,7 +24,7 @@ export const StatTable = (props: IStatProps) => {
             <h3>Stats</h3>
             <div style={{ display: 'flex', flexDirection: 'column'}}>
                 {props.stats.map((stat) =>
-                    <div className={style.statEntry}>
+                    <div key={stat.name} className={style.statEntry}>
                         <span className={style.statName}>{stat.name}</span>
                         <span className={style.statValue}>{stat.value}</span>
                         <div className={style.statBar}

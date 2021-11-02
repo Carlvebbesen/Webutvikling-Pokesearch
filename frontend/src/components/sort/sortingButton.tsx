@@ -3,7 +3,6 @@ import style from "./sortingButton.module.css";
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import FilterAltIcon from  '@mui/icons-material/FilterAlt';
-import {capitalize} from "@mui/material";
 
 interface iSortingButton {
     name: string,

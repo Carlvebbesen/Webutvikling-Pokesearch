@@ -14,7 +14,7 @@ const OverviewPage = () => {
 
     //data
     const [filterInput, setFilterInput] = useState<FilterInput>({
-        limit: 50,
+        limit: 10,
         offset: 0,
     });
     const {data, error, loading, refetch} = useQuery(GET_FILTERED_POKEMONS, {

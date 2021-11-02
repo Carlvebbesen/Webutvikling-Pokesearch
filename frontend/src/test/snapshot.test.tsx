@@ -8,7 +8,6 @@ import SimpleTable from '../components/simpleTable/SimpleTable';
 import {filteredData, mockFilter } from './testData';
 import SortingButtonsList from '../components/sort/sortingButtonsList';
 import SortingButton from '../components/sort/sortingButton';
-import Stats from '../components/stats/Stats';
 import TableListRow from '../components/tableListRow/tableListRow';
 import BackgroundPopUp from '../components/backgroundPopup/backgroudPopUp';
 
@@ -65,15 +64,7 @@ it('Snapshot test for PopUp component', () => {
   it('Snapshot test for SortButton component', () => {
     const component = shallow(
       <MockedProvider mocks={mockFilter} addTypename={false}>
-        <SortingButton name={'HP'} currentSort={undefined} sort={()=>{}}/>
-      </MockedProvider>
-    )
-    expect(component).toMatchSnapshot();
-  });
-  it('Snapshot test for Stats component', () => {
-    const component = shallow(
-      <MockedProvider mocks={mockFilter} addTypename={false}>
-        <Stats Hp={50} Atk={50} Def={50} SpAtk={50} SpDef={50} Speed={50}/>
+        <SortingButton name={'HP'} currentSort={undefined} sort={() => { } } label={''}/>
       </MockedProvider>
     )
     expect(component).toMatchSnapshot();
