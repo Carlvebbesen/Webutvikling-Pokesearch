@@ -1,16 +1,20 @@
 import React, {FC} from "react";
 
-import style from "./backdrop.module.css"
+import style from "./backgroundPopUp.module.css"
 
-interface iBackdrop {
+interface IBackgroundPopUp {
     show: boolean
     clicked: Function
 }
 
-const backdrop: FC<iBackdrop> = (props) => (
+const BackgroundPopUp: FC<IBackgroundPopUp> = (props) => (
     props.show ? <div className={style.Backdrop} onClick={() => props.clicked()}>
 
     </div> : null
 );
 
-export default backdrop;
+export default BackgroundPopUp;
+
+
+
+
