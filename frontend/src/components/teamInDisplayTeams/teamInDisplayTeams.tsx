@@ -11,7 +11,7 @@ interface IteamProps {
 
 export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
     return (
-        <div style={{padding: "15px 0px"}}>
+        <div data-cy={`team-${team.name}`} style={{padding: "15px 0px"}}>
             <div className={styles.teamName}> {team.name} </div>
             <Grid container spacing={2}>
                 {team.pokemon.map((poke) =>

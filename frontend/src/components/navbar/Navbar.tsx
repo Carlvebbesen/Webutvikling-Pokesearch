@@ -25,11 +25,11 @@ const Navbar = ()=>{
 
     return(
             <div className={style.navbar}>
-                <div className={overviewStyle} onClick={() => changeView("/prosjekt3/")}>
+                <div data-cy="nav-database" className={overviewStyle} onClick={() => changeView("/prosjekt3/")}>
                     <StorageIcon/>
                     <p className={style.text}>Database</p>
                 </div>
-                <div className={teamStyle} onClick={() => changeView("/prosjekt3/my-team")}>
+                <div data-cy="nav-teams" className={teamStyle} onClick={() => changeView("/prosjekt3/my-team")}>
                     <GroupWorkIcon/>
                     <p className={style.text}>Pokemon Teams</p>
                 </div>

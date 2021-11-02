@@ -50,3 +50,12 @@ Cypress.Commands.add('verify_stat_sort_ascending', (stat, stat_index) => {
             prevStatValue = parseInt(Cypress.$(item).text());
         })
 })
+
+Cypress.Commands.add('add_pokemon_to_current_team', (pokemonName) => {
+    cy.clock();
+    cy.get('[data-cy=name_input]').find('input').clear();
+    cy.get('[data-cy=name_input]').type(pokemonName);
+    cy.tick(5000);
+    cy.get(`[data-cy=${pokemonName}]`).click();
+    cy.get('[data-cy=add-pokemon-to-team]').click();
+})

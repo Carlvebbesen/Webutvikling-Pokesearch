@@ -52,13 +52,21 @@ const MyTeamOverviewComponent = () => {
                     {team.map((poke, key) =>
                         <PokemonInTeamComponent pokemon={poke} key={key}/>
                 )}
-                <TextField value={name}
-                disabled={team.length ===0}
-                id="outlined-basic" variant="outlined" label="A unique Team Name"
-                onChange={(e) => setName(String(e.target.value))}/>
+                <TextField
+                    data-cy="team-name-input"
+                    value={name}
+                    disabled={team.length === 0}
+                    id="outlined-basic"
+                    variant="outlined"
+                    label="A unique Team Name"
+                    onChange={(e) => setName(String(e.target.value))}/>
                 <Button
-                disabled={team.length===0|| name.trim() === ""}
-                variant="contained" onClick={saveTeam}>Save team</Button>
+                    data-cy="team-submit"
+                    disabled={team.length === 0 || name.trim() === ""}
+                    variant="contained"
+                    onClick={saveTeam}>
+                        Save team
+                </Button>
                 </div>
             }
 

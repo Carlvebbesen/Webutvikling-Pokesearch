@@ -1,6 +1,7 @@
 
 .container {
     width: 100%;
+    font-family: 'Work Sans';
 }
 
 .statEntry {
@@ -8,4 +9,21 @@
     flex-direction: row;
     align-items: center;
     border-bottom: 1px solid lightgray;
+    margin-bottom: 10px;
+}
+
+.statName {
+    width: 35%;
+    font-size: 16px;
+    text-align: start;
+}
+
+.statValue {
+    width: 10%;
+}
+
+.statBar {
+    border-radius: 2%;
+    margin-left: 10px;
+    height: 12px;
 }
