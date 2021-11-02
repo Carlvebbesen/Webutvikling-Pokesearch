@@ -105,7 +105,7 @@ const Filter: FC<iFilter> = (props) => {
                 </Select>
             </FormControl>
             <div>
-                <p>minimum rating:</p>
+                <p>Minimum rating:</p>
                 <div onClick={()=> props.setRating(0)}>
                 <Rating
                     name="simple-controlled"

@@ -10,15 +10,14 @@ export const DisplayTeams = () => {
 
     const {data, loading, error} = useQuery(GET_ALL_TEAMS)
  return (loading || error? <CircularProgress/> :
-        <div className={styles.teams}>
-            {data.getAllTeams.length === 0 ?
-                <div>
-                    There are noe teams available
-                </div>
-                : data.getAllTeams.map((team: Team, index: number) =>
-                    <TeamInDisplayTeams team={team}/>
-                )}
-
-        </div>
+             <div className={styles.teams}>
+                 {data.getAllTeams.length === 0 ?
+                     <div>
+                         There are no teams available
+                     </div>
+                     : data.getAllTeams.map((team: Team, index: number) =>
+                         <TeamInDisplayTeams team={team} key={index}/>
+                     )}
+             </div>
     );
 }

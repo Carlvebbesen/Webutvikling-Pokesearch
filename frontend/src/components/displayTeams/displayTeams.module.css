@@ -1,5 +1,21 @@
 .teams {
     grid-column-start: 2;
-    grid-row-start: 3;
+    grid-row-start: 4;
     text-transform: capitalize;
+    overflow-y: scroll;
+    height: 600px;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+
+.teams::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+}
+
+.teams::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }

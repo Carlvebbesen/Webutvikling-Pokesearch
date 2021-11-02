@@ -5,22 +5,27 @@ import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import {useHistory} from "react-router";
 import { useLocation } from 'react-router-dom'
 
-const Navbar = ()=>{
-    let history=useHistory();
+const Navbar = () => {
+    let history = useHistory();
     const location = useLocation();
 
-    const [overviewStyle, setOverviewStyle] = useState(style.chosenIcon);
-    const [teamStyle, setTeamStyle] = useState(style.icon);
+    let overview = style.chosenIcon;
+    let team = style.icon
+
+    if (location.pathname === "/prosjekt3/my-team") {
+        [overview, team] = [team, overview];
+    }
+
+    const [overviewStyle, setOverviewStyle] = useState(overview);
+    const [teamStyle, setTeamStyle] = useState(team);
 
     const changeView = (path : string) => {
-
         if (path !== location.pathname) {
             history.push(path);
             const a = teamStyle;
             setTeamStyle(overviewStyle);
             setOverviewStyle(a);
         }
-
     };
 
     return(
@@ -34,7 +39,6 @@ const Navbar = ()=>{
                     <p className={style.text}>Pokemon Teams</p>
                 </div>
             </div>
-
     )
 }
 

@@ -21,6 +21,7 @@ export const MyTeam = () => {
             <div className={styles.myTeamPage}>
                 <h2 className={styles.myTeamHeadline}>Current Team</h2>
                 <MyTeamOverviewComponent />
+                <h2 className={styles.teamsHeadline}>Teams</h2>
                 <DisplayTeams />
             </div>
         </div>
