@@ -1,13 +1,13 @@
-import React, {FC} from "react";
-import Paper from "@material-ui/core/Paper";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableBody from "@material-ui/core/TableBody";
-import TablePagination from "@mui/material/TablePagination";
+import React, {FC} from 'react';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TablePagination from '@mui/material/TablePagination';
 import style from './SimpleTable.module.css';
-import SortingButtonsList from "../sort/sortingButtonsList";
-import { FilteredPokemon, Pokemon } from "../../utils/Pokemon";
-import TableListRow from "../tableListRow/tableListRow";
+import SortingButtonsList from '../sort/sortingButtonsList';
+import { FilteredPokemon, Pokemon } from '../../utils/Pokemon';
+import TableListRow from '../tableListRow/tableListRow';
 
 
 interface iSimpleTable {
@@ -23,24 +23,27 @@ interface iSimpleTable {
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
     return (
-        <Paper className={style.root}>
-            <Table stickyHeader className={style.table} aria-label="sticky table">
-            <TableHead>
-                        <SortingButtonsList activeButton={props.activeSortButton} sortByValue={props.sortPokemon}
+        <Paper key={'TableWrapper'}>
+            <Table key={'TableRoot'} stickyHeader className={style.table} aria-label='sticky table'>
+            <TableHead key={'TableHeader'}>
+                        <SortingButtonsList key={'SortingButtonList'} activeButton={props.activeSortButton} sortByValue={props.sortPokemon}
                     />
                     </TableHead>
-                    <TableBody>
-                        {props.data.pokemons.map((pokemon: Pokemon) => <TableListRow  setPopUpShow={props.setPopUpId} pokemon={pokemon}/>)}
+                    <TableBody key={'TableBody'}>
+                        {props.data.pokemons.map((pokemon: Pokemon) => <TableListRow key={pokemon.entry_number} setPopUpShow={props.setPopUpId} pokemon={pokemon}/>)}
                     </TableBody>
-                </Table>
+
+            </Table>
                 <TablePagination
+                    align={'center'}
+                    key={'TablePagination'}
                     rowsPerPageOptions={[10, 25, 50]}
                     count={props.data.count}
                     page={props.page}
                     rowsPerPage={props.rowsPerPage}
                     onPageChange={(event, page)=> props.changePage(page)}
                     onRowsPerPageChange={(event)=> props.changeRowsPerPage(event)}
-                />
+                    />
             </Paper>
     )
         ;
