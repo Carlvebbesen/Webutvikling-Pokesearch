@@ -11,7 +11,6 @@ import { BsXSquare } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Team from "../team/Team";
-import { useResetRecoilState } from "recoil";
 
 interface iPopup {
     pokemonId: number,
@@ -22,10 +21,9 @@ interface iPopup {
 const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
     const [rating, setRating] = useState<number>(0)
     const [disable, setDisable] = useState<boolean>(false)
-    const {data, error, loading} = useQuery(GET_POKEMON_BY_ID, {
+    const {data, error, loading, refetch} = useQuery(GET_POKEMON_BY_ID, {
         variables: {input: {id: pokemonId}}
     });
-    const [totalRating, setTotalRating] = useState<number| null>(null);
     const [mutateFunction] = useMutation(ADD_RATING_BY_POKEMONID);
 
     useEffect(()=>{
@@ -34,7 +32,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
             setRating(parseInt(previousRating));
             setDisable(true);
         }
-    },[]);
+    },[pokemonId]);
 
 
     const handleRating = () => {
@@ -44,7 +42,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
             id: pokemonId,
             rating: rating,
         }}}).then((response) => {
-            setTotalRating(response.data.ratePokemon.rating)
+            refetch()
             toast.success("Rating submitted");
         });
     }

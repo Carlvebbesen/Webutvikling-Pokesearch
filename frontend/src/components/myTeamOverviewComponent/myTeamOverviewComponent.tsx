@@ -1,29 +1,42 @@
 import PokemonInTeamComponent from "../pokemonInTeamComponent/pokemonInTeamComponent";
 import styles from "./myTeamOverviewComponent.module.css"
-import {Button, TextField} from "@mui/material";
+import {Button, CircularProgress, TextField} from "@mui/material";
 import {useRecoilState} from "recoil";
 import {pokemonTeam} from "../../store";
 import {useState} from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_TEAM } from "../../queries";
+import { CREATE_TEAM, GET_ALL_TEAMS } from "../../queries";
+import { toast } from "react-toastify";
 
 const MyTeamOverviewComponent = () => {
 
     const [team, setTeam] = useRecoilState(pokemonTeam)
     const [name, setName] = useState<string>("");
-    const [mutateFunction] = useMutation(CREATE_TEAM);
-    const saveTeam = () => {
-        mutateFunction({variables: {input:{
-            name: name,
-            pokemons: team.map(pokemon => pokemon.entry_number),
-        }}});
-    setName("");
-    setTeam([]);
+    const [mutateFunction, { loading}] = useMutation(CREATE_TEAM,{
+        refetchQueries: [
+          GET_ALL_TEAMS,
+          'GetAllTeams', // Query name
+        ],});
+    const saveTeam = async () => {
+        try {
+            await mutateFunction({variables: {input:{
+                name: name,
+                pokemons: team.map(pokemon => pokemon.entry_number),
+            }}});
+                toast.success("The team was added to the database!")
+                setName("");
+                setTeam([]);
+        }
+        
+    catch (error) {
+            toast.error("A team with the given name already exist")
+            setName("");
+        }
     }
 
     return (
         <div className={styles.MyTeamOverview}>
-            {team.length === 0 ?
+            {loading ? <CircularProgress/> :team.length === 0 ?
                 <div>
                     You have not chosen any pokemon for your team
                 </div>

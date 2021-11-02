@@ -26,7 +26,7 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
             <TableCell/>
             {
             sortValues.map((name) => 
-            <TableCell className={style.statList}>
+            <TableCell className={style.statList} key={name}>
                 <SortingButton name={name} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>          
                 )}

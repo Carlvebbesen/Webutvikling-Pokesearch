@@ -4,6 +4,7 @@ import styles from "./myTeam.module.css";
 import {DisplayTeams} from "../components/displayTeams/displayTeams";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useHistory } from 'react-router';
+import { style } from '@mui/system';
 
 
 export type Pokemon = {
@@ -24,7 +25,7 @@ export const MyTeam = () => {
         <div className={styles.myTeamPage}>
             <ArrowBackIcon sx={{ fontSize: 60 }} onClick={()=> history.push("/prosjekt3/")}/>
             <h2 className={styles.myTeamHeadline}>Current Team</h2>
-            <MyTeamOverviewComponent />
+            <MyTeamOverviewComponent/>
             <DisplayTeams />
         </div>
     );

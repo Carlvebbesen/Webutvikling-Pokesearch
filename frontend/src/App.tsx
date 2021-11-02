@@ -4,8 +4,6 @@ import {BrowserRouter} from 'react-router-dom'
 import OverviewPage from "./pages/Overview";
 import "./index.css"
 import {MyTeam} from "./pages/myTeam";
-import {RecoilRoot} from "recoil";
-import Navbar from "./components/navbar/Navbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
