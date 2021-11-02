@@ -65,7 +65,7 @@ const Filter: FC<iFilter> = (props) => {
 
     return (
         <div className={style.filter}>
-            <TextField sx={{m: 1, width: 300}}
+            <TextField sx={{m: 1, width: 200}}
                        id="outlined-search"
                        label="Name"
                        type="search"
@@ -73,7 +73,7 @@ const Filter: FC<iFilter> = (props) => {
                        onChange={event => props.setName(event.target.value)}
                        data-cy="name_input"
             />
-            <FormControl sx={{m: 1, width: 300}} data-cy="type-selector-container">
+            <FormControl sx={{m: 1, width: 200}} data-cy="type-selector-container">
                 <InputLabel id="demo-multiple-chip-label">Type (Max 2)</InputLabel>
                 <Select
                     data-cy="type-selector"
