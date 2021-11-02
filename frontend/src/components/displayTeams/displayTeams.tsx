@@ -21,8 +21,8 @@ export const DisplayTeams: FC<IDisplayTeams> = ({pokemonClicked}) => {
                     There are noe teams available
                 </div>
                 : data.getAllTeams.map((team: Team, index: number) =>
-                    <TeamInDisplayTeams team={team} pokemonClicked={pokemonClicked} />
-                )}
+                    <TeamInDisplayTeams key={index} team={team} pokemonClicked={pokemonClicked} />
+                ).reverse()}
 
         </div>
     );

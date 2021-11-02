@@ -4,7 +4,7 @@ import SortingButton from './sortingButton';
 import style from "./../tableListRow/tableListRow.module.css";
 
 interface SortingButtonsListProps {
-    sortByValue: (name:string, decending: boolean) => void
+    sortByValue: (name: string, decending: boolean) => void
     activeButton: string | undefined,
 }
 
@@ -22,7 +22,7 @@ const SortingButtonsList: React.FC<SortingButtonsListProps> = ({sortByValue, act
         return (
         <TableRow>
             <TableCell>
-                <SortingButton name={""} label={"PokemonId"} currentSort={activeButton} sort={sortByValue}/>
+                <SortingButton name={"pokemonId"} label={"PokemonId"} currentSort={activeButton} sort={sortByValue}/>
             </TableCell>
             <TableCell/>
             <TableCell/>

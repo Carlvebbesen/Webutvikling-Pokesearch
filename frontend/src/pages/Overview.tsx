@@ -72,7 +72,7 @@ const OverviewPage = () => {
     }
     const changeSortBy = (name: string, decending: boolean) => {
         const newState = filterInput;
-        newState.sortBy = name;
+        newState.sortBy = name !== "pokemonId" ? name : undefined;
         newState.sortDesc = decending;
         setFilterInput(newState);
         setPage(0);

@@ -47,6 +47,7 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
     const [pokemons, setPokemons] = useRecoilState(pokemonTeam)
     const team = pokemons.map((pokemon, index) =>
         <TeamMember
+            key={index}
             TeamMember={pokemon}
             handleAdd={handleAdd}
             handleSwap={handleSwap}
@@ -84,7 +85,7 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
 
 
     if (team.length < 6 && !pokemons.find(pokemon => pokemon.entry_number === currentPokemon.entry_number)) {
-        team.push(<TeamMember TeamMember={null} handleAdd={handleAdd}
+        team.push(<TeamMember key={'12313'} TeamMember={null} handleAdd={handleAdd}
                                   handleSwap={handleSwap} index={team.length} handleRemove={handleRemove}/>)
     }
     return (

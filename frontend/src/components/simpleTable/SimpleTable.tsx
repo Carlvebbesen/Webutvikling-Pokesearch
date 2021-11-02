@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -8,6 +8,7 @@ import style from './SimpleTable.module.css';
 import SortingButtonsList from '../sort/sortingButtonsList';
 import { FilteredPokemon, Pokemon } from '../../utils/Pokemon';
 import TableListRow from '../tableListRow/tableListRow';
+import useWindowSize from '../../utils/useWindowSize';
 
 
 interface iSimpleTable {
@@ -22,6 +23,9 @@ interface iSimpleTable {
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
+
+    const [width, height] = useWindowSize();
+
     return (
         <Paper key={'TableWrapper'}>
             <Table key={'TableRoot'} stickyHeader className={style.table} aria-label='sticky table'>
@@ -39,6 +43,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     align={'center'}
                     key={'TablePagination'}
                     rowsPerPageOptions={[10, 25, 50]}
+                    labelRowsPerPage={width > 450 ? 'Rows per page' : ''}
                     count={props.data.count}
                     page={props.page}
                     rowsPerPage={props.rowsPerPage}

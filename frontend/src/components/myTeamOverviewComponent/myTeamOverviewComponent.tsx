@@ -23,13 +23,13 @@ const MyTeamOverviewComponent = () => {
                 name: name,
                 pokemons: team.map(pokemon => pokemon.entry_number),
             }}});
-                toast.success("The team was added to the database!")
+                toast.success("The team was added to the database!", {autoClose: 2000})
                 setName("");
                 setTeam([]);
         }
         
     catch (error) {
-            toast.error("A team with the given name already exist")
+            toast.error("A team with the given name already exist", {autoClose: 2000})
             setName("");
         }
     }

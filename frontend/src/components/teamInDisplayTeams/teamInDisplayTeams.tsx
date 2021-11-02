@@ -14,7 +14,8 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
 
     const useStyles =  makeStyles((theme) => ({
         teamContainer: {
-            marginBottom: "35px"
+            marginBottom: "35px",
+            padding: '20px',
         },
         pokeName: {
             [theme.breakpoints.down("xs")]: {
@@ -42,17 +43,17 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
             <h3 style={{textAlign: "center"}}> {team.name} </h3>
             <Grid container spacing={2} className={classes.teamContainer}>
                 {team.pokemon.map((poke, number) =>
-                    <Grid item xs={6} key={number}sx={{cursor: "pointer"}} onClick={()=> pokemonClicked(poke.entry_number)}>
+                    <Grid item xs={6} key={number} sx={{cursor: "pointer"}} onClick={()=> pokemonClicked(poke.entry_number)}>
                         <Card className={classes.pokeCard}>
-                            <CardContent>
+                            <CardContent sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                                 <Typography>
-                                    <img height="60" src={poke.sprite_url} alt={poke.name} />
+                                    <img height="70" src={poke.sprite_url} alt={poke.name} />
                                 </Typography>
                                 <Typography className={classes.pokeName}>
                                     {poke.name}
                                 </Typography>
                                 <Typography>
-                                    {poke.pokeTypes.map((type, number) => <img title={type} key={number} height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
+                                    {poke.pokeTypes.map((type, number) => <img title={type} key={number} height="30" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
                                 </Typography>
                             </CardContent>
                         </Card>
