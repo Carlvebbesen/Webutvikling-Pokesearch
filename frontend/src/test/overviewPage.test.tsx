@@ -4,14 +4,10 @@ import OverviewPage from '../../src/pages/Overview';
 import {GET_POKEMON_BY_ID, GET_FILTERED_POKEMONS} from "../queries"
 import TableListRow from "../components/tableListRow/tableListRow";
 import {Pokemon, Stats} from "../utils/Pokemon";
-import Popup from "../components/popup/Popup";
-import {RecoilRoot, atom, useRecoilValue} from 'recoil';
-import {render} from "@testing-library/react";
-import {useEffect} from "react";
-import Navbar from "../components/navbar/Navbar";
 import SortingButton from "../components/sort/sortingButton";
 import {StatTable} from "../components/statTable/statTable";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import Team from "../components/team/Team";
+import Filter from "../components/filter/Filter";
 
 
 
@@ -220,4 +216,18 @@ it('renders stat table without error', () => {
     expect(correct_span).toContain('4');
     expect(correct_span).toContain('5');
     expect(correct_span).toContain('6');
+});
+
+
+it('renders filter without error', () => {
+    const component = TestRenderer.create(
+        <MockedProvider mocks={mocks} addTypename={false}>
+            <Filter name={""} rating={0} setName={()=>{}} setRating={()=>{}} setType={()=>{}} type={[""]}/>
+        </MockedProvider>
+    );
+    const correct_input = component.root.findAllByType("input");
+    expect(correct_input.length).toBeGreaterThanOrEqual(13) //one for each half a star = 11 + Name and type
+    const correct_p = component.root.findAllByType("p").map(a => a.children).join("");
+    expect(correct_p).toContain('Minimum rating:');
+
 });
