@@ -37,7 +37,7 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
     const classes = useStyles();
 
     return (
-        <div>
+        <div data-cy={`team-${team.name}`}>
             <h3> {team.name} </h3>
             <Grid container spacing={2} className={classes.teamContainer}>
                 {team.pokemon.map((poke, number) =>

@@ -7,6 +7,7 @@ import {Pokemon} from "../../utils/Pokemon";
 import { useRecoilState} from "recoil";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { pokemonTeam } from "../../store";
+import { BsFillPlusSquareFill, BsTrash, BsArrowRepeat } from 'react-icons/bs';
 
 interface iTeamMember {
     TeamMember: Pokemon | null
@@ -21,21 +22,21 @@ const TeamMember: FC<iTeamMember> = ({TeamMember, handleAdd, handleRemove, handl
 
     if (TeamMember !== null) {
         return (
-            <div className={style.teamMember}>
+            <div data-cy={`team-${TeamMember.name}`} className={style.teamMember}>
                 <div className={style.innerTeamMember}>
                     <img className={style.teamSprite} src={TeamMember.sprite_url} alt="pokemonTeamMembers"/>
                     <p>{capitalize(TeamMember.name)}</p></div>
                 <div className={style.innerTeamMember}>
-                    <SwapHorizontalCircleOutlinedIcon className={style.removeButton}
+                    <BsArrowRepeat data-cy={`swap-${TeamMember.name}`} className={style.removeButton}
                                                       onClick={() => handleSwap(index)}/>
-                    <HighlightOffIcon className={style.removeButton} onClick={() => handleRemove(index)}/>
+                    <BsTrash data-cy={`trash-${TeamMember.name}`} className={style.removeButton} onClick={() => handleRemove(index)}/>
                 </div>
             </div>
         )
     }
     return (
         <div className={style.emptyTeamMember}>
-            <AddCircleOutlineIcon className={style.addButton} onClick={handleAdd}/>
+            <BsFillPlusSquareFill data-cy="add-pokemon-to-team" className={style.addButton} onClick={handleAdd}/>
         </div>
     )
 }
@@ -47,9 +48,13 @@ interface iTeam {
 
 const Team: FC<iTeam> = ({currentPokemon}) => {
     const [pokemons, setPokemons] = useRecoilState(pokemonTeam)
-    const team = pokemons.map((pokemon, index) => <TeamMember TeamMember={pokemon}
-                                                                  handleAdd={handleAdd} handleSwap={handleSwap}
-                                                                  index={index} handleRemove={handleRemove}/>)
+    const team = pokemons.map((pokemon, index) =>
+        <TeamMember
+            TeamMember={pokemon}
+            handleAdd={handleAdd}
+            handleSwap={handleSwap}
+            index={index}
+            handleRemove={handleRemove}/>)
 
     function handleSwap(remove_index: number) {
         let copy = pokemons
@@ -87,7 +92,7 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
     }
     return (
         <div className={style.team}>
-            <h4>Current Team</h4>
+            <h4>Add pokemon to current team</h4>
             <div className={style.wrapperTeams}>
                 {team}
             </div>

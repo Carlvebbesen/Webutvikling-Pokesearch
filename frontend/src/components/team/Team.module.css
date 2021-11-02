@@ -8,21 +8,18 @@
 }
 
 .teamMember{
-    background-color: lightblue;
+    background-color: white;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-radius: 20px;
-    border: solid 0.5px grey;
+    border: solid 1px #e43e71;
     justify-content: space-between;
     padding-left: 10px;
     padding-right: 20px;
     margin-top: 3px;
     height: 60px;
     width: 250px;
-}
-.teamMember:hover{
-    background-color: lightgreen;
 }
 
 .emptyTeamMember{
@@ -38,17 +35,20 @@
 
 
 .removeButton{
-    color: red;
+    color: #6600cd;
+    margin-left: 10px;
 }
 .removeButton:hover{
-    color: black;
+    cursor: pointer;
+    color: #400080;
 }
 
 .addButton{
-    color: green;
+    color: #6600cd;
 }
 .addButton:hover{
-    color: black;
+    cursor: pointer;
+    color: #400080;
 }
 
 .team{

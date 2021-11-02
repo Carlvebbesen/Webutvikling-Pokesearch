@@ -35,6 +35,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
 
             </Table>
                 <TablePagination
+                    data-cy='pagination-table'
                     align={'center'}
                     key={'TablePagination'}
                     rowsPerPageOptions={[10, 25, 50]}
