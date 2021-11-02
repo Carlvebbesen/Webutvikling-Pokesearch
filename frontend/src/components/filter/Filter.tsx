@@ -65,14 +65,14 @@ const Filter: FC<iFilter> = (props) => {
 
     return (
         <div className={style.filter}>
-            <TextField sx={{m: 1, width: 300}}
+            <TextField sx={{m: 1, width: 200}}
                        id="outlined-search"
                        label="Name"
                        type="search"
                        value={props.name}
                        onChange={(event) => props.setName(event.target.value)}
             />
-            <FormControl sx={{m: 1, width: 300}}>
+            <FormControl sx={{m: 1, width: 200}}>
                 <InputLabel id="demo-multiple-chip-label">Type (Max 2)</InputLabel>
                 <Select
                     labelId="multiple-chip-label"
