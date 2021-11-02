@@ -74,7 +74,7 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
                 weight: currentPokemon.weight,
                 rating: currentPokemon.rating,
                 number_of_ratings: currentPokemon.number_of_ratings,
-                usage_percentage: currentPokemon.usage_percentage,
+                usage_count: currentPokemon.usage_count,
                 sprite_url: currentPokemon.sprite_url,
                 id: currentPokemon.entry_number}]))
             }

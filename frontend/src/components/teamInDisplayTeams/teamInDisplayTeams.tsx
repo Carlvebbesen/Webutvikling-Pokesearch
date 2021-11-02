@@ -5,17 +5,18 @@ import {Card, CardContent, Grid, Typography} from "@mui/material";
 import { Team } from '../../utils/Pokemon';
 
 interface IteamProps {
-    team: Team
+    team: Team,
+    pokemonClicked: (pokemonId: number)=> void
 }
 
 
-export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
+export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
     return (
         <div style={{padding: "15px 0px"}}>
             <div className={styles.teamName}> {team.name} </div>
             <Grid container spacing={2}>
                 {team.pokemon.map((poke) =>
-                    <Grid item xs={4}>
+                    <Grid sx={{cursor: "pointer"}} item xs={4} onClick={()=> pokemonClicked(poke.entry_number)}>
                         <Card>
                             <CardContent>
                                 <Typography>

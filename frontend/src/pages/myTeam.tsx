@@ -10,7 +10,7 @@ export type Pokemon = {
     stats: ({ name: string; value: number })[],
     weight: number,
     rating: number,
-    usage_percentage: number,
+    usage_count: number,
     sprite_url: string
 }
 

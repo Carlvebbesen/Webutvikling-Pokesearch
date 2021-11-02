@@ -12,7 +12,7 @@ interface TableListRowProps {
 const TableListRow: React.FC<TableListRowProps> = ({pokemon, setPopUpShow}) => {
     return (
         
-        <TableRow onClick={() => setPopUpShow(pokemon.entry_number)} hover={true} key={pokemon.entry_number}>
+        <TableRow sx={{cursor:"pointer"}} onClick={() => setPopUpShow(pokemon.entry_number)} hover={true} key={pokemon.entry_number}>
             <TableCell padding="none" align="center" key={pokemon.entry_number + 10000}>
                 <img src={pokemon.sprite_url} alt="pokemon"/>
             </TableCell>

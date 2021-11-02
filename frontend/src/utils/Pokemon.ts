@@ -6,7 +6,7 @@ export interface Pokemon {
     weight: number,
     rating: number,
     number_of_ratings: number,
-    usage_percentage: number,
+    usage_count: number,
     sprite_url: string
 }
 
@@ -27,6 +27,7 @@ export interface FilteredPokemon {
 
 export type PokemonInTeam = {
     name: string,
+    entry_number: number,
     pokeTypes: string[],
     sprite_url: string
 }

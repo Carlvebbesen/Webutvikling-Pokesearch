@@ -40,7 +40,7 @@ query GetPokemonById($input: PokemonByIdInput){
             weight,
             rating,
             rating_count,
-            usage_percentage,
+            usage_count,
             sprite_url,
     }
 }
@@ -54,6 +54,7 @@ query GetAllTeams{
         name,
         pokeTypes,
         sprite_url,
+        entry_number,
     },
     }
 }
