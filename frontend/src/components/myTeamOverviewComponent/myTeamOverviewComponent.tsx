@@ -39,12 +39,11 @@ const MyTeamOverviewComponent = () => {
             {loading ? <CircularProgress/> :team.length === 0 ?
                 <div>
                     <div className={styles.emptyTeam}>
-                        You have not chosen any pokemon for your team. Please go to Database and select some for your team.
+                        You have not chosen any pokemon for your team. Please go to Database and select some you like.
                     </div>
                     <div className={styles.message}>
                         Maybe you can get inspired by some of the teams below
                     </div>
-
                 </div>
 
                 :
