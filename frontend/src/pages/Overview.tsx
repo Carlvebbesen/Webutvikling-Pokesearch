@@ -6,8 +6,7 @@ import {useQuery} from "@apollo/client";
 import {GET_FILTERED_POKEMONS} from "../queries";
 import {FilterInput} from "../utils/graphql";
 import Popup from "../components/popup/Popup";
-import Navbar from "../components/navbar/Navbar";
-import Backdrop from "../components/backdrop/backdrop";
+import BackgroundPopUp from "../components/backgroundPopup/backgroudPopUp";
 
 const OverviewPage = () => {
     //popup
@@ -82,36 +81,39 @@ const OverviewPage = () => {
 
 
     return (
-        <div className={style.overview}>
-            {pokemonId &&
-            <Popup
-                setOpen={(id:number|null)=>setPokemonId(id)}
-                pokemonId={pokemonId}/>
-            }
-            {pokemonId && <Backdrop show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
-            <Navbar/>
-            <Filter
-                name={name}
-                setName={changeName}
-                rating={filterInput.rating ?? 0}
-                setRating={changeRating}
-                setType={changeType}
-                type={filterInput.pokeTypes ?? []}/>
-            {loading || error ?
-                <p>Loading ...</p>
-                :
-                <SimpleTable
-                    activeSortButton={filterInput.sortBy}
-                    sortPokemon={changeSortBy}
-                    rowsPerPage={filterInput.limit}
-                    page={page}
-                    changePage={changePage}
-                    changeRowsPerPage={changeRowsPerPage}
-                    setPopUpId={setPokemonId}
-                    data={data.getFilteredPokemon}
-                />
-            }
-        </div>
+
+            <div className={style.overview}>
+
+                {pokemonId &&
+                <Popup
+                    setOpen={(id:number|null)=>setPokemonId(id)}
+                    pokemonId={pokemonId}/>
+                }
+                {pokemonId && <BackgroundPopUp show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
+
+                <Filter
+                    name={name}
+                    setName={changeName}
+                    rating={filterInput.rating ?? 0}
+                    setRating={changeRating}
+                    setType={changeType}
+                    type={filterInput.pokeTypes ?? []}/>
+                {loading || error ?
+                    <p>Loading ...</p>
+                    :
+                    <SimpleTable
+                        activeSortButton={filterInput.sortBy}
+                        sortPokemon={changeSortBy}
+                        rowsPerPage={filterInput.limit}
+                        page={page}
+                        changePage={changePage}
+                        changeRowsPerPage={changeRowsPerPage}
+                        setPopUpId={setPokemonId}
+                        data={data.getFilteredPokemon}
+                    />
+                }
+            </div>
+
     )
 }
 

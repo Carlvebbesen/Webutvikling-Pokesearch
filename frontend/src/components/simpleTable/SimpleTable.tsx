@@ -8,7 +8,6 @@ import style from './SimpleTable.module.css';
 import SortingButtonsList from '../sort/sortingButtonsList';
 import { FilteredPokemon, Pokemon } from '../../utils/Pokemon';
 import TableListRow from '../tableListRow/tableListRow';
-import { TableContainer } from '@mui/material';
 
 
 interface iSimpleTable {
@@ -25,7 +24,6 @@ interface iSimpleTable {
 const SimpleTable: FC<iSimpleTable> = (props) => {
     return (
         <Paper key={'TableWrapper'}>
-                <TableContainer>
             <Table key={'TableRoot'} stickyHeader className={style.table} aria-label='sticky table'>
             <TableHead key={'TableHeader'}>
                         <SortingButtonsList key={'SortingButtonList'} activeButton={props.activeSortButton} sortByValue={props.sortPokemon}
@@ -36,7 +34,6 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     </TableBody>
 
             </Table>
-                </TableContainer>
                 <TablePagination
                     align={'center'}
                     key={'TablePagination'}

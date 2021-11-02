@@ -6,6 +6,7 @@ import "./index.css"
 import {MyTeam} from "./pages/myTeam";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from './components/navbar/Navbar';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 draggable
                 pauseOnHover/>
             <BrowserRouter>
+                <Navbar/>
                 <Switch>
                     <Route exact path={"/prosjekt3/"}>
                         <OverviewPage/>
