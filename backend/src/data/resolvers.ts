@@ -28,8 +28,10 @@ export const resolvers: IResolvers = {
             let sortingOptions: SortOptions = {}
             if (args.input.sortBy !== undefined) {
                 sortingOptions[`stats.${args.input.sortBy}`] = args.input.sortDesc ? -1 : 1;
+                sortingOptions.entry_number = 1;
+            } else {
+                sortingOptions.entry_number = args.input.sortDesc ? -1 : 1;
             }
-            sortingOptions.entry_number = 1;
 
             const searchCount = Pokemons.countDocuments(query);
             query.sort(sortingOptions).skip(args.input.offset).limit(args.input.limit);
