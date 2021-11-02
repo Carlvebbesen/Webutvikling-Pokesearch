@@ -74,6 +74,7 @@ const OverviewPage = () => {
         const newState = filterInput;
         newState.sortBy = name !== "pokemonId" ? name : undefined;
         newState.sortDesc = decending;
+        newState.offset = 0;
         setFilterInput(newState);
         setPage(0);
         refetch();
