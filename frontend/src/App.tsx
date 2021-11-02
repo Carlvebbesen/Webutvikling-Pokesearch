@@ -23,6 +23,7 @@ function App() {
                 draggable
                 pauseOnHover/>
             <BrowserRouter>
+                <Navbar/>
                 <Switch>
                     <Route exact path={"/prosjekt3"}>
                         <OverviewPage/>
