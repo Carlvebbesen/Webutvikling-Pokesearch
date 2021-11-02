@@ -5,7 +5,7 @@ import App from '../App';
 import Filter from '../components/filter/Filter';
 import Popup from '../components/popup/Popup';
 import SimpleTable from '../components/simpleTable/SimpleTable';
-import { mocks, filteredData } from './testData';
+import {filteredData, mockFilter } from './testData';
 import SortingButtonsList from '../components/sort/sortingButtonsList';
 import SortingButton from '../components/sort/sortingButton';
 import Stats from '../components/stats/Stats';
@@ -16,7 +16,7 @@ Enzyme.configure({ adapter: new ReactSixteenAdapter() });
 
 it('Snapshot test for App component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <App/>
       </MockedProvider>
     )
@@ -24,7 +24,7 @@ it('Snapshot test for App component', () => {
   });
 it('Snapshot test for Backdrop component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <BackgroundPopUp clicked={()=>{}} show={true}/>
       </MockedProvider>
     )
@@ -32,7 +32,7 @@ it('Snapshot test for Backdrop component', () => {
   });
 it('Snapshot test for Filter component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <Filter type={[]} name={''} rating={0} setType={()=>{}} setName={()=>{}} setRating={()=>{}}/>
       </MockedProvider>
     )
@@ -40,7 +40,7 @@ it('Snapshot test for Filter component', () => {
   });
 it('Snapshot test for PopUp component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <Popup pokemonId={1} setOpen={()=> {}}/>
       </MockedProvider>
     )
@@ -48,7 +48,7 @@ it('Snapshot test for PopUp component', () => {
   });
   it('Snapshot test for SimpleTable component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <SimpleTable data={filteredData} changePage={()=>{}} changeRowsPerPage={()=>{}} setPopUpId={()=>{}} page={0} rowsPerPage={25} activeSortButton={"hp"} sortPokemon={()=>{}}/>
       </MockedProvider>
     )
@@ -56,7 +56,7 @@ it('Snapshot test for PopUp component', () => {
   });
   it('Snapshot test for SortList component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <SortingButtonsList sortByValue={()=>{}} activeButton={"HP"}/>
       </MockedProvider>
     )
@@ -64,7 +64,7 @@ it('Snapshot test for PopUp component', () => {
   });
   it('Snapshot test for SortButton component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <SortingButton name={'HP'} currentSort={undefined} sort={()=>{}}/>
       </MockedProvider>
     )
@@ -72,7 +72,7 @@ it('Snapshot test for PopUp component', () => {
   });
   it('Snapshot test for Stats component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <Stats Hp={50} Atk={50} Def={50} SpAtk={50} SpDef={50} Speed={50}/>
       </MockedProvider>
     )
@@ -81,7 +81,7 @@ it('Snapshot test for PopUp component', () => {
   
   it('Snapshot test for ListPokemonRow component', () => {
     const component = shallow(
-      <MockedProvider mocks={mocks} addTypename={false}>
+      <MockedProvider mocks={mockFilter} addTypename={false}>
         <TableListRow pokemon={filteredData.pokemons[0]} setPopUpShow={()=>{}}/>
       </MockedProvider>
     )
