@@ -9,6 +9,7 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     background-color: #FAFAFA;
+    padding-top: 20px;
 }
 
 @media only screen and (min-width: 600px) {

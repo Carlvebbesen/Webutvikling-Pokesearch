@@ -23,20 +23,55 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
         }
     }
 
-    const useStyles =  makeStyles({
+    const useStyles =  makeStyles((theme) => ({
         accDet: {
-            display: "grid"
+            display: "grid",
         },
+
+        acc: {
+            marginBottom: "20px",
+        },
+
         typ: {
             width: "33%",
             flexShrink: 0,
             alignSelf: "center",
-            textTransform: "capitalize"
+            textTransform: "capitalize",
         },
-        acc: {
-            marginBottom: "20px"
+
+        pokeName: {
+            width: "33%",
+            flexShrink: 0,
+            alignSelf: "center",
+            textTransform: "capitalize",
+            [theme.breakpoints.down("xs")]: {
+                fontSize: "15px"
+            }
+        },
+
+        pokeType: {
+
+            [theme.breakpoints.down("xs")]: {
+                height: "20px",
+                width: "auto"
+            }
+        },
+
+        pokeImage: {
+
+            [theme.breakpoints.down("xs")]: {
+                height: "55px",
+                width: "auto"
+            }
+        },
+
+        removeButton: {
+            [theme.breakpoints.down("xs")]: {
+                height: "25px",
+                fontSize: "10px"
+            }
         }
-    });
+    }));
 
     const classes = useStyles();
 
@@ -45,20 +80,18 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
                 <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
 
                         <Typography className={classes.typ}>
-                            <img src={poke.pokemon.sprite_url} alt={`${poke.pokemon.name}`}/>
+                            <img title={poke.pokemon.name} className={classes.pokeImage} src={poke.pokemon.sprite_url} alt={`${poke.pokemon.name}`}/>
                         </Typography>
-                        <Typography className={classes.typ}>
+                        <Typography className={classes.pokeName}>
                             {poke.pokemon.name}
                         </Typography>
                         <Typography className={classes.typ}>
-                            {poke.pokemon.pokeTypes.map(type => <img style={{marginRight: "10px"}} height="30" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                            {poke.pokemon.pokeTypes.map(type => <img className={classes.pokeType} style={{marginRight: "10px"}} height="30" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
                         </Typography>
 
                     </AccordionSummary >
                 <AccordionDetails className={classes.accDet}>
-                    <div>
-                        <Button variant="contained" onClick={removeFromTeam}>Remove from team</Button>
-                    </div>
+                        <Button className={classes.removeButton} variant="contained" onClick={removeFromTeam}>Remove from team</Button>
                 </AccordionDetails>
             </Accordion>
 

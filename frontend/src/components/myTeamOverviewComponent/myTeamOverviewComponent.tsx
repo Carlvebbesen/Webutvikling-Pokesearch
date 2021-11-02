@@ -39,12 +39,11 @@ const MyTeamOverviewComponent = () => {
             {loading ? <CircularProgress/> :team.length === 0 ?
                 <div>
                     <div className={styles.emptyTeam}>
-                        You have not chosen any pokemon for your team. Please go to Database and select some for your team.
+                        You have not chosen any pokemon for your team. Please go to Database and select some you like.
                     </div>
                     <div className={styles.message}>
-                        Maybe you can get inspired by some of the teams below
+                        Maybe you can get some inspiration from the teams below
                     </div>
-
                 </div>
 
                 :
@@ -52,13 +51,21 @@ const MyTeamOverviewComponent = () => {
                     {team.map((poke, key) =>
                         <PokemonInTeamComponent pokemon={poke} key={key}/>
                 )}
-                <TextField value={name}
-                disabled={team.length ===0}
-                id="outlined-basic" variant="outlined" label="A unique Team Name"
-                onChange={(e) => setName(String(e.target.value))}/>
+                <TextField
+                    data-cy="team-name-input"
+                    value={name}
+                    disabled={team.length === 0}
+                    id="outlined-basic"
+                    variant="outlined"
+                    label="A unique Team Name"
+                    onChange={(e) => setName(String(e.target.value))}/>
                 <Button
-                disabled={team.length===0|| name.trim() === ""}
-                variant="contained" onClick={saveTeam}>Save team</Button>
+                    data-cy="team-submit"
+                    disabled={team.length === 0 || name.trim() === ""}
+                    variant="contained"
+                    onClick={saveTeam}>
+                        Save team
+                </Button>
                 </div>
             }
 

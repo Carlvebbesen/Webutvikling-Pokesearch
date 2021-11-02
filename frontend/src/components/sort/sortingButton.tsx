@@ -18,7 +18,7 @@ interface iSortingButton {
         sort(name as string, newState);
     }
     return (
-        <button className={style.sortingButton} onClick={sortBy}>
+        <button data-cy={name} className={style.sortingButton} onClick={sortBy}>
             <p>{capitalize(name.replace('_', " "))}</p>
             {currentSort !== name
                 ? <FilterAltIcon/> :

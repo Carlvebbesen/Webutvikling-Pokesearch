@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import styles from "./teamInDisplayTeams.module.css";
 import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 import { Team } from '../../utils/Pokemon';
+import {makeStyles} from "@material-ui/core/styles";
 
 interface IteamProps {
     team: Team,
@@ -11,24 +11,48 @@ interface IteamProps {
 
 
 export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
+
+    const useStyles =  makeStyles((theme) => ({
+        teamContainer: {
+            marginBottom: "35px"
+        },
+        pokeName: {
+            [theme.breakpoints.down("xs")]: {
+                fontSize: "15px"
+            }
+
+        },
+        pokeCard: {
+            [theme.breakpoints.down("xs")]: {
+                height: "170px"
+            }
+        },
+        pokeType: {
+
+        },
+        pokeImage: {
+
+        }
+    }));
+
+    const classes = useStyles();
+
     return (
-        <div style={{padding: "15px 0px"}}>
-            <div className={styles.teamName}> {team.name} </div>
-            <Grid container spacing={2}>
-                {team.pokemon.map((poke) =>
-                    <Grid sx={{cursor: "pointer"}} item xs={4} onClick={()=> pokemonClicked(poke.entry_number)}>
-                        <Card>
+        <div data-cy={`team-${team.name}`}>
+            <h3 style={{textAlign: "center"}}> {team.name} </h3>
+            <Grid container spacing={2} className={classes.teamContainer}>
+                {team.pokemon.map((poke, number) =>
+                    <Grid item xs={6} key={number}sx={{cursor: "pointer"}} onClick={()=> pokemonClicked(poke.entry_number)}>
+                        <Card className={classes.pokeCard}>
                             <CardContent>
                                 <Typography>
-                                    <img height="60" src={poke.sprite_url} alt={poke.name} className={styles.pict}/>
+                                    <img height="60" src={poke.sprite_url} alt={poke.name} />
+                                </Typography>
+                                <Typography className={classes.pokeName}>
+                                    {poke.name}
                                 </Typography>
                                 <Typography>
-                                <div className={styles.name}>{poke.name}</div>
-                                </Typography>
-                                <Typography>
-                                    <div className={styles.types} >
-                                        {poke.pokeTypes.map(type => <img height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
-                                    </div>
+                                    {poke.pokeTypes.map((type, number) => <img title={type} key={number} height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
                                 </Typography>
                             </CardContent>
                         </Card>

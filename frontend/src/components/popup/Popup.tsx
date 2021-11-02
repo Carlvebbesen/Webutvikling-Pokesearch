@@ -51,73 +51,81 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
 
     return (
         <div id="inner" className={style.popupInner}>
-            {loading || error ? <CircularProgress/>
-                :<>
-                <div className={style.wrapper}>
-
-                <div className={style.container}>
-                    <div
-                        className={style.close}>
-                        <BsXSquare onClick={() => {
-                            setOpen(null)
-                        }}/>
-                    </div>
-                    <div className={style.spriteSection}>
-                        <h2>{capitalize(data?.getPokemonById.name)}</h2>
-                        <img
-                            className={style.spritePic}
-                            src={data?.getPokemonById.sprite_url}
-                            alt={"Picture of " + data?.getPokemonById.name}
-                            title={data?.getPokemonById.name}
-                            />
-                        <div className={style.dataEntry}>
-                            <span>Dex number</span>
-                            <span>{pokemonId}</span>
-                        </div>
-                        <div className={style.dataEntry}>
-                            <span>Typing</span>
-                            <div>
-                                {data?.getPokemonById.pokeTypes.map((type: string) =>
-                                    <img
-                                    style={{marginRight: "10px"}}
-                                    height="20"
-                                    src={getPokeTypeIcon(type)}
-                                    alt={type}
-                                    title={type}
-                                    />)}
+            {loading || error
+                ? <CircularProgress/>
+                : <>
+                    <div className={style.wrapper}>
+                        <div className={style.container}>
+                            <div
+                                data-cy="close-popup"
+                                className={style.close}>
+                                <BsXSquare onClick={() => {
+                                    setOpen(null)
+                                }}/>
+                            </div>
+                            <div className={style.headerSection} >
+                                <h2>{capitalize(data?.getPokemonById.name)}</h2>
+                                <img
+                                    className={style.spritePic}
+                                    src={data?.getPokemonById.sprite_url}
+                                    alt={"Picture of " + data?.getPokemonById.name}
+                                    title={data?.getPokemonById.name}/>
+                            </div>
+                            <div className={style.infoSection}>
+                                <h3>Info</h3>
+                                <div className={style.dataEntry}>
+                                    <span>Dex number</span>
+                                    <span>{pokemonId}</span>
+                                </div>
+                                <div className={style.dataEntry}>
+                                    <span>Typing</span>
+                                    <div>
+                                        {data?.getPokemonById.pokeTypes.map((type: string) =>
+                                            <img
+                                                style={{marginRight: "10px"}}
+                                                height="20"
+                                                src={getPokeTypeIcon(type)}
+                                                alt={type}
+                                                title={type}
+                                                />)
+                                                }
+                                    </div>
+                                </div>
+                                <div className={style.dataEntry}>
+                                    <span>Weight</span>
+                                    <span>{(data?.getPokemonById.weight/10).toFixed(1)} kg</span>
+                                </div>
+                                <div className={style.dataEntry}>
+                                    <span>{`Average rating of ${data?.getPokemonById.rating_count}`}</span>
+                                    <Rating
+                                        data-cy="current-rating"
+                                        name="read-only"
+                                        defaultValue={0}
+                                        precision={0.1}
+                                        value={data?.getPokemonById.rating}
+                                        readOnly
+                                        size="small"/>
+                                </div>
+                                <div className={style.dataEntry}>
+                                    <span>Team usage count</span>
+                                    <span>{data?.getPokemonById.usage_count}</span>
+                                </div>
+                            </div>
+                            <div className={style.dataSection}>
+                                <StatTable stats={[
+                                    {name: 'hp', value: data?.getPokemonById.stats.hp},
+                                    {name: 'attack', value: data?.getPokemonById.stats.attack},
+                                    {name: 'defense', value: data?.getPokemonById.stats.defense},
+                                    {name: 'special-attack', value: data?.getPokemonById.stats.special_attack},
+                                    {name: 'sepcial-defense', value: data?.getPokemonById.stats.special_defense},
+                                    {name: 'speed', value: data?.getPokemonById.stats.speed},
+                                ]} />
                             </div>
                         </div>
-                        <div className={style.dataEntry}>
-                            <span>Weight</span>
-                            <span>{(data?.getPokemonById.weight/10).toFixed(1)} kg</span>
-                        </div>
-                        <div className={style.dataEntry}>
-                            <span>{`Average rating of ${data?.getPokemonById.rating_count}`}</span>
-                            <Rating
-                                name="read-only"
-                                defaultValue={0}
-                                precision={0.1}
-                                value={data?.getPokemonById.rating}
-                                readOnly
-                                size="small"/>
-                        </div>
-                        <div className={style.dataEntry}>
-                            <span>Team usage count</span>
-                            <span>{data?.getPokemonById.usage_count}</span>
-                        </div>
-                    </div>
-                    <div className={style.dataSection}>
-                        <StatTable stats={[
-                            {name: 'hp', value: data?.getPokemonById.stats.hp},
-                            {name: 'attack', value: data?.getPokemonById.stats.attack},
-                            {name: 'defense', value: data?.getPokemonById.stats.defense},
-                            {name: 'special-attack', value: data?.getPokemonById.stats.special_attack},
-                            {name: 'sepcial-defense', value: data?.getPokemonById.stats.special_defense},
-                            {name: 'speed', value: data?.getPokemonById.stats.speed},
-                        ]} />
                         <div>
                             <h5>Give rating</h5>
                             <Rating
+                                data-cy="rating-input"
                                 name="simple-controlled"
                                 value={rating}
                                 precision={0.5}
@@ -126,14 +134,11 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 }}
                                 disabled={disable}
                                 />
-                            <button className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
+                            <button data-cy="rating-submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
+                        <Team currentPokemon={data?.getPokemonById}/>   
                     </div>
-                </div>
-                <Team currentPokemon={data?.getPokemonById}/>   
-                </div>
-                </>
-                }
+                </>}
         </div>
     );
 }

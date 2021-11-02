@@ -70,11 +70,13 @@ const Filter: FC<iFilter> = (props) => {
                        label="Name"
                        type="search"
                        value={props.name}
-                       onChange={(event) => props.setName(event.target.value)}
+                       onChange={event => props.setName(event.target.value)}
+                       data-cy="name_input"
             />
-            <FormControl sx={{m: 1, width: 300}}>
+            <FormControl sx={{m: 1, width: 300}} data-cy="type-selector-container">
                 <InputLabel id="demo-multiple-chip-label">Type (Max 2)</InputLabel>
                 <Select
+                    data-cy="type-selector"
                     labelId="multiple-chip-label"
                     id="Type"
                     multiple
@@ -95,14 +97,15 @@ const Filter: FC<iFilter> = (props) => {
                                   key={type}
                                   value={type}
                                   style={getStyles(type, props.type, theme)}
+                                  data-cy={`type-option-${type}`}
                         >
-                            <><img style={{marginRight: "10px"}} height="20" alt="pokemonTypes" src={getPokeTypeIcon(type)}/>{type} </>
+                            <><img title={type} style={{marginRight: "10px"}} height="20" alt="pokemonTypes" src={getPokeTypeIcon(type)}/>{type} </>
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
             <div>
-                <p>minimum rating:</p>
+                <p>Minimum rating:</p>
                 <div onClick={()=> props.setRating(0)}>
                 <Rating
                     name="simple-controlled"
