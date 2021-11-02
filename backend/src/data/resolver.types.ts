@@ -41,7 +41,7 @@ export interface Pokemon {
     weight: number,
     rating: number,
     rating_count: number,
-    usage_percentage: number,
+    usage_count: number,
     sprite_url: string,
 }
 
