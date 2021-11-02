@@ -4,8 +4,6 @@ import StorageIcon from '@mui/icons-material/Storage';
 import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import {useHistory} from "react-router";
 
-
-
 const Navbar = ()=>{
     let history=useHistory();
 

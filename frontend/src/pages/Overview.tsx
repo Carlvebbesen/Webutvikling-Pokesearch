@@ -6,7 +6,6 @@ import {useQuery} from "@apollo/client";
 import {GET_FILTERED_POKEMONS} from "../queries";
 import {FilterInput} from "../utils/graphql";
 import Popup from "../components/popup/Popup";
-import Navbar from "../components/navbar/Navbar";
 import BackgroundPopUp from "../components/backgroundPopup/backgroudPopUp";
 
 const OverviewPage = () => {
