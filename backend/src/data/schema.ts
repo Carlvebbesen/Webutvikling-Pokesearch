@@ -9,7 +9,7 @@ export const typeDefs = gql`
         weight: Int,
         rating: Float,
         rating_count: Int,
-        usage_percentage: Float,
+        usage_count: Float,
         sprite_url: String,
     }
 

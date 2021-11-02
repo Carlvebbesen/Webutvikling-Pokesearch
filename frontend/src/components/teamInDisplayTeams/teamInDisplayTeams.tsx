@@ -5,11 +5,12 @@ import { Team } from '../../utils/Pokemon';
 import {makeStyles} from "@material-ui/core/styles";
 
 interface IteamProps {
-    team: Team
+    team: Team,
+    pokemonClicked: (pokemonId: number)=> void
 }
 
 
-export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
+export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
 
     const useStyles =  makeStyles((theme) => ({
         teamContainer: {
@@ -38,10 +39,10 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
 
     return (
         <div data-cy={`team-${team.name}`}>
-            <h3> {team.name} </h3>
+            <h3 style={{textAlign: "center"}}> {team.name} </h3>
             <Grid container spacing={2} className={classes.teamContainer}>
                 {team.pokemon.map((poke, number) =>
-                    <Grid item xs={6} key={number}>
+                    <Grid item xs={6} key={number}sx={{cursor: "pointer"}} onClick={()=> pokemonClicked(poke.entry_number)}>
                         <Card className={classes.pokeCard}>
                             <CardContent>
                                 <Typography>
@@ -51,7 +52,7 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team}) => {
                                     {poke.name}
                                 </Typography>
                                 <Typography>
-                                    {poke.pokeTypes.map((type, number) => <img key={number} height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
+                                    {poke.pokeTypes.map((type, number) => <img title={type} key={number} height="10" src={getPokeTypeIcon(type)} alt="PokeTypes" />)}
                                 </Typography>
                             </CardContent>
                         </Card>

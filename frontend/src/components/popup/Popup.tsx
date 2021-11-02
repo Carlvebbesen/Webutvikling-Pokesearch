@@ -32,7 +32,9 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
             setRating(parseInt(previousRating));
             setDisable(true);
         }
-    },[pokemonId]);
+        //to get the new team count if it is updated
+        refetch()
+    },[pokemonId, refetch]);
 
 
     const handleRating = () => {
@@ -66,7 +68,8 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 <img
                                     className={style.spritePic}
                                     src={data?.getPokemonById.sprite_url}
-                                    alt={"Picture of " + data?.getPokemonById.name}/>
+                                    alt={"Picture of " + data?.getPokemonById.name}
+                                    title={data?.getPokemonById.name}/>
                             </div>
                             <div className={style.infoSection}>
                                 <h3>Info</h3>
@@ -82,15 +85,18 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                                 style={{marginRight: "10px"}}
                                                 height="20"
                                                 src={getPokeTypeIcon(type)}
-                                                alt={type}/>)}
+                                                alt={type}
+                                                title={type}
+                                                />)
+                                                }
                                     </div>
                                 </div>
                                 <div className={style.dataEntry}>
                                     <span>Weight</span>
-                                    <span>{data?.getPokemonById.weight} kg</span>
+                                    <span>{(data?.getPokemonById.weight/10).toFixed(1)} kg</span>
                                 </div>
                                 <div className={style.dataEntry}>
-                                    <span>Average rating</span>
+                                    <span>{`Average rating of ${data?.getPokemonById.rating_count}`}</span>
                                     <Rating
                                         data-cy="current-rating"
                                         name="read-only"
@@ -101,8 +107,8 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                         size="small"/>
                                 </div>
                                 <div className={style.dataEntry}>
-                                    <span>Usage percentage</span>
-                                    <span>{data?.getPokemonById.usage_percentage}%</span>
+                                    <span>Team usage count</span>
+                                    <span>{data?.getPokemonById.usage_count}</span>
                                 </div>
                             </div>
                             <div className={style.dataSection}>

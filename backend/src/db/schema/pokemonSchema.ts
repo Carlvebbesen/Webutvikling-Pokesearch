@@ -23,7 +23,7 @@ export const pokemonSchema = new mongoose.Schema({
     rating_count: {
         type: Number,
     },
-    usage_percentage: {
+    usage_count: {
         type: Number,
     },
     sprite_url: {

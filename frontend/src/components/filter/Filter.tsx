@@ -99,7 +99,7 @@ const Filter: FC<iFilter> = (props) => {
                                   style={getStyles(type, props.type, theme)}
                                   data-cy={`type-option-${type}`}
                         >
-                            <><img style={{marginRight: "10px"}} height="20" alt="pokemonTypes" src={getPokeTypeIcon(type)}/>{type} </>
+                            <><img title={type} style={{marginRight: "10px"}} height="20" alt="pokemonTypes" src={getPokeTypeIcon(type)}/>{type} </>
                         </MenuItem>
                     ))}
                 </Select>

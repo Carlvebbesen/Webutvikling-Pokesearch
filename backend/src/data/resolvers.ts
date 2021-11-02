@@ -9,10 +9,10 @@ import { FilterInput, SortOptions, TeamInput, RatePokemonInput, Pokemon, GetPoke
 
 export const resolvers: IResolvers = {
     Query: {
-        getFilteredPokemon:(_, args: {input: FilterInput})=> {
+        getFilteredPokemon:async (_, args: {input: FilterInput})=> {
             const query = args.input.name
                 ? Pokemons.find({
-                    name: { $regex: `^${args.input.name}`, $options: 'is' }
+                    name: { $regex: args.input.name, $options: 'i' }
                 })
                 : Pokemons.find();
             if(args.input.pokeTypes && args.input.pokeTypes.length !== 0){
@@ -25,14 +25,15 @@ export const resolvers: IResolvers = {
                 rating: {$gte: args.input.rating},
                 })
             }
-
             let sortingOptions: SortOptions = {}
             if (args.input.sortBy !== undefined) {
                 sortingOptions[`stats.${args.input.sortBy}`] = args.input.sortDesc ? -1 : 1;
+                sortingOptions.entry_number = 1;
+            } else {
+                sortingOptions.entry_number = args.input.sortDesc ? -1 : 1;
             }
-            sortingOptions.entry_number = 1;
 
-            const searchCount = Pokemons.count(query);
+            const searchCount = Pokemons.countDocuments(query);
             query.sort(sortingOptions).skip(args.input.offset).limit(args.input.limit);
             return new Promise((resolve, reject) => {
                 resolve({pokemons:query.exec(),
@@ -71,13 +72,13 @@ export const resolvers: IResolvers = {
                     reject(new UserInputError("The team name specified is not unique."));
                 })
             }
-                var teams_count = await Teams.countDocuments();
-                var pokemons = await Pokemons.find().where('entry_number').in(args.input.pokemons).exec();
+                const pokemons: Pokemon[] = await Pokemons.find().where('entry_number').in(args.input.pokemons).exec();
             if (pokemons.length== 0 || pokemons.length> 6) {
                 return new Promise((resolve, reject) => {
                     reject(new UserInputError("You can't have an empty team or a team with more than 6 members"));
                 })
             }
+            await Pokemons.updateMany({entry_number: {$in: args.input.pokemons}}, {$inc:{"usage_count":1}});
             const newTeam = new Teams({
                 name: args.input.name,
                 pokemon: pokemons,

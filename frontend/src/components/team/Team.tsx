@@ -24,7 +24,7 @@ const TeamMember: FC<iTeamMember> = ({TeamMember, handleAdd, handleRemove, handl
         return (
             <div data-cy={`team-${TeamMember.name}`} className={style.teamMember}>
                 <div className={style.innerTeamMember}>
-                    <img className={style.teamSprite} src={TeamMember.sprite_url} alt="pokemonTeamMembers"/>
+                    <img className={style.teamSprite} src={TeamMember.sprite_url} alt={TeamMember.name} title={TeamMember.name}/>
                     <p>{capitalize(TeamMember.name)}</p></div>
                 <div className={style.innerTeamMember}>
                     <BsArrowRepeat data-cy={`swap-${TeamMember.name}`} className={style.removeButton}
@@ -79,7 +79,7 @@ const Team: FC<iTeam> = ({currentPokemon}) => {
                 weight: currentPokemon.weight,
                 rating: currentPokemon.rating,
                 number_of_ratings: currentPokemon.number_of_ratings,
-                usage_percentage: currentPokemon.usage_percentage,
+                usage_count: currentPokemon.usage_count,
                 sprite_url: currentPokemon.sprite_url,
                 id: currentPokemon.entry_number}]))
             }

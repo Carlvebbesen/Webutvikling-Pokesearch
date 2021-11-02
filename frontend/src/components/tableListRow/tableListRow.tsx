@@ -11,16 +11,16 @@ interface TableListRowProps {
 
 const TableListRow: React.FC<TableListRowProps> = ({pokemon, setPopUpShow}) => {
     return (
-        <TableRow data-cy={pokemon.name} onClick={() => setPopUpShow(pokemon.entry_number)} hover={true} key={pokemon.entry_number}>
+        <TableRow sx={{cursor:"pointer"}} data-cy={pokemon.name} onClick={() => setPopUpShow(pokemon.entry_number)} hover={true} key={pokemon.entry_number}>
             <TableCell padding="none" align="center" key={pokemon.entry_number + 10000}>
-                <img src={pokemon.sprite_url} alt="pokemon"/>
+                <img src={pokemon.sprite_url} alt={pokemon.name} title={pokemon.name}/>
             </TableCell>
             <TableCell data-cy="pokemon-name"  padding={"none"} align="center" key={pokemon.entry_number + 20000}>
                 <p style={{width: "100px"}}>{capitalize(pokemon.name)}</p>
             </TableCell>
             <TableCell data-cy="type-container" padding={"none"} align="center">
                 {pokemon.pokeTypes.map(type => <img key={`${type}${pokemon.entry_number}`} style={{marginRight: "10px"}} height="30"
-                                                    src={getPokeTypeIcon(type)} alt={type}/>)}
+                                                    src={getPokeTypeIcon(type)} alt={type} title={type}/>)}
             </TableCell>
             {Object.values(pokemon.stats).slice(1)
                 .map((value, index) => <TableCell data-cy={`stat_${index}`} className={style.statList}  padding={"none"} align={"center"}  key={index}>{value === null ? '-' : value}</TableCell>)}

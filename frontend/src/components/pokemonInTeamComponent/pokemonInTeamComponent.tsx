@@ -80,7 +80,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
                 <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
 
                         <Typography className={classes.typ}>
-                            <img  className={classes.pokeImage} src={poke.pokemon.sprite_url} alt={`${poke.pokemon.name}`}/>
+                            <img title={poke.pokemon.name} className={classes.pokeImage} src={poke.pokemon.sprite_url} alt={`${poke.pokemon.name}`}/>
                         </Typography>
                         <Typography className={classes.pokeName}>
                             {poke.pokemon.name}
