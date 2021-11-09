@@ -24,9 +24,9 @@ const TeamMember: FC<iTeamMember> = ({TeamMember, handleAdd, handleRemove, handl
                     <img className={style.teamSprite} src={TeamMember.sprite_url} alt={TeamMember.name} title={TeamMember.name}/>
                     <p>{capitalize(TeamMember.name)}</p></div>
                 <div className={style.innerTeamMember}>
-                    <BsArrowRepeat data-cy={`swap-${TeamMember.name}`} className={style.removeButton}
+                    <BsArrowRepeat data-testid="swap_button" data-cy={`swap-${TeamMember.name}`} className={style.removeButton}
                                                       onClick={() => handleSwap(index)}/>
-                    <BsTrash data-cy={`trash-${TeamMember.name}`} className={style.removeButton} onClick={() => handleRemove(index)}/>
+                    <BsTrash data-testid="remove_button" data-cy={`trash-${TeamMember.name}`} className={style.removeButton} onClick={() => handleRemove(index)}/>
                 </div>
             </div>
         )

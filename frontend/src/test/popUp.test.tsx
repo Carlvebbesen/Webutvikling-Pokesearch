@@ -38,7 +38,7 @@ const testPokemon1 = {
     usage_count: 2
 } as unknown as Pokemon
 
-const testPokemon2={
+const testPokemon2 = {
     name: "Blastoise",
     pokeTypes: ["water"],
     sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/9.png",
@@ -71,11 +71,100 @@ describe('Team tests: ', () => {
 
         const component = doc.getByTestId("add_button")
         fireEvent.click(component)
-        //fireEvent.change(component, {target: {value: 'Recoil'}});
-
         expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
         expect(onChange).toHaveBeenCalledTimes(2);
         expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
         expect(component).not.toBeInTheDocument() //Button should be removed
+    });
+
+    test('Able to add two members', () => {
+        let onChange = jest.fn();
+        let input = testPokemon1
+        const doc = render(
+            <RecoilRoot>
+                <RecoilObserver node={pokemonTeam} onChange={onChange}/>
+                <Team currentPokemon={input}/>
+            </RecoilRoot>
+        );
+        const component = doc.getByTestId("add_button")
+        fireEvent.click(component)
+
+        input = testPokemon2
+        doc.rerender(
+            <RecoilRoot>
+                <RecoilObserver node={pokemonTeam} onChange={onChange}/>
+                <Team currentPokemon={input}/>
+            </RecoilRoot>)
+
+        expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
+        expect(onChange).toHaveBeenCalledTimes(2);
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
+        const component1 = doc.getByTestId("add_button")
+        fireEvent.click(component1)
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})
+            , expect.objectContaining({name: "Blastoise"})]); // final state on render.
+        expect(onChange).toHaveBeenCalledTimes(3);
+    },);
+
+    test('Swap pokemon', () => {
+        let onChange = jest.fn();
+        let input = testPokemon1
+        const doc = render(
+            <RecoilRoot>
+                <RecoilObserver node={pokemonTeam} onChange={onChange}/>
+                <Team currentPokemon={input}/>
+            </RecoilRoot>
+        );
+        const component = doc.getByTestId("add_button")
+        fireEvent.click(component)
+
+        input = testPokemon2
+        doc.rerender(
+            <RecoilRoot>
+                <RecoilObserver node={pokemonTeam} onChange={onChange}/>
+                <Team currentPokemon={input}/>
+            </RecoilRoot>)
+
+        expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
+        expect(onChange).toHaveBeenCalledTimes(2);
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
+        const component1 = doc.getByTestId("swap_button")
+        fireEvent.click(component1)
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Blastoise"})]); // Charizard is swapped
+        expect(onChange).toHaveBeenCalledTimes(3);
+    });
+
+    test('Be able to delete members', () => {
+        let onChange = jest.fn();
+        let input = testPokemon1
+        const doc = render(
+            <RecoilRoot>
+                <RecoilObserver node={pokemonTeam} onChange={onChange}/>
+                <Team currentPokemon={input}/>
+            </RecoilRoot>
+        );
+        const component = doc.getByTestId("add_button")
+        fireEvent.click(component)
+
+        input = testPokemon2
+        doc.rerender(
+            <RecoilRoot>
+                <RecoilObserver node={pokemonTeam} onChange={onChange}/>
+                <Team currentPokemon={input}/>
+            </RecoilRoot>)
+
+        expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
+        expect(onChange).toHaveBeenCalledTimes(2);
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
+        const component1 = doc.getByTestId("remove_button")
+        fireEvent.click(component1)
+        expect(onChange).toHaveBeenCalledWith([]); // Charizard is removed
+        expect(onChange).toHaveBeenCalledTimes(3);
+    });
+});
+
+describe('Popup tests: ', () => {
+    test('Be able to send in rating', () => {
+
     });
 });
