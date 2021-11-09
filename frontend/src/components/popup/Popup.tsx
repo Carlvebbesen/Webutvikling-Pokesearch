@@ -48,6 +48,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
             toast.success("Rating submitted", {autoClose: 2000});
         });
     }
+    console.log("DATA", data as string)
 
     return (
         <div id="inner" className={style.popupInner}>

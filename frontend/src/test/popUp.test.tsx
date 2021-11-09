@@ -1,4 +1,3 @@
-import {act, renderRecoilHook} from 'react-recoil-hooks-testing-library';
 import {useRecoilValue, atom} from "recoil";
 import {FC, useEffect} from "react";
 import {fireEvent, render} from "@testing-library/react";
@@ -8,15 +7,19 @@ import {pokemonTeam} from "../store";
 import Popup from "../components/popup/Popup";
 import Team from "../components/team/Team";
 import {Pokemon} from "../utils/Pokemon";
+import {MockedProvider} from "@apollo/client/testing";
+import {GET_POKEMON_BY_ID} from "../queries";
 
 
 //https://www.npmjs.com/package/react-recoil-hooks-testing-library
+//https://www.youtube.com/watch?v=VjmAzW2lrR8&ab_channel=BenAwad
 
 export const RecoilObserver: FC<{ node: any, onChange: Function }> = (props) => {
     const value = useRecoilValue(props.node);
     useEffect(() => props.onChange(value), [props.onChange, value]);
     return null;
 };
+
 
 const testPokemon1 = {
     name: "Charizard",
@@ -163,8 +166,55 @@ describe('Team tests: ', () => {
     });
 });
 
+
+const mocks = [
+    {
+        request: {
+            query: GET_POKEMON_BY_ID,
+            variables: {input: {id: 6}}
+
+        },
+        result: {
+            data: {
+                getPokemonById: {
+                    entry_number: 6,
+                    name: "charizard",
+                    pokeTypes: ["fire", "flying"],
+                    rating: 4.2,
+                    rating_count: 5,
+                    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+                    stats: {
+                        attack: 84,
+                        defense: 78,
+                        hp: 78,
+                        special_attack: 109,
+                        special_defense: 85,
+                        speed: 100,
+                        total: 534,
+                    },
+                    usage_count: 3,
+                    weight: 905,
+                }
+            }
+        }
+    }
+]
+
 describe('Popup tests: ', () => {
-    test('Be able to send in rating', () => {
+    test('Be able to send in rating', async () => {
+        let onChange = jest.fn();
+        let setOpen = jest.fn();
+        const doc = render(
+            <MockedProvider mocks={mocks} addTypename={false}>
+                <RecoilRoot>
+                    <Popup pokemonId={6} setOpen={setOpen}/>
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        await new Promise(resolve => setTimeout(resolve, 0));
+        doc.getByTestId("add_button")
+
 
     });
 });

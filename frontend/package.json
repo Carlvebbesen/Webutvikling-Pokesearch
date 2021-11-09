@@ -20,6 +20,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router": "^5.1.17",
     "@types/react-router-dom": "^5.3.1",
+    "apollo-mocked-provider": "^5.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.2",
