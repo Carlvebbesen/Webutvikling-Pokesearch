@@ -33,7 +33,7 @@ const TeamMember: FC<iTeamMember> = ({TeamMember, handleAdd, handleRemove, handl
     }
     return (
         <div className={style.emptyTeamMember}>
-            <BsFillPlusSquareFill data-cy="add-pokemon-to-team" className={style.addButton} onClick={handleAdd}/>
+            <BsFillPlusSquareFill data-testid="add_button" data-cy="add-pokemon-to-team" className={style.addButton} onClick={handleAdd}/>
         </div>
     )
 }
