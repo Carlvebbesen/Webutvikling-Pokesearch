@@ -8,7 +8,7 @@ import Popup from "../components/popup/Popup";
 import Team from "../components/team/Team";
 import {Pokemon} from "../utils/Pokemon";
 import {MockedProvider} from "@apollo/client/testing";
-import {GET_POKEMON_BY_ID} from "../queries";
+import {ADD_RATING_BY_POKEMONID, GET_POKEMON_BY_ID} from "../queries";
 
 
 //https://www.npmjs.com/package/react-recoil-hooks-testing-library
@@ -20,6 +20,62 @@ export const RecoilObserver: FC<{ node: any, onChange: Function }> = (props) => 
     return null;
 };
 
+/*
+let localStore: Map<number,number>;
+beforeEach(() => {
+    localStore = new Map<number, number>()
+
+    spyOn(window.localStorage, 'getItem').and.callFake((key) =>
+        key in localStore ? localStore.get(key) : null
+    );
+    spyOn(window.localStorage, 'setItem').and.callFake(
+        (key, value) => (localStore.set(key,value))
+    );
+    spyOn(window.localStorage, 'clear').and.callFake(() => (localStore.clear()));
+});*/
+
+
+const mocks = [
+    {
+        request: {
+            query: GET_POKEMON_BY_ID,
+            variables: {input: {id: 6}}
+
+        },
+        result: {
+            data: {
+                getPokemonById: {
+                    entry_number: 6,
+                    name: "charizard",
+                    pokeTypes: ["fire", "flying"],
+                    rating: 4.2,
+                    rating_count: 5,
+                    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+                    stats: {
+                        attack: 84,
+                        defense: 78,
+                        hp: 78,
+                        special_attack: 109,
+                        special_defense: 85,
+                        speed: 100,
+                        total: 534,
+                    },
+                    usage_count: 3,
+                    weight: 905,
+                }
+            }
+        }
+    },
+    {
+        request: {
+            query: ADD_RATING_BY_POKEMONID,
+            variables: {input: {id: 6, rating: 4}} //TODO: rating change + add body
+        },
+        result: {
+            data: {}
+        }
+    }
+]
 
 const testPokemon1 = {
     name: "Charizard",
@@ -167,42 +223,31 @@ describe('Team tests: ', () => {
 });
 
 
-const mocks = [
-    {
-        request: {
-            query: GET_POKEMON_BY_ID,
-            variables: {input: {id: 6}}
-
-        },
-        result: {
-            data: {
-                getPokemonById: {
-                    entry_number: 6,
-                    name: "charizard",
-                    pokeTypes: ["fire", "flying"],
-                    rating: 4.2,
-                    rating_count: 5,
-                    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-                    stats: {
-                        attack: 84,
-                        defense: 78,
-                        hp: 78,
-                        special_attack: 109,
-                        special_defense: 85,
-                        speed: 100,
-                        total: 534,
-                    },
-                    usage_count: 3,
-                    weight: 905,
-                }
-            }
-        }
-    }
-]
-
 describe('Popup tests: ', () => {
-    test('Be able to send in rating', async () => {
-        let onChange = jest.fn();
+    test('Renders correctly', async () => {
+        let setOpen = jest.fn();
+        const doc = render(
+            <MockedProvider mocks={mocks} addTypename={false}>
+                <RecoilRoot>
+                    <Popup pokemonId={6} setOpen={setOpen}/>
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        await new Promise(resolve => {
+            act(() => {
+                setTimeout(resolve, 0)
+            })
+        });
+        const submit = doc.getByTestId("rating_submit")
+        expect(submit).toBeDisabled()
+        expect(doc.findAllByText("Charizard")).toBeInTheDocument()
+        expect(doc.findAllByText("Stats")).toBeInTheDocument()
+        expect(doc.findAllByText("Info")).toBeInTheDocument()
+        expect(doc.findAllByText("Add pokemon to current team")).toBeInTheDocument()
+    });
+
+    test('Can rate pokemon', async () => {
         let setOpen = jest.fn();
         const doc = render(
             <MockedProvider mocks={mocks} addTypename={false}>
@@ -219,7 +264,31 @@ describe('Popup tests: ', () => {
         });
         const rating = doc.getByTestId("rating")
         const submit = doc.getByTestId("rating_submit")
-
-
+        //fireEvent.click(rating.firstChild!) //TODO: not working
+        //expect(submit).toBeEnabled()
     });
+
+    test('Can exit screen', async () => {
+        let setOpen = jest.fn();
+        const doc = render(
+            <MockedProvider mocks={mocks} addTypename={false}>
+                <RecoilRoot>
+                    <Popup pokemonId={6} setOpen={setOpen}/>
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        await new Promise(resolve => {
+            act(() => {
+                setTimeout(resolve, 0)
+            })
+        });
+        expect(setOpen).toHaveBeenCalledTimes(0)
+        const close = doc.getByTestId("close_popup")
+        fireEvent.click(close)
+        expect(setOpen).toHaveBeenCalledTimes(1)
+        expect(setOpen).toHaveBeenCalledWith(null)
+    });
+
+
 });

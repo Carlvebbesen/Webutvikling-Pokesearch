@@ -59,7 +59,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                             <div
                                 data-cy="close-popup"
                                 className={style.close}>
-                                <BsXSquare onClick={() => {
+                                <BsXSquare data-testid="close_popup" onClick={() => {
                                     setOpen(null)
                                 }}/>
                             </div>
