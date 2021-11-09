@@ -48,14 +48,14 @@ const testPokemon2={
         attack: 89,
         defense: 100,
         special_attack: 85,
-        special_defense: 85,
-        speed: 100,
-        total: 534,
+        special_defense: 105,
+        speed: 78,
+        total: 530,
     },
-    weight: 90.5,
-    rating: 4,
+    weight: 85.5,
+    rating: 4.1,
     number_of_ratings: 2,
-    usage_count: 2
+    usage_count: 1
 } as unknown as Pokemon
 
 describe('Team tests: ', () => {
@@ -65,7 +65,6 @@ describe('Team tests: ', () => {
         const doc = render(
             <RecoilRoot>
                 <RecoilObserver node={pokemonTeam} onChange={onChange}/>
-                {/*<Popup pokemonId={1} setOpen={()=>{}}/>*/}
                 <Team currentPokemon={testPokemon1}/>
             </RecoilRoot>
         );
@@ -76,7 +75,7 @@ describe('Team tests: ', () => {
 
         expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
         expect(onChange).toHaveBeenCalledTimes(2);
-        expect(onChange).toHaveBeenCalledWith([testPokemon1 as Object]); // Initial state on render.
-
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
+        expect(component).not.toBeInTheDocument() //Button should be removed
     });
 });
