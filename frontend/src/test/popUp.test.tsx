@@ -1,6 +1,6 @@
 import {useRecoilValue, atom} from "recoil";
 import {FC, useEffect} from "react";
-import {fireEvent, render} from "@testing-library/react";
+import {act, fireEvent, render} from "@testing-library/react";
 import {RecoilRoot} from 'recoil';
 import React from "react"
 import {pokemonTeam} from "../store";
@@ -212,8 +212,13 @@ describe('Popup tests: ', () => {
             </MockedProvider>
         );
 
-        await new Promise(resolve => setTimeout(resolve, 0));
-        doc.getByTestId("add_button")
+        await new Promise(resolve => {
+            act(() => {
+                setTimeout(resolve, 0)
+            })
+        });
+        const rating = doc.getByTestId("rating")
+        const submit = doc.getByTestId("rating_submit")
 
 
     });

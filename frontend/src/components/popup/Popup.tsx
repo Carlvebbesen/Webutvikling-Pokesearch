@@ -48,7 +48,6 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
             toast.success("Rating submitted", {autoClose: 2000});
         });
     }
-    console.log("DATA", data as string)
 
     return (
         <div id="inner" className={style.popupInner}>
@@ -127,6 +126,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                         <div className={style.ratingSection}>
                             <h5>Give rating</h5>
                             <Rating
+                                data-testid="rating"
                                 data-cy="rating-input"
                                 name="simple-controlled"
                                 value={rating}
@@ -136,7 +136,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 }}
                                 disabled={disable}
                                 />
-                            <button data-cy="rating-submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
+                            <button data-testid="rating_submit" data-cy="rating-submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
                         <Team currentPokemon={data?.getPokemonById}/>   
                     </div>
