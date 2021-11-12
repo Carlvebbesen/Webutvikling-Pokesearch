@@ -74,7 +74,19 @@ const mocks = [
         result: {
             data: {}
         }
-    }
+    },
+    {
+        request: {
+            query: ADD_RATING_BY_POKEMONID,
+            variables: {
+                input: {
+                    id: 6,
+                    rating: 2,
+                }
+            }
+        },
+        result: {data: {response: true}},
+    },
 ]
 
 const testPokemon1 = {
@@ -262,10 +274,45 @@ describe('Popup tests: ', () => {
                 setTimeout(resolve, 0)
             })
         });
-        const rating = doc.getByTestId("rating")
+        const stars = doc.getAllByTestId("test_empty_star")
+        for (let i = 0; i < stars.length; i++) {
+            if (i !== 0) { //will not find any, and fail
+                expect(doc.getAllByTestId("test_full_star").length).toEqual(i)
+            }
+            fireEvent.click(stars[i])
+            expect(doc.getAllByTestId("test_full_star").length).toEqual(i + 1)
+        }
+    });
+
+    test('Can send rating of pokemon', async () => {
+        let setOpen = jest.fn();
+        const doc = render(
+            <MockedProvider mocks={mocks} addTypename={false}>
+                <RecoilRoot>
+                    <Popup pokemonId={6} setOpen={setOpen}/>
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        await new Promise(resolve => {
+            act(() => {
+                setTimeout(resolve, 0)
+            })
+        });
+        const stars = doc.getAllByTestId("test_empty_star")
         const submit = doc.getByTestId("rating_submit")
-        //fireEvent.click(rating.firstChild!) //TODO: not working
-        //expect(submit).toBeEnabled()
+        expect(submit).toBeDisabled()
+        fireEvent.click(stars[4])
+        expect(submit).toBeEnabled()
+
+        await new Promise(resolve => {
+            act(() => {
+                setTimeout(resolve, 0)
+                fireEvent.click(submit)
+            })
+        });
+        expect(doc.getByText("Rating submitted")).toBeInTheDocument()
+
     });
 
     test('Can exit screen', async () => {
@@ -291,4 +338,5 @@ describe('Popup tests: ', () => {
     });
 
 
-});
+})
+;
