@@ -4,28 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
 } from "@apollo/client";
 import {RecoilRoot} from "recoil";
 
 const client = new ApolloClient({
-  uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
-  cache: new InMemoryCache()
+    uri: 'http://it2810-11.idi.ntnu.no:8080/graphql',
+    cache: new InMemoryCache()
 });
-
 
 
 ReactDOM.render(
     <RecoilRoot>
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-    <App />
-    </ApolloProvider>
-  </React.StrictMode>
+        <React.StrictMode>
+            <ApolloProvider client={client}>
+                <App/>
+            </ApolloProvider>
+        </React.StrictMode>
     </RecoilRoot>,
-  document.getElementById('root')
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
