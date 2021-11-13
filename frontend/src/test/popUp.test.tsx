@@ -1,6 +1,6 @@
 import {useRecoilValue, atom} from "recoil";
 import {FC, useEffect} from "react";
-import {act, fireEvent, render} from "@testing-library/react";
+import {act, cleanup, fireEvent, render, screen} from "@testing-library/react";
 import {RecoilRoot} from 'recoil';
 import React from "react"
 import {pokemonTeam} from "../store";
@@ -20,22 +20,19 @@ export const RecoilObserver: FC<{ node: any, onChange: Function }> = (props) => 
     return null;
 };
 
-/*
-let localStore: Map<number,number>;
-beforeEach(() => {
-    localStore = new Map<number, number>()
 
-    spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-        key in localStore ? localStore.get(key) : null
-    );
-    spyOn(window.localStorage, 'setItem').and.callFake(
-        (key, value) => (localStore.set(key,value))
-    );
-    spyOn(window.localStorage, 'clear').and.callFake(() => (localStore.clear()));
-});*/
-
-
-const mocks = [
+const mocks = [{
+    request: {
+        query: ADD_RATING_BY_POKEMONID,
+        variables: {
+            input: {
+                id: 6,
+                rating: 2.5,
+            }
+        }
+    },
+    result: {data: {response: true}},
+},
     {
         request: {
             query: GET_POKEMON_BY_ID,
@@ -65,17 +62,7 @@ const mocks = [
                 }
             }
         }
-    },
-    {
-        request: {
-            query: ADD_RATING_BY_POKEMONID,
-            variables: {input: {id: 6, rating: 4}} //TODO: rating change + add body
-        },
-        result: {
-            data: {}
-        }
-    },
-    {
+    }, /*{
         request: {
             query: ADD_RATING_BY_POKEMONID,
             variables: {
@@ -86,7 +73,7 @@ const mocks = [
             }
         },
         result: {data: {response: true}},
-    },
+    }*/
 ]
 
 const testPokemon1 = {
@@ -236,27 +223,33 @@ describe('Team tests: ', () => {
 
 
 describe('Popup tests: ', () => {
+    beforeEach(() => jest.resetAllMocks())
+
     test('Renders correctly', async () => {
         let setOpen = jest.fn();
+        let onChange = jest.fn();
         const doc = render(
             <MockedProvider mocks={mocks} addTypename={false}>
                 <RecoilRoot>
+                    <RecoilObserver node={pokemonTeam} onChange={onChange}/>
                     <Popup pokemonId={6} setOpen={setOpen}/>
                 </RecoilRoot>
             </MockedProvider>
         );
-
         await new Promise(resolve => {
-            act(() => {
-                setTimeout(resolve, 0)
-            })
+            act(()=>{
+            setTimeout(resolve, 0) })
         });
+
         const submit = doc.getByTestId("rating_submit")
         expect(submit).toBeDisabled()
-        expect(doc.findAllByText("Charizard")).toBeInTheDocument()
-        expect(doc.findAllByText("Stats")).toBeInTheDocument()
-        expect(doc.findAllByText("Info")).toBeInTheDocument()
-        expect(doc.findAllByText("Add pokemon to current team")).toBeInTheDocument()
+
+        expect(doc.getByText("Stats")).toBeInTheDocument()
+        expect(doc.getByText("Info")).toBeInTheDocument()
+        expect(doc.getByText("Add pokemon to current team")).toBeInTheDocument()
+        expect(doc.getByText("Charizard")).toBeInTheDocument() //should be capitalized
+        cleanup()
+
     });
 
     test('Can rate pokemon', async () => {
@@ -282,6 +275,8 @@ describe('Popup tests: ', () => {
             fireEvent.click(stars[i])
             expect(doc.getAllByTestId("test_full_star").length).toEqual(i + 1)
         }
+        cleanup()
+
     });
 
     test('Can send rating of pokemon', async () => {
@@ -304,14 +299,17 @@ describe('Popup tests: ', () => {
         expect(submit).toBeDisabled()
         fireEvent.click(stars[4])
         expect(submit).toBeEnabled()
-
         await new Promise(resolve => {
             act(() => {
                 setTimeout(resolve, 0)
                 fireEvent.click(submit)
             })
         });
-        expect(doc.getByText("Rating submitted")).toBeInTheDocument()
+
+        expect(submit).toBeDisabled()
+        expect(await screen.findByText("Rating submitted")).toBeInTheDocument();
+        //expect(await doc.getByText("Rating submitted")).toBeInTheDocument();
+        cleanup()
 
     });
 
@@ -335,6 +333,7 @@ describe('Popup tests: ', () => {
         fireEvent.click(close)
         expect(setOpen).toHaveBeenCalledTimes(1)
         expect(setOpen).toHaveBeenCalledWith(null)
+        cleanup()
     });
 
 

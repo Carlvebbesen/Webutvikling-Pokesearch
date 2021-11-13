@@ -37,6 +37,10 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
         refetch()
     }, [pokemonId, refetch]);
 
+    useEffect(()=>{
+        console.log(data as unknown as string)
+    },[data])
+
 
     const handleRating = () => {
         setDisable(true);
@@ -51,8 +55,10 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
         }).then((response) => {
             refetch()
             toast.success("Rating submitted", {autoClose: 2000});
+            console.log("SUCCESS")
         });
     }
+
 
     return (
         <div id="inner" className={style.popupInner}>
