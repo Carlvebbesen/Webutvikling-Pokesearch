@@ -76,7 +76,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
     const classes = useStyles();
 
     return (
-            <Accordion className={classes.acc}>
+            <Accordion className={classes.acc} data-testid="pokemon_accordion">
                 <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
 
                         <Typography className={classes.typ}>
@@ -91,7 +91,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
 
                     </AccordionSummary >
                 <AccordionDetails className={classes.accDet}>
-                        <Button className={classes.removeButton} variant="contained" onClick={removeFromTeam}>Remove from team</Button>
+                        <Button className={classes.removeButton} variant="contained" onClick={removeFromTeam} data-testid="remove_button">Remove from team</Button>
                 </AccordionDetails>
             </Accordion>
 
