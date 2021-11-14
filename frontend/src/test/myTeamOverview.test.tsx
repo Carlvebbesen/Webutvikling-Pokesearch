@@ -1,5 +1,5 @@
-import React, {FC, useEffect} from 'react'
-import {RecoilRoot, useRecoilValue} from "recoil";
+import React from 'react'
+import {RecoilRoot} from "recoil";
 import MyTeamOverviewComponent from "../components/myTeamOverviewComponent/myTeamOverviewComponent"
 import PokemonInTeamComponent from "../components/pokemonInTeamComponent/pokemonInTeamComponent"
 import {fireEvent, render} from "@testing-library/react";
@@ -12,12 +12,6 @@ import {pokemonTeam} from "../store";
 //ID-er:
 //remove_button
 //pokemon_accordion
-
-export const RecoilObserver: FC<{ node: any, onChange: Function }> = (props) => {
-    const value = useRecoilValue(props.node);
-    useEffect(() => props.onChange(value), [props.onChange, value]);
-    return null;
-};
 
 const testPokemon1 = {
     name: "Charizard",
@@ -92,6 +86,34 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         expect(textField).toBeInTheDocument()
 
     });
+
+    test('Test if pokemon is removed when clicking remove from team', async () => {
+
+        const doc = render(
+            <MockedProvider>
+                <RecoilRoot>
+                    <Team currentPokemon={testPokemon1}/>
+                    <MyTeamOverviewComponent />
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
+        const add = doc.getByTestId("add_button")
+        fireEvent.click(add)
+
+        const component = doc.getByTestId("remove-button")
+
+        //Finds textfield which shoul be visible because there are pokemon in the team
+        const textField = doc.getByTestId("team-name-input")
+
+        //Clicks the remove from team button
+        fireEvent.click(component)
+
+        //The text field should not be visible, since there are no pokemon in the team
+        expect(textField).not.toBeInTheDocument()
+
+    })
 });
 
 describe('Tests for pokemonInTeamComponent: ', () => {

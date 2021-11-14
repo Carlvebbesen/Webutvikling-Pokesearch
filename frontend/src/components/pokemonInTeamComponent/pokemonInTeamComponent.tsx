@@ -91,7 +91,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
 
                     </AccordionSummary >
                 <AccordionDetails className={classes.accDet}>
-                        <Button className={classes.removeButton} variant="contained" onClick={removeFromTeam} data-testid="remove_button">Remove from team</Button>
+                        <Button className={classes.removeButton} variant="contained" onClick={removeFromTeam} data-testid="remove-button">Remove from team</Button>
                 </AccordionDetails>
             </Accordion>
 
