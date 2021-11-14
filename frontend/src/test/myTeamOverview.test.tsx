@@ -8,6 +8,7 @@ import {Pokemon} from "../utils/Pokemon";
 import TestRenderer from "react-test-renderer";
 import Team from "../components/team/Team";
 import {pokemonTeam} from "../store";
+import userEvent from "@testing-library/user-event";
 
 //ID-er:
 //remove_button
@@ -104,7 +105,7 @@ describe('Tests for myTeamOverviewComponent: ', () => {
 
         const component = doc.getByTestId("remove-button")
 
-        //Finds textfield which shoul be visible because there are pokemon in the team
+        //Finds text field which should be visible because there are pokemon in the team
         const textField = doc.getByTestId("team-name-input")
 
         //Clicks the remove from team button
@@ -113,6 +114,35 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         //The text field should not be visible, since there are no pokemon in the team
         expect(textField).not.toBeInTheDocument()
 
+    })
+
+    test('Test that "save team"-button is disabled when text field is empty', async () => {
+
+        const doc = render(
+            <MockedProvider>
+                <RecoilRoot>
+                    <Team currentPokemon={testPokemon1}/>
+                    <MyTeamOverviewComponent />
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
+        const add = doc.getByTestId("add_button")
+        fireEvent.click(add)
+
+        //Retrieves the input-element from the textField material-ui-component
+        const textFieldInput = doc.getByTestId("team-name-input").children.item(1)!.children.item(0)
+        const button = doc.getByTestId("team-submit")
+
+        //Button should be disabled
+        expect(button).toBeDisabled()
+
+        //Types into the input
+        userEvent.type(textFieldInput!, "Name")
+
+        expect(textFieldInput).toHaveValue("Name")
+        expect(button).not.toBeDisabled()
     })
 });
 
