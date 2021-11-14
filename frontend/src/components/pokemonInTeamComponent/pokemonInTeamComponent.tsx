@@ -86,7 +86,7 @@ const PokemonInTeamComponent = (poke : pokeProps) => {
                             {poke.pokemon.name}
                         </Typography>
                         <Typography className={classes.typ}>
-                            {poke.pokemon.pokeTypes.map(type => <img className={classes.pokeType} style={{marginRight: "10px"}} height="30" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
+                            {poke.pokemon.pokeTypes.map(type => <img key={type} className={classes.pokeType} style={{marginRight: "10px"}} height="30" src={getPokeTypeIcon(type)} alt="PokeTypes"/>)}
                         </Typography>
 
                     </AccordionSummary >
