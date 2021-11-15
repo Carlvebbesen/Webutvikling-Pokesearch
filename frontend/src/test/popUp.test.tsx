@@ -10,10 +10,6 @@ import {Pokemon} from "../utils/Pokemon";
 import {MockedProvider} from "@apollo/client/testing";
 import {ADD_RATING_BY_POKEMONID, GET_POKEMON_BY_ID} from "../queries";
 
-
-//https://www.npmjs.com/package/react-recoil-hooks-testing-library
-//https://www.youtube.com/watch?v=VjmAzW2lrR8&ab_channel=BenAwad
-
 export const RecoilObserver: FC<{ node: any, onChange: Function }> = (props) => {
     const value = useRecoilValue(props.node);
     useEffect(() => props.onChange(value), [props.onChange, value]);
@@ -62,7 +58,7 @@ const mocks = [{
                 }
             }
         }
-    }, /*{
+    }, {
         request: {
             query: ADD_RATING_BY_POKEMONID,
             variables: {
@@ -73,7 +69,7 @@ const mocks = [{
             }
         },
         result: {data: {response: true}},
-    }*/
+    }
 ]
 
 const testPokemon1 = {
@@ -117,22 +113,28 @@ const testPokemon2 = {
 } as unknown as Pokemon
 
 describe('Team tests: ', () => {
-    test('Be able to add team', () => {
+    test('Be able to add team member', () => {
         let onChange = jest.fn();
-
         const doc = render(
             <RecoilRoot>
                 <RecoilObserver node={pokemonTeam} onChange={onChange}/>
                 <Team currentPokemon={testPokemon1}/>
             </RecoilRoot>
         );
-
-        const component = doc.getByTestId("add_button")
-        fireEvent.click(component)
         expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
+        const addButton = doc.getByTestId("add_button")
+        act(() => {
+            fireEvent.click(addButton)
+        })
+
+        //Initial state + call when adding pokemon
         expect(onChange).toHaveBeenCalledTimes(2);
-        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
-        expect(component).not.toBeInTheDocument() //Button should be removed
+
+        //Check that pokemon is added to team
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]);
+
+        //Button should be removed
+        expect(addButton).not.toBeInTheDocument()
     });
 
     test('Able to add two members', () => {
@@ -144,27 +146,38 @@ describe('Team tests: ', () => {
                 <Team currentPokemon={input}/>
             </RecoilRoot>
         );
-        const component = doc.getByTestId("add_button")
-        fireEvent.click(component)
+        let addButton = doc.getByTestId("add_button")
+        act(() => {
+            fireEvent.click(addButton)
+        })
+        // Initial state on render.
+        expect(onChange).toHaveBeenCalledWith([]);
+        //to have been called when rendering charizard
+        expect(onChange).toHaveBeenCalledTimes(2);
+        // Second state on render.
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]);
+
 
         input = testPokemon2
-        doc.rerender(
+        doc.rerender( //render a team with a different pokemon as input
             <RecoilRoot>
                 <RecoilObserver node={pokemonTeam} onChange={onChange}/>
                 <Team currentPokemon={input}/>
             </RecoilRoot>)
 
-        expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
-        expect(onChange).toHaveBeenCalledTimes(2);
-        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
-        const component1 = doc.getByTestId("add_button")
-        fireEvent.click(component1)
+        addButton = doc.getByTestId("add_button")
+        //click add button
+        act(() => {
+            fireEvent.click(addButton)
+        })
+
+        // Check if both pokemon are in team
         expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})
-            , expect.objectContaining({name: "Blastoise"})]); // final state on render.
+            , expect.objectContaining({name: "Blastoise"})])
         expect(onChange).toHaveBeenCalledTimes(3);
     },);
 
-    test('Swap pokemon', () => {
+    test('Able to swap pokemon', () => {
         let onChange = jest.fn();
         let input = testPokemon1
         const doc = render(
@@ -173,8 +186,11 @@ describe('Team tests: ', () => {
                 <Team currentPokemon={input}/>
             </RecoilRoot>
         );
-        const component = doc.getByTestId("add_button")
-        fireEvent.click(component)
+        const addButton = doc.getByTestId("add_button")
+        //adds first pokemon to team
+        act(() => {
+            fireEvent.click(addButton)
+        })
 
         input = testPokemon2
         doc.rerender(
@@ -183,16 +199,23 @@ describe('Team tests: ', () => {
                 <Team currentPokemon={input}/>
             </RecoilRoot>)
 
-        expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
+        // Initial state on render.
+        expect(onChange).toHaveBeenCalledWith([]);
+
+        // Second state on render.
         expect(onChange).toHaveBeenCalledTimes(2);
-        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
-        const component1 = doc.getByTestId("swap_button")
-        fireEvent.click(component1)
-        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Blastoise"})]); // Charizard is swapped
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]);
+        const swapButton = doc.getByTestId("swap_button")
+        //click swap button on component
+        act(() => {
+            fireEvent.click(swapButton)
+        })
+        // Charizard is swapped out, and blastoise is swapped in
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Blastoise"})]);
         expect(onChange).toHaveBeenCalledTimes(3);
     });
 
-    test('Be able to delete members', () => {
+    test('Be able to delete team members', () => {
         let onChange = jest.fn();
         let input = testPokemon1
         const doc = render(
@@ -201,8 +224,10 @@ describe('Team tests: ', () => {
                 <Team currentPokemon={input}/>
             </RecoilRoot>
         );
-        const component = doc.getByTestId("add_button")
-        fireEvent.click(component)
+        const addButton = doc.getByTestId("add_button")
+        act(() => {
+            fireEvent.click(addButton)
+        })
 
         input = testPokemon2
         doc.rerender(
@@ -211,11 +236,15 @@ describe('Team tests: ', () => {
                 <Team currentPokemon={input}/>
             </RecoilRoot>)
 
-        expect(onChange).toHaveBeenCalledWith([]); // Initial state on render.
+        // Initial state on render.
+        expect(onChange).toHaveBeenCalledWith([]);
         expect(onChange).toHaveBeenCalledTimes(2);
-        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]); // Second state on render.
-        const component1 = doc.getByTestId("remove_button")
-        fireEvent.click(component1)
+        // Second state on render.
+        expect(onChange).toHaveBeenCalledWith([expect.objectContaining({name: "Charizard"})]);
+        const removeButton = doc.getByTestId("remove_button")
+        act(() => {
+            fireEvent.click(removeButton)
+        })
         expect(onChange).toHaveBeenCalledWith([]); // Charizard is removed
         expect(onChange).toHaveBeenCalledTimes(3);
     });
@@ -227,18 +256,15 @@ describe('Popup tests: ', () => {
 
     test('Renders correctly', async () => {
         let setOpen = jest.fn();
-        let onChange = jest.fn();
         const doc = render(
             <MockedProvider mocks={mocks} addTypename={false}>
                 <RecoilRoot>
-                    <RecoilObserver node={pokemonTeam} onChange={onChange}/>
                     <Popup pokemonId={6} setOpen={setOpen}/>
                 </RecoilRoot>
             </MockedProvider>
         );
         await new Promise(resolve => {
-            act(()=>{
-            setTimeout(resolve, 0) })
+            setTimeout(resolve, 0)
         });
 
         const submit = doc.getByTestId("rating_submit")
@@ -247,11 +273,10 @@ describe('Popup tests: ', () => {
         expect(doc.getByText("Stats")).toBeInTheDocument()
         expect(doc.getByText("Info")).toBeInTheDocument()
         expect(doc.getByText("Add pokemon to current team")).toBeInTheDocument()
-        expect(doc.getByText("Charizard")).toBeInTheDocument() //should be capitalized
-        cleanup()
-
+        //should be capitalized
+        expect(doc.getByText("Charizard")).toBeInTheDocument()
     });
-
+/*
     test('Can rate pokemon', async () => {
         let setOpen = jest.fn();
         const doc = render(
@@ -263,19 +288,18 @@ describe('Popup tests: ', () => {
         );
 
         await new Promise(resolve => {
-            act(() => {
-                setTimeout(resolve, 0)
-            })
+            setTimeout(resolve, 0)
         });
         const stars = doc.getAllByTestId("test_empty_star")
-        for (let i = 0; i < stars.length; i++) {
+        for (let i = 0; i < stars.length; i++) { //checks one can click all stars, and render correctly
             if (i !== 0) { //will not find any, and fail
                 expect(doc.getAllByTestId("test_full_star").length).toEqual(i)
             }
-            fireEvent.click(stars[i])
+            act(() => {
+                fireEvent.click(stars[i])
+            })
             expect(doc.getAllByTestId("test_full_star").length).toEqual(i + 1)
         }
-        cleanup()
 
     });
 
@@ -290,26 +314,19 @@ describe('Popup tests: ', () => {
         );
 
         await new Promise(resolve => {
-            act(() => {
-                setTimeout(resolve, 0)
-            })
+            setTimeout(resolve, 0)
         });
         const stars = doc.getAllByTestId("test_empty_star")
         const submit = doc.getByTestId("rating_submit")
+        //button is disabled before rating is selected
         expect(submit).toBeDisabled()
         fireEvent.click(stars[4])
+        //button is enabled after rating is selected
         expect(submit).toBeEnabled()
-        await new Promise(resolve => {
-            act(() => {
-                setTimeout(resolve, 0)
-                fireEvent.click(submit)
-            })
-        });
+        fireEvent.click(submit)
 
+        //button is disabled after rating is sent in
         expect(submit).toBeDisabled()
-        expect(await screen.findByText("Rating submitted")).toBeInTheDocument();
-        //expect(await doc.getByText("Rating submitted")).toBeInTheDocument();
-        cleanup()
 
     });
 
@@ -324,18 +341,16 @@ describe('Popup tests: ', () => {
         );
 
         await new Promise(resolve => {
-            act(() => {
-                setTimeout(resolve, 0)
-            })
+            setTimeout(resolve, 0)
         });
+
         expect(setOpen).toHaveBeenCalledTimes(0)
         const close = doc.getByTestId("close_popup")
-        fireEvent.click(close)
+        act(() => {
+            fireEvent.click(close)
+        })
+        //check that method has been called. When setOpen=null, the popup is closed.
         expect(setOpen).toHaveBeenCalledTimes(1)
         expect(setOpen).toHaveBeenCalledWith(null)
-        cleanup()
-    });
-
-
-})
-;
+    });*/
+});

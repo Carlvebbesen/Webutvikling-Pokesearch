@@ -19,43 +19,38 @@ interface iPopup {
 }
 
 
-const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
+const Popup: FC<iPopup> = (props) => {
     const [rating, setRating] = useState<number>(0)
     const [disable, setDisable] = useState<boolean>(false)
     const {data, error, loading, refetch} = useQuery(GET_POKEMON_BY_ID, {
-        variables: {input: {id: pokemonId}}
+        variables: {input: {id: props.pokemonId}}
     });
     const [mutateFunction] = useMutation(ADD_RATING_BY_POKEMONID);
 
     useEffect(() => {
-        const previousRating = localStorage.getItem(pokemonId.toString());
+        const previousRating = localStorage.getItem(props.pokemonId.toString());
         if (previousRating !== null) {
             setRating(parseInt(previousRating));
             setDisable(true);
         }
         //to get the new team count if it is updated
         refetch()
-    }, [pokemonId, refetch]);
-
-    useEffect(()=>{
-        console.log(data as unknown as string)
-    },[data])
+    }, [props.pokemonId, refetch]);
 
 
     const handleRating = () => {
         setDisable(true);
-        localStorage.setItem(pokemonId.toString(), rating.toString());
+        localStorage.setItem(props.pokemonId.toString(), rating.toString());
         mutateFunction({
             variables: {
                 input: {
-                    id: pokemonId,
+                    id: props.pokemonId,
                     rating: rating,
                 }
             }
         }).then((response) => {
             refetch()
             toast.success("Rating submitted", {autoClose: 2000});
-            console.log("SUCCESS")
         });
     }
 
@@ -71,7 +66,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 data-cy="close-popup"
                                 className={style.close}>
                                 <BsXSquare data-testid="close_popup" onClick={() => {
-                                    setOpen(null)
+                                    props.setOpen(null)
                                 }}/>
                             </div>
                             <div className={style.headerSection}>
@@ -86,7 +81,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 <h3>Info</h3>
                                 <div className={style.dataEntry}>
                                     <span>Dex number</span>
-                                    <span>{pokemonId}</span>
+                                    <span>{props.pokemonId}</span>
                                 </div>
                                 <div className={style.dataEntry}>
                                     <span>Typing</span>
