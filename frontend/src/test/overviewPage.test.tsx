@@ -8,7 +8,6 @@ import { StatTable } from "../components/statTable/statTable";
 import Filter from "../components/filter/Filter";
 import { filteredDataMocks } from "./testData";
 import { act, fireEvent, render } from "@testing-library/react";
-import { PokemonTypes } from "../utils/Values";
 
 const single_pokemon_mock = {
   name: "Charizard",
@@ -269,15 +268,14 @@ describe("Test filtering fields", () => {
       });
     });
 
-    const pokemonTypesFire = doc.getByTestId("types_input");
-    act(() => {
+    await act(async () => {
+      const pokemonTypesFire = doc.getByTestId("types_input");
       fireEvent.click(pokemonTypesFire);
-    });
-    const pokemonTypesTypes_input = doc.getByTestId("type-option-fire");
-    act(() => {
+      const pokemonTypesTypes_input = await doc.findByTestId(
+        "type-option-fire"
+      );
       fireEvent.click(pokemonTypesTypes_input);
     });
-
     expect(doc.getAllByText(/TestPokemon/)).toHaveLength(1);
     expect(doc.getAllByText(/TestPokemon/)[0].textContent).toEqual(
       "TestPokemonFire"
