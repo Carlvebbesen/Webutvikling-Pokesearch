@@ -1,4 +1,4 @@
-import {useRecoilValue, atom} from "recoil";
+import {useRecoilValue} from "recoil";
 import {FC, useEffect} from "react";
 import {act, fireEvent, render} from "@testing-library/react";
 import {RecoilRoot} from 'recoil';
@@ -6,9 +6,8 @@ import React from "react"
 import {pokemonTeam} from "../store";
 import Popup from "../components/popup/Popup";
 import Team from "../components/team/Team";
-import {Pokemon} from "../utils/Pokemon";
 import {MockedProvider} from "@apollo/client/testing";
-import {ADD_RATING_BY_POKEMONID, GET_POKEMON_BY_ID} from "../queries";
+import { mocks, testPokemon1, testPokemon2 } from "./testData";
 
 
 //https://www.npmjs.com/package/react-recoil-hooks-testing-library
@@ -19,103 +18,6 @@ export const RecoilObserver: FC<{ node: any, onChange: Function }> = (props) => 
     useEffect(() => props.onChange(value), [props.onChange, value]);
     return null;
 };
-
-/*
-let localStore: Map<number,number>;
-beforeEach(() => {
-    localStore = new Map<number, number>()
-
-    spyOn(window.localStorage, 'getItem').and.callFake((key) =>
-        key in localStore ? localStore.get(key) : null
-    );
-    spyOn(window.localStorage, 'setItem').and.callFake(
-        (key, value) => (localStore.set(key,value))
-    );
-    spyOn(window.localStorage, 'clear').and.callFake(() => (localStore.clear()));
-});*/
-
-
-const mocks = [
-    {
-        request: {
-            query: GET_POKEMON_BY_ID,
-            variables: {input: {id: 6}}
-
-        },
-        result: {
-            data: {
-                getPokemonById: {
-                    entry_number: 6,
-                    name: "charizard",
-                    pokeTypes: ["fire", "flying"],
-                    rating: 4.2,
-                    rating_count: 5,
-                    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
-                    stats: {
-                        attack: 84,
-                        defense: 78,
-                        hp: 78,
-                        special_attack: 109,
-                        special_defense: 85,
-                        speed: 100,
-                        total: 534,
-                    },
-                    usage_count: 3,
-                    weight: 905,
-                }
-            }
-        }
-    },
-    {
-        request: {
-            query: ADD_RATING_BY_POKEMONID,
-            variables: {input: {id: 6, rating: 4}} //TODO: rating change + add body
-        },
-        result: {
-            data: {}
-        }
-    }
-]
-
-const testPokemon1 = {
-    name: "Charizard",
-    pokeTypes: ["fire", "flying"],
-    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/6.png",
-    entry_number: "6",
-    stats: {
-        hp: 78,
-        attack: 84,
-        defense: 78,
-        special_attack: 109,
-        special_defense: 85,
-        speed: 100,
-        total: 534,
-    },
-    weight: 90.5,
-    rating: 4,
-    number_of_ratings: 2,
-    usage_count: 2
-} as unknown as Pokemon
-
-const testPokemon2 = {
-    name: "Blastoise",
-    pokeTypes: ["water"],
-    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/9.png",
-    entry_number: "9",
-    stats: {
-        hp: 79,
-        attack: 89,
-        defense: 100,
-        special_attack: 85,
-        special_defense: 105,
-        speed: 78,
-        total: 530,
-    },
-    weight: 85.5,
-    rating: 4.1,
-    number_of_ratings: 2,
-    usage_count: 1
-} as unknown as Pokemon
 
 describe('Team tests: ', () => {
     test('Be able to add team', () => {

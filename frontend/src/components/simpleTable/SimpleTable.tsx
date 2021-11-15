@@ -34,7 +34,7 @@ const SimpleTable: FC<iSimpleTable> = (props) => {
                     />
                     </TableHead>
                     <TableBody key={'TableBody'}>
-                        {props.data.pokemons.map((pokemon: Pokemon) => <TableListRow key={pokemon.entry_number} setPopUpShow={props.setPopUpId} pokemon={pokemon}/>)}
+                        {props.data.pokemons.map((pokemon: Pokemon) => <TableListRow data-testid={"TableListRow"} key={pokemon.entry_number} setPopUpShow={props.setPopUpId} pokemon={pokemon}/>)}
                     </TableBody>
 
             </Table>

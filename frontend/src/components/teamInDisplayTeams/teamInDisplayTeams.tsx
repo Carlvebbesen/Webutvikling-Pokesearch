@@ -3,6 +3,7 @@ import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 import { Team } from '../../utils/Pokemon';
 import {makeStyles} from "@material-ui/core/styles";
+import { width } from '@mui/system';
 
 interface IteamProps {
     team: Team,
@@ -24,16 +25,21 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
 
         },
         pokeCard: {
-            [theme.breakpoints.down("xs")]: {
-                height: "170px"
-            }
         },
         pokeType: {
 
         },
         pokeImage: {
 
+        },
+        gridContainer: {
+            [theme.breakpoints.down("xs")]: {
+                maxWidth: "100%",
+                width: "100%",
+                justifyContent: "center"
+            }
         }
+        
     }));
 
     const classes = useStyles();
@@ -43,7 +49,7 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({team, pokemonClicked}) => {
             <h3 style={{textAlign: "center"}}> {team.name} </h3>
             <Grid container spacing={2} className={classes.teamContainer}>
                 {team.pokemon.map((poke, number) =>
-                    <Grid item xs={6} key={number} sx={{cursor: "pointer"}} onClick={()=> pokemonClicked(poke.entry_number)}>
+                    <Grid className={classes.gridContainer} item xs={6} key={number} sx={{cursor: "pointer"}} onClick={()=> pokemonClicked(poke.entry_number)}>
                         <Card className={classes.pokeCard}>
                             <CardContent sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}}>
                                 <Typography>

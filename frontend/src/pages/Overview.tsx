@@ -22,6 +22,7 @@ const OverviewPage = () => {
     })
     const [name, setName] = useState<string>("");
 
+    console.log(filterInput);
     //filter
     const [page, setPage] = useState<number>(0);
 
@@ -93,6 +94,7 @@ const OverviewPage = () => {
                 {pokemonId && <BackgroundPopUp show={pokemonId !== null} clicked={() => setPokemonId(null)}/>}
 
                 <Filter
+                    data-testid="filter"
                     name={name}
                     setName={changeName}
                     rating={filterInput.rating ?? 0}
@@ -103,6 +105,7 @@ const OverviewPage = () => {
                     <p>Loading ...</p>
                     :
                     <SimpleTable
+                        data-testid="simpleTable"
                         activeSortButton={filterInput.sortBy}
                         sortPokemon={changeSortBy}
                         rowsPerPage={filterInput.limit}
