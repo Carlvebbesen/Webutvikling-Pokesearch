@@ -7,12 +7,8 @@ import {MockedProvider} from "@apollo/client/testing";
 import {Pokemon} from "../utils/Pokemon";
 import TestRenderer from "react-test-renderer";
 import Team from "../components/team/Team";
-import {pokemonTeam} from "../store";
 import userEvent from "@testing-library/user-event";
 
-//ID-er:
-//remove_button
-//pokemon_accordion
 
 const testPokemon1 = {
     name: "Charizard",
@@ -73,11 +69,9 @@ describe('Tests for myTeamOverviewComponent: ', () => {
             </MockedProvider>
         );
 
-
-
         //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
-        const component = doc.getByTestId("add_button")
-        fireEvent.click(component)
+        const add_button = doc.getByTestId("add_button")
+        fireEvent.click(add_button)
 
         const button = doc.getByTestId("team-submit")
         const textField = doc.getByTestId("team-name-input")
@@ -103,13 +97,13 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         const add = doc.getByTestId("add_button")
         fireEvent.click(add)
 
-        const component = doc.getByTestId("remove-button")
+        const removeButton = doc.getByTestId("remove-button")
 
         //Finds text field which should be visible because there are pokemon in the team
         const textField = doc.getByTestId("team-name-input")
 
         //Clicks the remove from team button
-        fireEvent.click(component)
+        fireEvent.click(removeButton)
 
         //The text field should not be visible, since there are no pokemon in the team
         expect(textField).not.toBeInTheDocument()
@@ -158,7 +152,7 @@ describe('Tests for pokemonInTeamComponent: ', () => {
             </MockedProvider>
         );
 
-        //Combines the contents of p-type into one string
+        //Combines the contents of all p-type-elements into one string
         const p = doc.root.findAllByType("p").map(a => a.children).join("");
 
         expect(p).toContain("Charizard")
