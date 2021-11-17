@@ -138,6 +138,38 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         expect(textFieldInput).toHaveValue("Name")
         expect(button).not.toBeDisabled()
     })
+
+    test('Test that "save team"-button is working', async () => {
+
+        const doc = render(
+            <MockedProvider>
+                <RecoilRoot>
+                    <Team currentPokemon={testPokemon1}/>
+                    <MyTeamOverviewComponent />
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
+        const add = doc.getByTestId("add_button")
+        fireEvent.click(add)
+
+        //Retrieves the input-element from the textField material-ui-component
+        const textFieldInput = doc.getByTestId("team-name-input").children.item(1)!.children.item(0)
+        const button = doc.getByTestId("team-submit")
+
+        //Types into the input
+        userEvent.type(textFieldInput!, "Unique Name")
+
+        //Clicks the save-team-button
+        fireEvent.click(button);
+
+
+
+        //expect(button).toBeDisabled()
+
+
+    })
 });
 
 describe('Tests for pokemonInTeamComponent: ', () => {
@@ -153,10 +185,25 @@ describe('Tests for pokemonInTeamComponent: ', () => {
         );
 
         //Combines the contents of all p-type-elements into one string
-        const p = doc.root.findAllByType("p").map(a => a.children).join("");
+        const pTypes = doc.root.findAllByType("p").map(a => a.children).join("");
 
-        expect(p).toContain("Charizard")
+        expect(pTypes).toContain("Charizard")
 
+    })
+
+    test('Test that remove-button is enabled', async () => {
+
+        const doc = render(
+            <MockedProvider>
+                <RecoilRoot>
+                    <PokemonInTeamComponent pokemon={testPokemon1} />
+                </RecoilRoot>
+            </MockedProvider>
+        );
+
+        const removeButton = doc.getByTestId("remove-button")
+
+        expect(removeButton).not.toBeDisabled();
     })
 
 
