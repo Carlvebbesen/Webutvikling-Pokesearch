@@ -30,7 +30,7 @@ const single_pokemon_mock = {
   usage_count: 2,
 };
 
-const waitForRender = async () => {
+export const waitForRender = async () => {
   await new Promise((resolve) => {
     act(() => {
       setTimeout(resolve, 0);
