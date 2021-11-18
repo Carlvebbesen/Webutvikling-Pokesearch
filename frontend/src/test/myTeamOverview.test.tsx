@@ -43,18 +43,18 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         );
 
         //Combines the contents of div-type into one string, and same for button-type
-        const div = doc.root.findAllByType("div").map(a => a.children).join("");
-        const button = doc.root.findAllByType("button").map(a => a.children).join("");
+        const div_text : string = doc.root.findAllByType("div").map(a => a.children).join("");
+        const button_text : string = doc.root.findAllByType("button").map(a => a.children).join("");
 
-        const text1 = "You have not chosen any pokemon for your team. Please go to Database and select some you like."
-        const text2 = "Maybe you can get some inspiration from the teams below"
+        const text1 : string = "You have not chosen any pokemon for your team. Please go to Database and select some you like."
+        const text2 : string = "Maybe you can get some inspiration from the teams below"
 
         //These strings should appear when there are noe pokemon in the team
-        expect(div).toContain(text1)
-        expect(div).toContain(text2)
+        expect(div_text).toContain(text1)
+        expect(div_text).toContain(text2)
 
         //The button should not be on the page, because there are no pokemon in the team
-        expect(button).not.toContain("SAVE TEAM")
+        expect(button_text).not.toContain("SAVE TEAM")
 
     });
 
@@ -70,11 +70,11 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         );
 
         //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
-        const add_button = doc.getByTestId("add_button")
+        const add_button : HTMLElement  = doc.getByTestId("add_button")
         fireEvent.click(add_button)
 
-        const button = doc.getByTestId("team-submit")
-        const textField = doc.getByTestId("team-name-input")
+        const button : HTMLElement = doc.getByTestId("team-submit")
+        const textField : HTMLElement  = doc.getByTestId("team-name-input")
 
         //The button and text field should be in the document, since there are pokemon in the team
         expect(button).toBeInTheDocument();
@@ -94,13 +94,13 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         );
 
         //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
-        const add = doc.getByTestId("add_button")
+        const add : HTMLElement = doc.getByTestId("add_button")
         fireEvent.click(add)
 
-        const removeButton = doc.getByTestId("remove-button")
+        const removeButton : HTMLElement = doc.getByTestId("remove-button")
 
         //Finds text field which should be visible because there are pokemon in the team
-        const textField = doc.getByTestId("team-name-input")
+        const textField : HTMLElement = doc.getByTestId("team-name-input")
 
         //Clicks the remove from team button
         fireEvent.click(removeButton)
@@ -122,12 +122,12 @@ describe('Tests for myTeamOverviewComponent: ', () => {
         );
 
         //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
-        const add = doc.getByTestId("add_button")
+        const add : HTMLElement = doc.getByTestId("add_button")
         fireEvent.click(add)
 
         //Retrieves the input-element from the textField material-ui-component
-        const textFieldInput = doc.getByTestId("team-name-input").children.item(1)!.children.item(0)
-        const button = doc.getByTestId("team-submit")
+        const textFieldInput : Element|null = doc.getByTestId("team-name-input").children.item(1)!.children.item(0)
+        const button : HTMLElement = doc.getByTestId("team-submit")
 
         //Button should be disabled
         expect(button).toBeDisabled()
@@ -142,7 +142,7 @@ describe('Tests for myTeamOverviewComponent: ', () => {
     test('Test that "save team"-button is working', async () => {
 
         const doc = render(
-            <MockedProvider>
+            <MockedProvider >
                 <RecoilRoot>
                     <Team currentPokemon={testPokemon1}/>
                     <MyTeamOverviewComponent />
@@ -150,24 +150,23 @@ describe('Tests for myTeamOverviewComponent: ', () => {
             </MockedProvider>
         );
 
-        //Must first add a pokemon to team, in order for the state to change (this functionality is tested somewhere else)
-        const add = doc.getByTestId("add_button")
+        //Must first add a pokemon to team (this functionality is tested somewhere else)
+        const add : HTMLElement = doc.getByTestId("add_button")
         fireEvent.click(add)
 
         //Retrieves the input-element from the textField material-ui-component
-        const textFieldInput = doc.getByTestId("team-name-input").children.item(1)!.children.item(0)
-        const button = doc.getByTestId("team-submit")
+        const textFieldInput : Element|null = doc.getByTestId("team-name-input").children.item(1)!.children.item(0)
+        const button : HTMLElement = doc.getByTestId("team-submit")
 
         //Types into the input
-        userEvent.type(textFieldInput!, "Unique Name")
+        userEvent.type(textFieldInput!, "Name")
 
+        expect(button).toBeInTheDocument()
         //Clicks the save-team-button
         fireEvent.click(button);
 
-
-
-        //expect(button).toBeDisabled()
-
+        //Shows that the button is removed when saving team, which means there are no longer pokemon in the team
+        expect(button).not.toBeInTheDocument()
 
     })
 });
@@ -185,9 +184,9 @@ describe('Tests for pokemonInTeamComponent: ', () => {
         );
 
         //Combines the contents of all p-type-elements into one string
-        const pTypes = doc.root.findAllByType("p").map(a => a.children).join("");
+        const p_text : string = doc.root.findAllByType("p").map(a => a.children).join("");
 
-        expect(pTypes).toContain("Charizard")
+        expect(p_text).toContain("Charizard")
 
     })
 
@@ -201,7 +200,7 @@ describe('Tests for pokemonInTeamComponent: ', () => {
             </MockedProvider>
         );
 
-        const removeButton = doc.getByTestId("remove-button")
+        const removeButton : HTMLElement = doc.getByTestId("remove-button")
 
         expect(removeButton).not.toBeDisabled();
     })
