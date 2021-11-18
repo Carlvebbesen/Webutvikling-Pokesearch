@@ -75,14 +75,18 @@ const Filter: FC<iFilter> = (props) => {
       <FormControl sx={{ m: 1, width: 200 }} data-cy="type-selector-container">
         <InputLabel id="demo-multiple-chip-label">Type (Max 2)</InputLabel>
         <Select
-          data-testid="types_input"
           data-cy="type-selector"
           labelId="multiple-chip-label"
           id="Type"
           multiple
           value={props.type}
           onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Type" />}
+          input={
+            <OutlinedInput
+              id="select-multiple-chip"
+              label="Type"
+            />
+          }
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               {selected.map((value) => (
@@ -94,7 +98,6 @@ const Filter: FC<iFilter> = (props) => {
         >
           {PokemonTypes.map((type) => (
             <MenuItem
-              data-testid={`type-option-${type}`}
               sx={{ display: "block" }}
               key={type}
               value={type}
@@ -121,6 +124,7 @@ const Filter: FC<iFilter> = (props) => {
           <Rating
             name="simple-controlled"
             value={props.rating}
+            data-testid="filter-rating"
             precision={0.5}
             onChange={(event, star) => {
               if (star != null) {

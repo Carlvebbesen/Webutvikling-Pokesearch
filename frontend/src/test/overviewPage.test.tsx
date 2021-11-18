@@ -7,7 +7,7 @@ import SortingButton from "../components/sort/sortingButton";
 import { StatTable } from "../components/statTable/statTable";
 import Filter from "../components/filter/Filter";
 import { filteredDataMocks } from "./testData";
-import { act, fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 
 const single_pokemon_mock = {
   name: "Charizard",
@@ -30,6 +30,14 @@ const single_pokemon_mock = {
   usage_count: 2,
 };
 
+const waitForRender = async () => {
+  await new Promise((resolve) => {
+    act(() => {
+      setTimeout(resolve, 0);
+    });
+  });
+};
+
 describe("Test Sorting correctly", () => {
   test("init render of objects", async () => {
     const doc = render(
@@ -37,10 +45,8 @@ describe("Test Sorting correctly", () => {
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
     expect(doc.getAllByText(/TestPokemon/)).toHaveLength(3);
     expect(doc.getAllByText(/TestPokemon/)[0].textContent).toEqual(
@@ -53,6 +59,7 @@ describe("Test Sorting correctly", () => {
       "TestPokemonFire"
     );
   });
+
   test("Sort by hp descending", async () => {
     const doc = render(
       <MockedProvider mocks={filteredDataMocks} addTypename={false}>
@@ -60,10 +67,8 @@ describe("Test Sorting correctly", () => {
       </MockedProvider>
     );
 
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     const component = doc.getByTestId("hp");
@@ -77,10 +82,8 @@ describe("Test Sorting correctly", () => {
       </MockedProvider>
     );
 
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     //Check if elements is sorted by hp desc
@@ -103,10 +106,8 @@ describe("Test Sorting correctly", () => {
       </MockedProvider>
     );
 
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     const component = doc.getByTestId("hp");
@@ -120,11 +121,10 @@ describe("Test Sorting correctly", () => {
       </MockedProvider>
     );
 
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
+
     const componentHp = doc.getByTestId("hp");
     act(() => {
       fireEvent.click(componentHp);
@@ -136,10 +136,8 @@ describe("Test Sorting correctly", () => {
       </MockedProvider>
     );
 
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     //Check if elements is sorted by hp asc
@@ -160,10 +158,8 @@ describe("Test Sorting correctly", () => {
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     const component = doc.getByTestId("hp");
@@ -175,10 +171,8 @@ describe("Test Sorting correctly", () => {
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     expect(doc.getAllByText(/TestPokemon/)).toHaveLength(3);
@@ -200,11 +194,10 @@ describe("Test Sorting correctly", () => {
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
+
     expect(doc.getAllByText(/TestPokemon/)[0].textContent).toEqual(
       "TestPokemonFire"
     );
@@ -224,14 +217,12 @@ describe("Test filtering fields", () => {
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
-    const nameField: HTMLElement = doc.getByTestId("name_input");
+
+    const nameField: any = doc.getByTestId("name_input");
     act(() => {
-      //   fireEvent.click(nameField);
       fireEvent.change(nameField, { target: { value: "TestPokemonWater" } });
     });
     //to wait for the debounce on name search
@@ -245,40 +236,42 @@ describe("Test filtering fields", () => {
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
+
     expect(nameField.value).toBe("TestPokemonWater");
     expect(doc.getAllByText(/TestPokemon/)).toHaveLength(1);
     expect(doc.getAllByText(/TestPokemon/)[0].textContent).toEqual(
       "TestPokemonWater"
     );
   });
-  test("filter on type", async () => {
+  test("filter on stars", async () => {
     const doc = render(
       <MockedProvider mocks={filteredDataMocks} addTypename={false}>
         <OverviewPage />
       </MockedProvider>
     );
-    await new Promise((resolve) => {
-      act(() => {
-        setTimeout(resolve, 0);
-      });
+    await act(async () => {
+      await waitForRender();
     });
 
     await act(async () => {
-      const pokemonTypesFire = doc.getByTestId("types_input");
-      fireEvent.click(pokemonTypesFire);
-      const pokemonTypesTypes_input = await doc.findByTestId(
-        "type-option-fire"
-      );
-      fireEvent.click(pokemonTypesTypes_input);
+      const filterRating = doc.getAllByTestId("StarBorderIcon");
+      fireEvent.click(filterRating[5]);
     });
+    doc.rerender(
+      <MockedProvider mocks={filteredDataMocks} addTypename={false}>
+        <OverviewPage />
+      </MockedProvider>
+    );
+    await act(async () => {
+      await waitForRender();
+    });
+
     expect(doc.getAllByText(/TestPokemon/)).toHaveLength(1);
     expect(doc.getAllByText(/TestPokemon/)[0].textContent).toEqual(
-      "TestPokemonFire"
+      "TestPokemonRating"
     );
   });
 });

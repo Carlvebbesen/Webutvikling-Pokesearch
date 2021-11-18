@@ -22,7 +22,6 @@ const OverviewPage = () => {
     })
     const [name, setName] = useState<string>("");
 
-    console.log(filterInput);
     //filter
     const [page, setPage] = useState<number>(0);
 

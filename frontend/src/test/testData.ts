@@ -4,6 +4,7 @@ import {
   GET_FILTERED_POKEMONS,
   GET_POKEMON_BY_ID,
 } from "../queries";
+import { count } from "console";
 
 export const filteredData = {
   pokemons: [
@@ -409,6 +410,43 @@ export const filteredDataMocks = [
             },
           ],
           count: 3,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_FILTERED_POKEMONS,
+      variables: {
+        input: {
+          limit: 10,
+          offset: 0,
+          rating: 3,
+        },
+      },
+    },
+    result: {
+      data: {
+        getFilteredPokemon: {
+          pokemons: [
+            {
+              name: "TestPokemonRating",
+              pokeTypes: ["grass"],
+              sprite_url:
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
+              entry_number: "1",
+              stats: {
+                hp: 1,
+                attack: 2,
+                defense: 3,
+                special_attack: 4,
+                special_defense: 5,
+                speed: 6,
+                total: 7,
+              },
+            },
+          ],
+          count: 1,
         },
       },
     },

@@ -3,7 +3,6 @@ import { getPokeTypeIcon } from "../../static/typeIcons/pokeTypeIcons";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { Team } from "../../utils/Pokemon";
 import { makeStyles } from "@material-ui/core/styles";
-import { width } from "@mui/system";
 
 interface IteamProps {
   team: Team;
@@ -25,7 +24,11 @@ export const TeamInDisplayTeams: FC<IteamProps> = ({
         fontSize: "15px",
       },
     },
-    pokeCard: {},
+    pokeCard: {
+      [theme.breakpoints.down("xs")]: {
+        width: "230px",
+      },
+    },
     pokeType: {},
     pokeImage: {},
     gridContainer: {
