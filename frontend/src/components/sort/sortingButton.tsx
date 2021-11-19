@@ -18,7 +18,7 @@ interface iSortingButton {
         sort(name as string, newState);
     }
     return (
-        <button data-cy={name} className={style.sortingButton} onClick={sortBy}>
+        <button data-testid={name} data-cy={name} className={style.sortingButton} onClick={sortBy}>
             <p>{label}</p>
             {currentSort !== name && (currentSort !== undefined || name !== "pokemonId")
                 ? <FilterAltIcon/> :
