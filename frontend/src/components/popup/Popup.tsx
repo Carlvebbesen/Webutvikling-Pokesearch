@@ -64,7 +64,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 }}/>
                             </div>
                             <div className={style.headerSection} >
-                                <h2>{capitalize(data?.getPokemonById.name)}</h2>
+                                <h2 data-testid={"popupTitle"}>{capitalize(data?.getPokemonById.name)}</h2>
                                 <img
                                     className={style.spritePic}
                                     src={data?.getPokemonById.sprite_url}

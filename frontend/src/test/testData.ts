@@ -4,7 +4,6 @@ import {
   GET_FILTERED_POKEMONS,
   GET_POKEMON_BY_ID,
 } from "../queries";
-import { count } from "console";
 
 export const filteredData = {
   pokemons: [
@@ -80,7 +79,7 @@ export const filteredDataMocks = [
               pokeTypes: ["grass", "posion"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "1",
+              entry_number: 1,
               stats: {
                 hp: 1,
                 attack: 2,
@@ -96,7 +95,7 @@ export const filteredDataMocks = [
               pokeTypes: ["water"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "2",
+              entry_number: 2,
               stats: {
                 hp: 45,
                 attack: 49,
@@ -112,7 +111,7 @@ export const filteredDataMocks = [
               pokeTypes: ["fire"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
-              entry_number: "3",
+              entry_number: 3,
               stats: {
                 hp: 14,
                 attack: 122,
@@ -135,6 +134,42 @@ export const filteredDataMocks = [
       variables: {
         input: {
           limit: 10,
+          offset: 10,
+        },
+      },
+    },
+    result: {
+      data: {
+        getFilteredPokemon: {
+          pokemons: [
+            {
+              name: "TestPokemonOffset",
+              pokeTypes: ["grass", "posion"],
+              sprite_url:
+                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
+              entry_number: 11,
+              stats: {
+                hp: 1,
+                attack: 2,
+                defense: 3,
+                special_attack: 4,
+                special_defense: 5,
+                speed: 6,
+                total: 7,
+              },
+            },
+          ],
+          count: 1,
+        },
+      },
+    },
+  },
+  {
+    request: {
+      query: GET_FILTERED_POKEMONS,
+      variables: {
+        input: {
+          limit: 10,
           offset: 0,
           sortBy: undefined,
           sortDesc: true,
@@ -146,11 +181,11 @@ export const filteredDataMocks = [
         getFilteredPokemon: {
           pokemons: [
             {
-              name: "TestPokemonFire",
+              name: "TestPokemonFirePokemonId3",
               pokeTypes: ["fire"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
-              entry_number: "3",
+              entry_number: 3,
               stats: {
                 hp: 14,
                 attack: 122,
@@ -162,11 +197,11 @@ export const filteredDataMocks = [
               },
             },
             {
-              name: "TestPokemonWater",
+              name: "TestPokemonWaterPokemonId2",
               pokeTypes: ["water"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "2",
+              entry_number: 2,
               stats: {
                 hp: 45,
                 attack: 49,
@@ -178,11 +213,11 @@ export const filteredDataMocks = [
               },
             },
             {
-              name: "TestPokemonGrassPoison",
+              name: "TestPokemonGrassPoisonPokemonId1",
               pokeTypes: ["grass", "posion"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "1",
+              entry_number: 1,
               stats: {
                 hp: 1,
                 attack: 2,
@@ -216,11 +251,11 @@ export const filteredDataMocks = [
         getFilteredPokemon: {
           pokemons: [
             {
-              name: "TestPokemonWater",
+              name: "TestPokemonWaterHp45",
               pokeTypes: ["water"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "2",
+              entry_number: 2,
               stats: {
                 hp: 45,
                 attack: 49,
@@ -232,11 +267,11 @@ export const filteredDataMocks = [
               },
             },
             {
-              name: "TestPokemonFire",
+              name: "TestPokemonFireHp14",
               pokeTypes: ["fire"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
-              entry_number: "3",
+              entry_number: 3,
               stats: {
                 hp: 14,
                 attack: 122,
@@ -248,11 +283,11 @@ export const filteredDataMocks = [
               },
             },
             {
-              name: "TestPokemonGrassPoison",
+              name: "TestPokemonGrassPoisonHp1",
               pokeTypes: ["grass", "posion"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "1",
+              entry_number: 1,
               stats: {
                 hp: 1,
                 attack: 2,
@@ -286,11 +321,11 @@ export const filteredDataMocks = [
         getFilteredPokemon: {
           pokemons: [
             {
-              name: "TestPokemonGrassPoison",
+              name: "TestPokemonGrassPoisonHp1",
               pokeTypes: ["grass", "posion"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "1",
+              entry_number: 1,
               stats: {
                 hp: 1,
                 attack: 2,
@@ -302,11 +337,11 @@ export const filteredDataMocks = [
               },
             },
             {
-              name: "TestPokemonFire",
+              name: "TestPokemonFireHp14",
               pokeTypes: ["fire"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
-              entry_number: "3",
+              entry_number: 3,
               stats: {
                 hp: 14,
                 attack: 122,
@@ -318,11 +353,11 @@ export const filteredDataMocks = [
               },
             },
             {
-              name: "TestPokemonWater",
+              name: "TestPokemonWaterHp45",
               pokeTypes: ["water"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "2",
+              entry_number: 2,
               stats: {
                 hp: 45,
                 attack: 49,
@@ -359,7 +394,7 @@ export const filteredDataMocks = [
               pokeTypes: ["water"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "2",
+              entry_number: 2,
               stats: {
                 hp: 45,
                 attack: 49,
@@ -372,44 +407,6 @@ export const filteredDataMocks = [
             },
           ],
           count: 1,
-        },
-      },
-    },
-  },
-  {
-    request: {
-      query: GET_FILTERED_POKEMONS,
-      variables: {
-        input: {
-          sortDesc: false,
-          limit: 10,
-          offset: 0,
-          pokemonTypes: ["fire"],
-        },
-      },
-    },
-    result: {
-      data: {
-        getFilteredPokemon: {
-          pokemons: [
-            {
-              name: "TestPokemonFire",
-              pokeTypes: ["fire"],
-              sprite_url:
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
-              entry_number: "3",
-              stats: {
-                hp: 14,
-                attack: 122,
-                defense: 23,
-                special_attack: 42,
-                special_defense: 25,
-                speed: 26,
-                total: 27,
-              },
-            },
-          ],
-          count: 3,
         },
       },
     },
@@ -434,7 +431,7 @@ export const filteredDataMocks = [
               pokeTypes: ["grass"],
               sprite_url:
                 "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
-              entry_number: "1",
+              entry_number: 1,
               stats: {
                 hp: 1,
                 attack: 2,
