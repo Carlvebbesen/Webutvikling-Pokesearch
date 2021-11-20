@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import style from "./sortingButton.module.css";
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
-import FilterAltIcon from  '@mui/icons-material/FilterAlt';
+import SortIcon from '@mui/icons-material/Sort';
 
 interface iSortingButton {
     name: string,
@@ -21,7 +21,7 @@ interface iSortingButton {
         <button data-testid={name} data-cy={name} className={style.sortingButton} onClick={sortBy}>
             <p>{label}</p>
             {currentSort !== name && (currentSort !== undefined || name !== "pokemonId")
-                ? <FilterAltIcon/> :
+                ? <SortIcon/> :
                 decending ? <ArrowUpwardOutlinedIcon/> : <ArrowDownwardOutlinedIcon/>}
         </button>
     )
