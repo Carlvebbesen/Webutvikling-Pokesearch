@@ -1,7 +1,8 @@
 describe("Verify team functionality", () => {
 
     beforeEach(() => {
-        cy.visit('http://localhost:3000/prosjekt3/');
+        cy.clock();
+        cy.visit('http://localhost:3000/prosjekt3');
     })
 
     it("Test adding a pokemon to the team", () => {

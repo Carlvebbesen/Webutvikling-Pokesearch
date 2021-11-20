@@ -70,7 +70,8 @@ const Filter: FC<iFilter> = (props) => {
                        label="Name"
                        type="search"
                        value={props.name}
-                       onChange={event => props.setName(event.target.value)}
+                       onChange={event =>
+                           props.setName(event.target.value)}
                        data-cy="name_input"
             />
             <FormControl sx={{m: 1, width: 200}} data-cy="type-selector-container">

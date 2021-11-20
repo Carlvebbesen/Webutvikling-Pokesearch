@@ -1,6 +1,7 @@
 describe("Verify sorting results in list of pokémon in correct order.", () => {
 
     beforeEach(() => {
+        cy.clock();
         cy.visit('http://localhost:3000/prosjekt3');
     })
 
