@@ -20,7 +20,7 @@ const TableListRow: React.FC<TableListRowProps> = ({pokemon, setPopUpShow}) => {
             </TableCell>
             <TableCell data-cy="type-container" padding={"none"} align="center">
                 {pokemon.pokeTypes.map(type => <img key={`${type}${pokemon.entry_number}`} style={{marginRight: "10px"}} height="30"
-                                                    src={getPokeTypeIcon(type)} alt={type} title={type}/>)}
+                                                    src={getPokeTypeIcon(type)} alt={type} title={type} data-cy={type} />)}
             </TableCell>
             {Object.values(pokemon.stats).slice(1)
                 .map((value, index) => <TableCell data-cy={`stat_${index}`} className={style.statList}  padding={"none"} align={"center"}  key={index}>{value === null ? '-' : value}</TableCell>)}

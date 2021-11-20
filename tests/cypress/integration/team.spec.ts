@@ -1,7 +1,8 @@
 describe("Verify team functionality", () => {
 
     beforeEach(() => {
-        cy.visit('http://localhost:3000/prosjekt3/');
+        cy.clock();
+        cy.visit('http://localhost:3000/prosjekt3');
     })
 
     it("Test adding a pokemon to the team", () => {
@@ -63,8 +64,8 @@ describe("Verify team functionality", () => {
         cy.get('[data-cy=close-popup]').click();
 
         cy.get('[data-cy=nav-teams]').click();
-        const uniqueNumber = parseInt(Math.random(1000000) * Math.random(1000000) * 1000000);
-        cy.get('[data-cy=team-name-input]').type(`Team-from-testing-${uniqueNumber}`);
+        const uniqueNumber = Math.floor(Math.random()*100000 * Math.random()*100000);
+        cy.get('[data-cy=team-name-input]').type(`Team-from-testing-${uniqueNumber.toString()}`);
         cy.get('[data-cy=team-submit]').click();
         cy.clock();
         cy.tick(10000);
