@@ -6,48 +6,54 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {capitalize, Rating} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import {getPokeTypeIcon} from "../../static/typeIcons/pokeTypeIcons";
-import { StatTable } from "../statTable/statTable";
-import { BsXSquare } from 'react-icons/bs';
-import { toast } from 'react-toastify';
+import {StatTable} from "../statTable/statTable";
+import {BsXSquare} from 'react-icons/bs';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Team from "../team/Team";
+import {Star, StarBorder} from "@material-ui/icons";
 
 interface iPopup {
     pokemonId: number,
-    setOpen: (id: number|null)=> void,
+    setOpen: (id: number | null) => void,
 }
 
 
-const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
+const Popup: FC<iPopup> = (props) => {
     const [rating, setRating] = useState<number>(0)
     const [disable, setDisable] = useState<boolean>(false)
     const {data, error, loading, refetch} = useQuery(GET_POKEMON_BY_ID, {
-        variables: {input: {id: pokemonId}}
+        variables: {input: {id: props.pokemonId}}
     });
     const [mutateFunction] = useMutation(ADD_RATING_BY_POKEMONID);
 
-    useEffect(()=>{
-        const previousRating = localStorage.getItem(pokemonId.toString());
-        if(previousRating!== null) {
+    useEffect(() => {
+        const previousRating = localStorage.getItem(props.pokemonId.toString());
+        if (previousRating !== null) {
             setRating(parseInt(previousRating));
             setDisable(true);
         }
         //to get the new team count if it is updated
         refetch()
-    },[pokemonId, refetch]);
+    }, [props.pokemonId, refetch]);
 
 
     const handleRating = () => {
         setDisable(true);
-        localStorage.setItem(pokemonId.toString(), rating.toString());
-        mutateFunction({variables: {input:{
-            id: pokemonId,
-            rating: rating,
-        }}}).then((response) => {
+        localStorage.setItem(props.pokemonId.toString(), rating.toString());
+        mutateFunction({
+            variables: {
+                input: {
+                    id: props.pokemonId,
+                    rating: rating,
+                }
+            }
+        }).then((response) => {
             refetch()
             toast.success("Rating submitted", {autoClose: 2000});
         });
     }
+
 
     return (
         <div id="inner" className={style.popupInner}>
@@ -59,11 +65,11 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                             <div
                                 data-cy="close-popup"
                                 className={style.close}>
-                                <BsXSquare onClick={() => {
-                                    setOpen(null)
+                                <BsXSquare data-testid="close_popup" onClick={() => {
+                                    props.setOpen(null)
                                 }}/>
                             </div>
-                            <div className={style.headerSection} >
+                            <div className={style.headerSection}>
                                 <h2>{capitalize(data?.getPokemonById.name)}</h2>
                                 <img
                                     className={style.spritePic}
@@ -75,7 +81,7 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                 <h3>Info</h3>
                                 <div className={style.dataEntry}>
                                     <span>Dex number</span>
-                                    <span>{pokemonId}</span>
+                                    <span>{props.pokemonId}</span>
                                 </div>
                                 <div className={style.dataEntry}>
                                     <span>Typing</span>
@@ -88,13 +94,13 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                                 src={getPokeTypeIcon(type)}
                                                 alt={type}
                                                 title={type}
-                                                />)
-                                                }
+                                            />)
+                                        }
                                     </div>
                                 </div>
                                 <div className={style.dataEntry}>
                                     <span>Weight</span>
-                                    <span>{(data?.getPokemonById.weight/10).toFixed(1)} kg</span>
+                                    <span>{(data?.getPokemonById.weight / 10).toFixed(1)} kg</span>
                                 </div>
                                 <div className={style.dataEntry}>
                                     <span>{`Average rating of ${data?.getPokemonById.rating_count}`}</span>
@@ -120,13 +126,17 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                     {name: 'special-attack', value: data?.getPokemonById.stats.special_attack},
                                     {name: 'sepcial-defense', value: data?.getPokemonById.stats.special_defense},
                                     {name: 'speed', value: data?.getPokemonById.stats.speed},
-                                ]} />
+                                ]}/>
                             </div>
                         </div>
                         <div className={style.ratingSection}>
                             <h5>Give rating</h5>
                             <Rating
+                                data-testid="rating"
                                 data-cy="rating-input"
+                                emptyIcon={<StarBorder data-testid="test_empty_star" fontSize="inherit"/>}
+                                icon={<Star data-testid="test_full_star" fontSize="inherit"/>
+                                }
                                 name="simple-controlled"
                                 value={rating}
                                 precision={0.5}
@@ -134,10 +144,11 @@ const Popup: FC<iPopup> = ({pokemonId, setOpen}) => {
                                     setRating(newValue ? newValue : 0)
                                 }}
                                 disabled={disable}
-                                />
-                            <button data-cy="rating-submit" className={style.rating} onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
+                            />
+                            <button data-testid="rating_submit" data-cy="rating-submit" className={style.rating}
+                                    onClick={handleRating} disabled={(rating === 0) || disable}><SendIcon/></button>
                         </div>
-                        <Team currentPokemon={data?.getPokemonById}/>   
+                        <Team currentPokemon={data?.getPokemonById}/>
                     </div>
                 </>}
         </div>
