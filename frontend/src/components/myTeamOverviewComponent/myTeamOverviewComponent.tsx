@@ -53,6 +53,7 @@ const MyTeamOverviewComponent = () => {
                 )}
                 <TextField
                     data-cy="team-name-input"
+                    data-testid="team-name-input"
                     value={name}
                     disabled={team.length === 0}
                     id="outlined-basic"
@@ -61,6 +62,7 @@ const MyTeamOverviewComponent = () => {
                     onChange={(e) => setName(String(e.target.value))}/>
                 <Button
                     data-cy="team-submit"
+                    data-testid="team-submit"
                     disabled={team.length === 0 || name.trim() === ""}
                     variant="contained"
                     onClick={saveTeam}>
