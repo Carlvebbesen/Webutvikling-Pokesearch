@@ -90,4 +90,11 @@ Vi har i dette prosjektet valgt å bruke recoil for state management. Dette er e
 
 - Vi har opplevd at en av gruppemedlemmene sliter med å få kjørt alle testene, men de varierer hvilke tester som ikke kjører for personen. Vi har forsøkt å feilsøke, men finner ingen åpenbare feil ved prosjektets tester. Vedlagt finner du et bilde som viser at alle testene fungerer og kjører slik de skal. Om du evt får et problem med tester som ikke kjører, prøv hvertfall å kjør dem en gang til :D
 
+**Komponenttestene:**
+
+![Unit Tests](/images/Screenshot_2021-11-20_at_15.37.15.png?raw=true "Unit tests")
+
+**Cypress-testene:**
+
+![Cypress](/images/Screenshot_2021-11-20_at_16.10.58.png?raw=true "Cypress")
 
