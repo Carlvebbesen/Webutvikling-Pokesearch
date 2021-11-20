@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -22,7 +22,7 @@ interface iSimpleTable {
 }
 
 const SimpleTable: FC<iSimpleTable> = (props) => {
-  const [width, height] = useWindowSize();
+  const [width] = useWindowSize();
 
   return (
     <Paper key={"TableWrapper"}>
