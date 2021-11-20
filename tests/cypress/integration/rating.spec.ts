@@ -8,7 +8,7 @@ describe("Verify that a pokemon recieves rating", () => {
         cy.get('[data-cy=blastoise]').click();
         cy.get('[data-cy=rating-input]').find('[name=simple-controlled]').each((item, index, list) => {
             if (index === 2) {
-                Cypress.$(item).click();
+                Cypress.$(item).trigger('click');
             }
         });
         cy.get('[data-cy=rating-submit]').click();
