@@ -2,39 +2,19 @@ import React from 'react'
 import {RecoilRoot} from "recoil";
 import MyTeamOverviewComponent from "../components/myTeamOverviewComponent/myTeamOverviewComponent"
 import PokemonInTeamComponent from "../components/pokemonInTeamComponent/pokemonInTeamComponent"
-import {fireEvent, render} from "@testing-library/react";
+import {act, fireEvent, render} from "@testing-library/react";
 import {MockedProvider} from "@apollo/client/testing";
-import {Pokemon} from "../utils/Pokemon";
-import TestRenderer from "react-test-renderer";
 import Team from "../components/team/Team";
 import userEvent from "@testing-library/user-event";
+import {testPokemon1} from "./testData"
+import {waitForRender} from "./overviewPage.test";
 
-
-const testPokemon1 = {
-    name: "Charizard",
-    pokeTypes: ["fire", "flying"],
-    sprite_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/6.png",
-    entry_number: "6",
-    stats: {
-        hp: 78,
-        attack: 84,
-        defense: 78,
-        special_attack: 109,
-        special_defense: 85,
-        speed: 100,
-        total: 534,
-    },
-    weight: 90.5,
-    rating: 4,
-    number_of_ratings: 2,
-    usage_count: 2
-} as unknown as Pokemon
 
 describe('Tests for myTeamOverviewComponent: ', () => {
 
     test('Test if myTeamOverviewComponent renders correctly without pokemon in team', async () => {
 
-        const doc = TestRenderer.create(
+        const doc = render(
             <MockedProvider>
                 <RecoilRoot>
                     <MyTeamOverviewComponent />
@@ -42,19 +22,21 @@ describe('Tests for myTeamOverviewComponent: ', () => {
             </MockedProvider>
         );
 
-        //Combines the contents of div-type into one string, and same for button-type
-        const div_text : string = doc.root.findAllByType("div").map(a => a.children).join("");
-        const button_text : string = doc.root.findAllByType("button").map(a => a.children).join("");
+        await act(async () => {
+            await waitForRender();
+        });
 
-        const text1 : string = "You have not chosen any pokemon for your team. Please go to Database and select some you like."
+        const text1 : string = "You have not chosen any pokemon for your team. " +
+            "Please go to Database and select some you like."
         const text2 : string = "Maybe you can get some inspiration from the teams below"
 
-        //These strings should appear when there are noe pokemon in the team
-        expect(div_text).toContain(text1)
-        expect(div_text).toContain(text2)
+        //These strings should appear when there are noe pokemon in the team. Both texts contains the word "you"
+        expect(doc.getAllByText(/you/)).toHaveLength(2)
+        expect(doc.getAllByText(/you/)[0].textContent).toContain(text1)
+        expect(doc.getAllByText(/you/)[1].textContent).toContain(text2)
 
         //The button should not be on the page, because there are no pokemon in the team
-        expect(button_text).not.toContain("SAVE TEAM")
+        expect(doc.queryAllByText(/SAVE TEAM/)).toHaveLength(0)
 
     });
 
@@ -175,7 +157,7 @@ describe('Tests for pokemonInTeamComponent: ', () => {
 
     test('Test if pokemonInTeamComponent renders correctly', async () => {
 
-        const doc = TestRenderer.create(
+        const doc =render(
             <MockedProvider>
                 <RecoilRoot>
                     <PokemonInTeamComponent pokemon={testPokemon1} />
@@ -183,10 +165,12 @@ describe('Tests for pokemonInTeamComponent: ', () => {
             </MockedProvider>
         );
 
-        //Combines the contents of all p-type-elements into one string
-        const p_text : string = doc.root.findAllByType("p").map(a => a.children).join("");
+        await act(async () => {
+            await waitForRender();
+        });
 
-        expect(p_text).toContain("Charizard")
+        expect(doc.getAllByText(/Charizard/)).toHaveLength(1)
+        expect(doc.getAllByText(/Charizard/)[0].textContent).toContain("Charizard")
 
     })
 

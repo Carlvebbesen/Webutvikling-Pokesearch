@@ -1,16 +1,16 @@
 import React from 'react'
-import {fireEvent, render} from "@testing-library/react";
-import TestRenderer from "react-test-renderer";
+import {act, fireEvent, render} from "@testing-library/react";
 import {MockedProvider} from "@apollo/client/testing";
 import {RecoilRoot} from "recoil";
 import Navbar from "../components/navbar/Navbar";
 import {BrowserRouter} from 'react-router-dom'
+import {waitForRender} from "./overviewPage.test";
 
 describe('Tests for Navbar: ', () => {
 
     test('Test Navbar rendering', async () => {
 
-        const doc = TestRenderer.create(
+        const doc = render(
             <MockedProvider>
                 <RecoilRoot>
                     <BrowserRouter>
@@ -20,14 +20,13 @@ describe('Tests for Navbar: ', () => {
             </MockedProvider>
         );
 
-        //Combines the contents of p-type into one string
-        const div = doc.root.findAllByType("p").map(a => a.children).join("");
+        await act(async () => {
+            await waitForRender();
+        });
 
-        const text1 = "Database"
-        const text2 = "Pokemon Teams"
-
-        expect(div).toContain(text1)
-        expect(div).toContain(text2)
+        //Tests that both elements of the navbar is rendered
+        expect(doc.getAllByText(/Database/)).toHaveLength(1)
+        expect(doc.getAllByText(/Pokemon Teams/)).toHaveLength(1)
 
     });
 
