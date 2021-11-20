@@ -2,7 +2,7 @@ describe("Verify team functionality", () => {
 
     beforeEach(() => {
         cy.clock();
-        cy.visit('http://localhost:3000/prosjekt3');
+        cy.visit('http://it2810-11.idi.ntnu.no/prosjekt3');
     })
 
     it("Test adding a pokemon to the team", () => {
