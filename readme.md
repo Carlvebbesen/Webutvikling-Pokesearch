@@ -135,6 +135,6 @@ Vi har i dette prosjektet valgt å bruke recoil for state management. Dette er e
 
 **Backend Komponent-tester**
 
-![Backend-unit](/images/Screenshot 2021-11-21_at_10.47.28.png?raw=true "Cypress")
+![Backend-unit](/images/Screenshot_2021-11-21_at_10.47.28.png?raw=true "Cypress")
 
 
