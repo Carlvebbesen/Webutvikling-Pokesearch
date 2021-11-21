@@ -8,14 +8,16 @@ Applikasjonen gjør det mulig å filtrere og sortere en database av Pokémon, sa
 
 ## Lokal kjøring:
 
-**Kjør først for å installere alle pakkene backend:**
+**Kjør først for å installere alle pakkene backend i backend/-mappen:**
+
 ```yarn install```
 
 **Start lokal backend i backend/-mappen:**
 
 ```yarn start```
 
-**Kjør først for å installere alle pakken frontend:**
+**Kjør først for å installere alle pakken frontend i frontend/-mappen:**
+
 ```yarn install```
 
 **Start lokal frontend i frontend/-mappen:**
@@ -87,7 +89,7 @@ Logikken til graphql-apiet er skrevet i resolvers.ts. Her tas input fra klienten
 
 Kommando for å kjøre backend jest tester (fra backend/-mappen):
 
-Kjør først for å installere alle pakkene:
+Kjør først for å installere alle pakkene til testene i backend/-mappen:
 
 ```yarn install```
 
@@ -102,7 +104,7 @@ Vi har også brukt snapshot-tester for å teste at nettsiden lastes riktig. Grun
 
 Kommando for å kjøre frontend jest tester (fra frontend/-mappen):
 
-Kjør først for å installere alle pakkene:
+Kjør først for å installere alle pakkene til testing i frontend/-mappen:
 
 ```yarn install```
 
