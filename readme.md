@@ -122,7 +122,7 @@ Vi har i dette prosjektet valgt å bruke recoil for state management. Dette er e
 ### **Annet**
 
 - Grunnen til at ikke dependency-arrayet til useEffecten i overview-page er fylt opp er at dette ikke vil gi ønsket funksjonalitet som er debounce kun på søk på navn, om dette arrayet hadde blitt fylt ut hadde det trigget flere databasekall enn hva intensjonen hadde vært. 
-- Det kommer en feilmelding i console når man går inn på database-siden. Refererer til at en <td> ikke kan være inne i en <div>.  Dette er en feil som oppstår på grunn av noen material-ui-komponenter. Gjennom omfattende testing har vi funnet ut at dette ikke påvirker funksjonaliteten i noen grad, og at feiler kommer fra inne i en av MUI-komponentene.
+- Det kommer en feilmelding i console når man går inn på database-siden. Refererer til at en ```<td> ikke kan være inne i en <div>```.  Dette er en feil som oppstår på grunn av noen material-ui-komponenter. Gjennom omfattende testing har vi funnet ut at dette ikke påvirker funksjonaliteten i noen grad, og at feiler kommer fra inne i en av MUI-komponentene.
 
 - Vi har opplevd at en av gruppemedlemmene sliter med å få kjørt alle testene, men de varierer hvilke tester som ikke kjører for personen. Vi har forsøkt å feilsøke, men finner ingen åpenbare feil ved prosjektets tester. Vedlagt finner du et bilde som viser at alle testene fungerer og kjører slik de skal. Om du evt får et problem med tester som ikke kjører, prøv hvertfall å kjør dem en gang til :D
 
