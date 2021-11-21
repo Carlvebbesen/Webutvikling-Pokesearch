@@ -2,7 +2,7 @@ describe("Verify sorting results in list of pokémon in correct order.", () => {
 
     beforeEach(() => {
         cy.clock();
-        cy.visit('http://localhost:3000/prosjekt3');
+        cy.visit('http://it2810-11.idi.ntnu.no/prosjekt3');
     })
 
     it("Verify sorting on stats", () => {

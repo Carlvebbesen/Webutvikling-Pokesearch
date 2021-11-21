@@ -2,7 +2,7 @@ describe('Verify filtering options renders correct pokemon', () => {
 
     beforeEach(() => {
         cy.clock();
-        cy.visit('http://localhost:3000/prosjekt3');
+        cy.visit('http://it2810-11.idi.ntnu.no/prosjekt3');
     })
 
     it("Verify resulting pokemon contain search input", () => {
@@ -19,6 +19,7 @@ describe('Verify filtering options renders correct pokemon', () => {
             expect(Cypress.$(item).text()).to.match(/.*[bB].*/);
         });
         cy.get('[data-testid=KeyboardArrowLeftIcon]').click();
+        cy.wait(500);
         cy.get('[data-cy=pokemon-name]').each((item, index, list) => {
             expect(firstPagePokemons[index]).to.be.eq(Cypress.$(item).text());
         });
