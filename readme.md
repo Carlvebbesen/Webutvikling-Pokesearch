@@ -1,3 +1,6 @@
+Prosjektet i faget Webutvikling, utviklet av Andreas Rystad, Marius Sjølie, Henrik Brun Fevang og Carl Valdemar Ebbesen.
+
+
 ## Prosjekt 4 ##
 Vi har for prosjekt 4 valgt deloppgave b, som lyder som følger: **Forbedringer og systematisk enhetstesting av backend og klient fra prosjekt 3** Vi har derfor skiftet ut mange av testene fra prosjekt 3, samt brukt mye tid på å skrive nye enhetstester frontend, samt flere ende til ende tester i cypress. Vi har også laget enhetstester for backend. Endringene fra prosjekt 3 finnes derfor i hovedsak i mappene: ```/frontend/src/test``` og ```/tests/cypress``` og ```/backend/src/test```. Er også gjort noen mindre kosmetiske endringer på appen etter tilbakemeldingene vi fikk på prosjekt 3.
 
